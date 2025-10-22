@@ -1,0 +1,119 @@
+body {
+  background-color: #f0f6fb;
+  color: #2c3e50;
+}
+.rolunk-hero {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rolunk-hero .overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(26, 60, 87, 0.5);
+}
+
+.rolunk-hero .hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.rolunk-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.rolunk-hero p {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+
+
+
+.value-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.value-card i {
+  color: darkcyan;
+}
+
+.team-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: scale(1.05);
+}
+
+.team-card img {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid darkcyan;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-card:hover img {
+  transform: scale(1.08);
+}
+
+
+
+.team-card p {
+  display: none;              
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;        
+  margin-top: 10px;           
+}
+
+.team-card:hover p {
+  display: block;            
+  opacity: 1;
+}
+
+
+.team-card {
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: scale(1.05);
+}
+@media (max-width: 768px) {
+  .rolunk-hero h1 {
+    font-size: 2rem;
+  }
+}
+.earth-img-hover {
+      transition: transform 0.2s ease;
+    }
+    .earth-img-hover:hover {
+      transform: scale(1.06);
+    }
