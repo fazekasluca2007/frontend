@@ -6,16 +6,23 @@
 .navbar .navbar-brand {
   color: #2c3e50;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
-.navbar-brand img{
-  max-height: 40px;
+
+.navbar .nav-link {
+  color: #1a3c57; /* alap szín felülírva az előzőt */
+}
+
+.navbar .nav-link:hover {
+  color: darkcyan;
+}
+
+.navbar-brand img {
+  max-height: 50px;
   width: auto;
   transform: scale(2);
   transform-origin: center;
   margin-right: 15px;
   margin-left: 15px;
-}
-
-.navbar .nav-link:hover {
-  color: #1a3c57;
+  margin-top: 5px;
 }
