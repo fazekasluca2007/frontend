@@ -1,0 +1,118 @@
+body {
+  background-color: #f0f6fb;
+  color: #2c3e50;
+}
+
+.btn-primary,
+.btn.btn-primary.btn-lg {
+  background-color: #6daedb;
+  border-color: #6daedb;
+  transition: 0.3s all;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn.btn-primary.btn-lg:focus {
+  background-color: #1a3c57 !important;
+  border-color: #1a3c57 !important;
+}
+
+.btn-primary:hover,
+.btn.btn-primary.btn-lg:hover {
+  transform: scale(1.1);
+}
+
+.btn.btn-primary.btn-lg {
+  background-color: darkcyan !important;
+  border-color: darkcyan !important;
+  transition: transform 0.4s ease, background-color 0.3s ease, box-shadow 0.4s ease;
+}
+
+.btn.btn-primary.btn-lg:hover {
+  transform: scale(1.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn.btn-primary.btn-lg:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#map {
+  width: 80%;
+  height: 350px;
+  margin: 20px auto;
+  border: 3px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#foldgomb {
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0;
+  filter: drop-shadow(0 0 6px rgba(0,0,0,0.15));
+  transition: transform 0.2s ease;
+}
+
+#foldgomb:hover {
+  transform: scale(1.1);
+}
+
+.text-block {
+  margin-bottom: 20px;
+  padding: 20px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  font-size: 0.95rem;
+  color: #fff;
+  text-align: left;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.text-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.text-block.blue {
+  background: linear-gradient(135deg, darkcyan);
+}
+
+.text-block.green {
+  background: linear-gradient(135deg, #7dbf7d);
+}
+
+.text-block.brown {
+  background: linear-gradient(135deg, #a87c5c);
+}
+
+.text-block p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.leaflet-popup-content {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.leaflet-popup-content b {
+  color: #2c3e50;
+}
+
+.leaflet-popup-content i {
+  color: #555;
+}
+
+/* Öko szállás popup */
+.eco-popup .leaflet-popup-content-wrapper {
+  background: #e8fce8;
+  border: 2px solid #3ba94d;
+}

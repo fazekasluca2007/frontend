@@ -1,0 +1,17 @@
+footer {
+  background-color: #a8cde8;
+  color: #2c3e50;
+}
+
+.hover-szin a {
+  transition: color 0.3s ease;
+}
+.hover-szin a:hover {
+  color: darkcyan !important;
+}
+.hover-szin a i {
+  transition: color 0.3s ease !important;
+}
+.hover-szin a:hover i {
+  color: darkcyan !important;
+}
