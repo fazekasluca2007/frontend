@@ -70,161 +70,166 @@ export default function AuthCard() {
   };
 
   return (
-    <div className="card shadow p-6 w-[380px] mx-auto rounded-2xl bg-white">
-      <h2 className="text-center text-2xl font-semibold mb-6" id="formTitle">
-        {isLogin ? "Bejelentkezés" : "Regisztráció"}
-      </h2>
+    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+      <div
+        className="card shadow p-4 rounded-4"
+        style={{ width: "380px", backgroundColor: "white" }}
+      >
+        <h2 className="text-center fw-semibold mb-4" id="formTitle">
+          {isLogin ? "Bejelentkezés" : "Regisztráció"}
+        </h2>
 
-      {isLogin ? (
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label htmlFor="username" className="block mb-1 font-medium">
-              Felhasználónév
-            </label>
-            <input
-              type="text"
-              id="username"
-              className="form-control w-full border rounded-md p-2"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="password" className="block mb-1 font-medium">
-              Jelszó
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="form-control w-full border rounded-md p-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-2 rounded-md"
-            style={{ backgroundColor: "darkcyan", color: "white", border: "none" }}
-          >
-            Bejelentkezés
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={handleRegister}>
-          <div className="mb-3">
-            <label htmlFor="fullName" className="block mb-1 font-medium">
-              Teljes név
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              className="form-control w-full border rounded-md p-2"
-              placeholder="Add meg a teljes neved"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="regUsername" className="block mb-1 font-medium">
-              Felhasználónév
-            </label>
-            <input
-              type="text"
-              id="regUsername"
-              className="form-control w-full border rounded-md p-2"
-              placeholder="Válassz felhasználónevet"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="regEmail" className="block mb-1 font-medium">
-              E-mail cím
-            </label>
-            <input
-              type="email"
-              id="regEmail"
-              className="form-control w-full border rounded-md p-2"
-              placeholder="Add meg az e-mail címed"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="regPassword" className="block mb-1 font-medium">
-              Jelszó
-            </label>
-            <input
-              type="password"
-              id="regPassword"
-              className="form-control w-full border rounded-md p-2"
-              placeholder="Írj be egy jelszót"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="regPassword2" className="block mb-1 font-medium">
-              Jelszó ismét
-            </label>
-            <input
-              type="password"
-              id="regPassword2"
-              className="form-control w-full border rounded-md p-2"
-              placeholder="Írd be újra a jelszót"
-              value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-2 rounded-md"
-            style={{ backgroundColor: "darkcyan", color: "white", border: "none" }}
-          >
-            Regisztráció
-          </button>
-        </form>
-      )}
-
-      <p className="text-center mt-4 text-sm">
         {isLogin ? (
-          <>
-            Nincs fiókod?{" "}
+          <form onSubmit={handleLogin}>
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label fw-medium">
+                Felhasználónév
+              </label>
+              <input
+                type="text"
+                id="username"
+                className="form-control"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label fw-medium">
+                Jelszó
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
             <button
-              type="button"
-              onClick={() => setIsLogin(false)}
-              className="text-cyan-700 underline"
+              type="submit"
+              className="btn w-100"
+              style={{ backgroundColor: "darkcyan", color: "white" }}
             >
-              Regisztrálj be!
+              Bejelentkezés
             </button>
-          </>
+          </form>
         ) : (
-          <>
-            Már van fiókod?{" "}
+          <form onSubmit={handleRegister}>
+            <div className="mb-3">
+              <label htmlFor="fullName" className="form-label fw-medium">
+                Teljes név
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                className="form-control"
+                placeholder="Add meg a teljes neved"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="regUsername" className="form-label fw-medium">
+                Felhasználónév
+              </label>
+              <input
+                type="text"
+                id="regUsername"
+                className="form-control"
+                placeholder="Válassz felhasználónevet"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="regEmail" className="form-label fw-medium">
+                E-mail cím
+              </label>
+              <input
+                type="email"
+                id="regEmail"
+                className="form-control"
+                placeholder="Add meg az e-mail címed"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="regPassword" className="form-label fw-medium">
+                Jelszó
+              </label>
+              <input
+                type="password"
+                id="regPassword"
+                className="form-control"
+                placeholder="Írj be egy jelszót"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="regPassword2" className="form-label fw-medium">
+                Jelszó ismét
+              </label>
+              <input
+                type="password"
+                id="regPassword2"
+                className="form-control"
+                placeholder="Írd be újra a jelszót"
+                value={password2}
+                onChange={(e) => setPassword2(e.target.value)}
+                required
+              />
+            </div>
+
             <button
-              type="button"
-              onClick={() => setIsLogin(true)}
-              className="text-cyan-700 underline"
+              type="submit"
+              className="btn w-100"
+              style={{ backgroundColor: "darkcyan", color: "white" }}
             >
-              Jelentkezz be!
+              Regisztráció
             </button>
-          </>
+          </form>
         )}
-      </p>
+
+        <p className="text-center mt-3 small">
+          {isLogin ? (
+            <>
+              Nincs fiókod?{" "}
+              <button
+                type="button"
+                onClick={() => setIsLogin(false)}
+                className="btn btn-link p-0 text-decoration-underline text-primary"
+              >
+                Regisztrálj be!
+              </button>
+            </>
+          ) : (
+            <>
+              Már van fiókod?{" "}
+              <button
+                type="button"
+                onClick={() => setIsLogin(true)}
+                className="btn btn-link p-0 text-decoration-underline text-primary"
+              >
+                Jelentkezz be!
+              </button>
+            </>
+          )}
+        </p>
+      </div>
     </div>
   );
 }
