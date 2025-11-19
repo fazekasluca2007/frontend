@@ -1,4 +1,4 @@
-// EcoTripsPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import Trip_card from './components/Trip_card';
 import "./Ecotrips.css";
