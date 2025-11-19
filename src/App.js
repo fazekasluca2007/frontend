@@ -1,10 +1,11 @@
-import Home from "./pages/Home";
+import FAQ from "./pages/FAQ";
+
 
 
 function App() {
   return (
     <div>
-      <Home/>
+      <FAQ/>
     </div>
   );
 }
