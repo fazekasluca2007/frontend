@@ -1,12 +1,11 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
+import "./Trip.css";
 import Trip_card from './components/Trip_card';
-import "./Ecotrips.css";
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
 const data = [
-    {
+  {
         country: "Magyarország",
         flag: "img/zaszlok/hu.png",
         description: "Utazz zöldebben, fedezd fel Magyarország érintetlen szépségeit és fenntartható szállásait!",
@@ -126,107 +125,135 @@ const data = [
     }
 ];
 
-const Ecotrips = () => {
+const Trip = () => {
 
-    const [positions, setPositions] = useState({});
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
-    const moveSlide = (country, step) => {
-        const countryData = data.find(c => c.country === country);
-        const cards = countryData.hotels.length;
-        const visible = 4;
-        const maxPos = Math.max(0, cards - visible);
+  const [positions, setPositions] = useState({});
 
-        setPositions(prev => {
-            const current = prev[country] || 0;
-            let newPos = current + step;
-            newPos = Math.max(0, Math.min(newPos, maxPos));
-            return { ...prev, [country]: newPos };
-        });
-    };
+  const moveSlide = (country, step) => {
+    const countryData = data.find((c) => c.country === country);
+    const cards = countryData.hotels.length;
+    const visible = 4;
+    const maxPos = Math.max(0, cards - visible);
 
+    setPositions((prev) => {
+      const current = prev[country] || 0;
+      let newPos = current + step;
+      newPos = Math.max(0, Math.min(newPos, maxPos));
+      return { ...prev, [country]: newPos };
+    });
+  };
 
-    return (
-        <>
-            <Nav />
-            <div className="container my-5" id="countries-container">
-                {data.map(country => {
-                    const pos = positions[country.country] || 0;
-                    const movePercent = -(pos * 100);
+  const cities = selectedCountry
+    ? data.find((c) => c.country === selectedCountry)?.hotels.map(h => h.city)
+    : [];
 
-                    return (
-                        <div key={country.country} className="my-5">
-                            {/* Ország banner – pontosan a te CSS-ed */}
-                            <div className="country-banner d-flex align-items-center mb-4">
-                                <div className="flag-box me-3">
-                                    <img src={country.flag} alt={country.country} className="zaszlokep" />
-                                </div>
-                                <div>
-                                    <h3 className="mb-1">{country.country}</h3>
-                                    <p className="fst-italic mb-0">{country.description}</p>
-                                </div>
-                            </div>
+  return (
+    <>
+      <Nav />
 
-                            {/* Slider – pontosan a te stílusoddal */}
-                            <div className="slider-wrapper">
-                                <button
-                                    className="slider-btn left"
-                                    onClick={() => moveSlide(country.country, -1)}
-                                    disabled={pos === 0}
-                                >
-                                    &#10094;
-                                </button>
+      {/*Szűrő box*/}
+      <div className="trip-filter container my-4">
+        <div className="trip-filter-inner">
 
-                                <div className="slider-container">
-                                    <div
-                                        className="slider-track"
-                                        style={{ transform: `translateX(${movePercent}%)` }}
-                                    >
-                                        {country.hotels.map(hotel => (
-                                            <Trip_card key={hotel.modalId} hotel={hotel} />
-                                        ))}
-                                    </div>
-                                </div>
+        
+          <h2 className="filter-title">Hová utazna?</h2>
 
-                                <button
-                                    className="slider-btn right"
-                                    onClick={() => moveSlide(country.country, 1)}
-                                    disabled={pos >= country.hotels.length - 4}
-                                >
-                                    &#10095;
-                                </button>
-                            </div>
-                        </div>
-                    );
-                })}
+          <div className="filter-field">
+            <label>Ország</label>
+            <div className="filter-input-wrapper">
+              <span className="filter-icon">🌍</span>
+              <select
+                value={selectedCountry}
+                onChange={(e) => {
+                  setSelectedCountry(e.target.value);
+                  setSelectedCity("");
+                }}
+              >
+                <option value="">Válassz országot…</option>
+                {data.map((country) => (
+                  <option key={country.country} value={country.country}>
+                    {country.country}
+                  </option>
+                ))}
+              </select>
             </div>
+          </div>
 
-            {/* Modálok – Bootstrap, de a te stílusoddal */}
-            {data.flatMap(country =>
-                country.hotels.map(hotel => (
-                    <div key={hotel.modalId} className="modal fade" id={hotel.modalId} tabIndex="-1">
-                        <div className="modal-dialog modal-lg">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">{hotel.city} – {hotel.name}</h5>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div
-                                    className="modal-body"
-                                    dangerouslySetInnerHTML={{ __html: hotel.modalText }}
-                                />
-                                <div className="modal-footer">
-                                    <button className="btn btn-primary" data-bs-dismiss="modal">
-                                        Foglalás
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+          <div className="filter-field">
+            <label>Város</label>
+            <div className="filter-input-wrapper">
+              <span className="filter-icon">🏙️</span>
+              <select
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                disabled={!selectedCountry}
+              >
+                <option value="">Válassz várost…</option>
+                {cities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ORSZÁGOK + HOTELEK*/}
+      <div className="container my-5" id="countries-container">
+
+        {data
+          .filter(country =>
+            selectedCountry ? country.country === selectedCountry : true
+          )
+          .map(country => {
+
+            const filteredHotels = selectedCity
+              ? country.hotels.filter(h => h.city === selectedCity)
+              : country.hotels;
+
+            const pos = positions[country.country] || 0;
+            const movePercent = -(pos * 100);
+
+            return (
+              <div key={country.country} className="my-5">
+
+                <div className="country-banner d-flex align-items-center mb-4">
+                  <div className="flag-box me-3">
+                    <img src={country.flag} alt={country.country} className="zaszlokep" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1">{country.country}</h3>
+                    <p className="fst-italic mb-0">{country.description}</p>
+                  </div>
+                </div>
+
+                <div className="slider-wrapper">
+                  <div className="slider-container">
+                    <div
+                      className="slider-track"
+                      style={{ transform: `translateX(${movePercent}%)` }}
+                    >
+                      {filteredHotels.map(hotel => (
+                        <Trip_card key={hotel.modalId} hotel={hotel} />
+                      ))}
                     </div>
-                ))
-            )}
-            <Footer />
-        </>
-    );
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
+      </div>
+
+      <Footer />
+    </>
+  );
 };
 
-export default Ecotrips;
+export default Trip;
