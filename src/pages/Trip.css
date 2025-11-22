@@ -90,7 +90,7 @@
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
   border: 1px solid #e5e7eb;
   transition: 0.3s;
-  flex-wrap: wrap; /* fontos a középső címhez */
+  flex-wrap: wrap; 
 }
 
 .trip-filter-inner:hover {

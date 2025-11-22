@@ -110,7 +110,7 @@ const Trip = () => {
         </div>
       </div>
 
-      {/* ORSZÁGOK + HOTELEK */}
+      {/* ORSZÁGOK + HOTELEK*/}
       <div className="container my-5" id="countries-container">
 
         {data
