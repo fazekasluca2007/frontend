@@ -1,10 +1,10 @@
-import Trip from "./pages/Trip.js";
+import Home from "./pages/Home.js";
 
 
 function App() {
   return (
     <div>
-      <Trip/>
+      <Home/>
     </div>
   );
 }

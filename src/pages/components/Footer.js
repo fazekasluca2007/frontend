@@ -3,10 +3,7 @@ import './Footer.css';
 
 export default function Footer() {
   return (
-    <footer
-      className="text-white mt-5"
-      style={{ backgroundColor: '#a8cde8' }}
-    >
+    <footer className="footer-custom text-white mt-5">
       <div className="container py-4">
         <div className="row">
           
@@ -36,22 +33,12 @@ export default function Footer() {
             <h5>Kövess minket!</h5>
             <ul className="list-unstyled d-flex flex-column align-items-center gap-2 mt-2">
               <li>
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-white fs-4"
-                >
+                <a href="https://facebook.com" className="text-white fs-4" target="_blank" rel="noreferrer">
                   <i className="fab fa-facebook"></i>
                 </a>
               </li>
               <li>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-white fs-4"
-                >
+                <a href="https://instagram.com" className="text-white fs-4" target="_blank" rel="noreferrer">
                   <i className="fab fa-instagram"></i>
                 </a>
               </li>
@@ -60,7 +47,6 @@ export default function Footer() {
 
         </div>
 
-        {/* Copyright */}
         <div className="text-center mt-3">
           <small>&copy; 2025 EcoTrip - Minden jog fenntartva</small>
         </div>
