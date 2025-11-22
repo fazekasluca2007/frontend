@@ -1,4 +1,3 @@
-
 .country-banner {
   background: linear-gradient(90deg, #6daedb, #7dbf7d, #a87c5c);
   color: #fff;
@@ -72,8 +71,91 @@
   right: -20px;
 }
 
-.border-bottom-custom {
-  border-bottom: 3px solid #6daedb !important;
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0 2px 8px rgba(109, 174, 219, 0.2);
+/*Szűrő*/
+
+.trip-filter {
+  display: flex;
+  justify-content: center;
+}
+
+.trip-filter-inner {
+  background: linear-gradient(135deg, #7dbf7d,
+#6daedb);
+  border-radius: 20px;
+  padding: 25px 30px;
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e5e7eb;
+  transition: 0.3s;
+  flex-wrap: wrap; /* fontos a középső címhez */
+}
+
+.trip-filter-inner:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.filter-title {
+  width: 100%;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.filter-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-field label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.filter-input-wrapper {
+  position: relative;
+}
+
+.filter-input-wrapper select {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border-radius: 12px;
+  border: 2px solid #d1d5db;
+  background: #fff;
+  font-size: 1rem;
+  appearance: none;
+  outline: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.filter-input-wrapper select:focus {
+  border-color: #6daedb;
+  box-shadow: 0 0 0 3px rgba(109, 174, 219, 0.4);
+}
+
+.filter-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .trip-filter-inner {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
 }
