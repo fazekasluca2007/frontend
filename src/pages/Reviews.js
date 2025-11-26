@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Footer from "./components/Footer";
-import Nav from "./components/Nav"
 
 
 
@@ -65,7 +64,6 @@ export default function Reviews() {
 
     return (
         <>
-            <Nav />
             {/* Vélemények listája */}
             <section className="reviews-section" style={{ padding: "50px 0" }}>
                 <div className="container">

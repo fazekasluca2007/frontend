@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
-import Nav from './components/Nav';
 import Footer from './components/Footer';
 
 const data = [
@@ -58,7 +57,6 @@ const Trip = () => {
 
   return (
     <>
-      <Nav />
 
       {/*Szűrő box*/}
       <div className="trip-filter container my-4">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // <- importálni kell
 
 export default function AuthCard() {
   const [isLogin, setIsLogin] = useState(true);
@@ -8,16 +9,17 @@ export default function AuthCard() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  // Ellenőrzés, hogy be van-e jelentkezve
+  const navigate = useNavigate(); // <- navigációhoz
+
+  // Ellenőrzés, hogy be van-e jelentkezve → Home page-re navigál
   useEffect(() => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const storedUser = JSON.parse(localStorage.getItem("user") || "null");
 
     if (loggedIn && storedUser) {
-      alert(`Már be vagy jelentkezve, ${storedUser.fullName}!`);
-      window.location.href = "velemenyek.html";
+      navigate("/"); // Home page
     }
-  }, []);
+  }, [navigate]);
 
   // Bejelentkezés logika
   const handleLogin = (e) => {
@@ -35,7 +37,7 @@ export default function AuthCard() {
     localStorage.setItem("loggedIn", "true");
     localStorage.setItem("user", JSON.stringify(user));
     alert(`Üdv újra, ${user.fullName}!`);
-    window.location.href = "velemenyek.html";
+    navigate("/"); // Home page
   };
 
   // Regisztráció logika

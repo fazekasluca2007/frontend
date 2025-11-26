@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Nav from './components/Nav';
 import Footer from './components/Footer';
 import './FAQ.css';
 
@@ -40,7 +39,6 @@ export default function FAQ() {
 
   return (
     <div>
-      <Nav />
       <div className="container my-5">
         {faqs.map((faq, index) => (
           <div key={index}>

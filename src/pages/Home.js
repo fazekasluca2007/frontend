@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
-import Nav from './components/Nav';
 import Footer from './components/Footer';
 
 // A szállások adatai
@@ -215,7 +214,6 @@ export default function Home() {
 
     return (
         <div>
-            <Nav />
             <div className="position-relative text-center">
 
                 {/* Carousel */}
