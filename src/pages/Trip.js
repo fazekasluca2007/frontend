@@ -1,4 +1,6 @@
+// File: src/Trip.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
 
@@ -30,11 +32,11 @@ const data = [
 ];
 
 const Trip = () => {
-
+  const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-
   const [positions, setPositions] = useState({});
+  const [openModalId, setOpenModalId] = useState(null);
 
   const moveSlide = (country, step) => {
     const countryData = data.find((c) => c.country === country);
@@ -54,16 +56,16 @@ const Trip = () => {
     ? data.find((c) => c.country === selectedCountry)?.hotels.map(h => h.city)
     : [];
 
+  const handleBooking = () => {
+    setOpenModalId(null);
+    navigate("/informaciok");
+  };
+
   return (
     <>
-
-      {/*Szűrő box*/}
       <div className="trip-filter container my-4">
         <div className="trip-filter-inner">
-
-        
           <h2 className="filter-title">Hová utazna?</h2>
-
           <div className="filter-field">
             <label>Ország</label>
             <div className="filter-input-wrapper">
@@ -84,7 +86,6 @@ const Trip = () => {
               </select>
             </div>
           </div>
-
           <div className="filter-field">
             <label>Város</label>
             <div className="filter-input-wrapper">
@@ -96,36 +97,26 @@ const Trip = () => {
               >
                 <option value="">Válassz várost…</option>
                 {cities.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
+                  <option key={city} value={city}>{city}</option>
                 ))}
               </select>
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* ORSZÁGOK + HOTELEK*/}
       <div className="container my-5" id="countries-container">
-
         {data
-          .filter(country =>
-            selectedCountry ? country.country === selectedCountry : true
-          )
+          .filter(country => selectedCountry ? country.country === selectedCountry : true)
           .map(country => {
-
             const filteredHotels = selectedCity
               ? country.hotels.filter(h => h.city === selectedCity)
               : country.hotels;
-
             const pos = positions[country.country] || 0;
             const movePercent = -(pos * 100);
 
             return (
               <div key={country.country} className="my-5">
-
                 <div className="country-banner d-flex align-items-center mb-4">
                   <div className="flag-box me-3">
                     <img src={country.flag} alt={country.country} className="zaszlokep" />
@@ -137,23 +128,48 @@ const Trip = () => {
                 </div>
 
                 <div className="slider-wrapper">
+                  <button className="slider-btn left" onClick={() => moveSlide(country.country, -1)}>{"\u276E"}</button>
                   <div className="slider-container">
-                    <div
-                      className="slider-track"
-                      style={{ transform: `translateX(${movePercent}%)` }}
-                    >
+                    <div className="slider-track" style={{ transform: `translateX(${movePercent}%)` }}>
                       {filteredHotels.map(hotel => (
-                        <Trip_card key={hotel.modalId} hotel={hotel} />
+                        <Trip_card
+                          key={hotel.modalId}
+                          hotel={hotel}
+                          onClick={() => setOpenModalId(hotel.modalId)}
+                        />
                       ))}
                     </div>
                   </div>
+                  <button className="slider-btn right" onClick={() => moveSlide(country.country, 1)}>{"\u276F"}</button>
                 </div>
 
+                {/* React modál minden hotelhez */}
+                {filteredHotels.map(hotel =>
+                  openModalId === hotel.modalId && (
+                    <div className="modal-backdrop" key={hotel.modalId}>
+                      <div className="modal-dialog">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title">{hotel.name}</h5>
+                            <button type="button" className="btn-close" onClick={() => setOpenModalId(null)}></button>
+                          </div>
+                          <div className="modal-body">
+                            <img src={hotel.img} alt={hotel.name} className="img-fluid mb-3"/>
+                            <p>Város: {hotel.city}</p>
+                            <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
+                            <button className="btn btn-primary btn-lg mt-3" onClick={handleBooking}>
+                              Foglalás
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                )}
               </div>
             );
           })}
       </div>
-
     </>
   );
 };

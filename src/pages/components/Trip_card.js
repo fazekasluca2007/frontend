@@ -55,16 +55,14 @@
 //     )
 // }
 
-// HotelCard.jsx
 import React from 'react';
 
-const Trip_card = ({ hotel }) => {
+const Trip_card = ({ hotel, onClick }) => {
     return (
         <div
             className="hotel-card border-custom"
-            data-bs-toggle="modal"
-            data-bs-target={`#${hotel.modalId}`}
             style={{ cursor: 'pointer' }}
+            onClick={onClick}
         >
             <img
                 src={hotel.img}
@@ -82,5 +80,3 @@ const Trip_card = ({ hotel }) => {
 };
 
 export default Trip_card;
-
-
