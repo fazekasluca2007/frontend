@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Nav from "./pages/components/Nav.js";
+import Footer from "./pages/components/Footer.js";
 import Home from "./pages/Home.js";
 import Login from "./pages/Login.js";
 import Trip from "./pages/Trip.js";
@@ -25,6 +26,8 @@ function App() {
         <Route path='/gyik' element={<FAQ/>} />
         <Route path='/velemenyek' element={<Reviews/>} />
       </Routes>
+
+      <Footer/>
     </div>
     </BrowserRouter>
   );

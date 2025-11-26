@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Footer from "./components/Footer";
 
 
 
@@ -198,7 +197,6 @@ export default function Reviews() {
                     </div>
                 </section>
             )}
-            <Footer />
         </>
     );
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Footer from './components/Footer';
 import './FAQ.css';
 
 export default function FAQ() {
@@ -57,7 +56,6 @@ export default function FAQ() {
           </div>
         ))}
       </div>
-      <Footer />
     </div>
   );
 }

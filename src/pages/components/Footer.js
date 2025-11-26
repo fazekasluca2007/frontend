@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css'; 
+import { NavLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -20,11 +21,51 @@ export default function Footer() {
           {/* Linkek */}
           <div className="col-md-4 mb-3 text-center hover-szin">
             <ul className="list-unstyled">
-              <li><a href="utjaink.html" className="text-white text-decoration-none">Útjaink</a></li>
-              <li><a href="okoutjaink.html" className="text-white text-decoration-none">ÖkoÚtjaink</a></li>
-              <li><a href="rolunk.html" className="text-white text-decoration-none">Rólunk</a></li>
-              <li><a href="gyik.html" className="text-white text-decoration-none">GYIK</a></li>
-              <li><a href="velemenyek.html" className="text-white text-decoration-none">Vélemények</a></li>
+              <li>
+                <NavLink 
+                  to="/utjaink" 
+                  className="text-white text-decoration-none"
+                  activeclassname="active"
+                >
+                  Útjaink
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/okoutjaink" 
+                  className="text-white text-decoration-none"
+                  activeclassname="active"
+                >
+                  ÖkoÚtjaink
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/rolunk" 
+                  className="text-white text-decoration-none"
+                  activeclassname="active"
+                >
+                  Rólunk
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/gyik" 
+                  className="text-white text-decoration-none"
+                  activeclassname="active"
+                >
+                  GYIK
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/velemenyek" 
+                  className="text-white text-decoration-none"
+                  activeclassname="active"
+                >
+                  Vélemények
+                </NavLink>
+              </li>
             </ul>
           </div>
 

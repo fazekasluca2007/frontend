@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
-import Footer from './components/Footer';
 
 // A szállások adatai
 const szallasok = `Olaszország;Róma;Hotel Artemide;4;Központi elhelyezkedés, modern szobák, tetőtéri étterem csodás panorámával.;41.90084354818584, 12.49365002410819
@@ -292,7 +291,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

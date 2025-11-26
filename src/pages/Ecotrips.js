@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
-import Footer from './components/Footer';
 
 const data = [
   {
@@ -262,7 +261,6 @@ const Trip = () => {
           })}
       </div>
 
-      <Footer />
     </>
   );
 };
