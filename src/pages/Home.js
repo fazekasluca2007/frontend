@@ -18,7 +18,7 @@ Olaszország;Szicília;Rifugio Lanzagallo;3;Vidéki menedékház organikus regge
 export default function Home() {
     const navigate = useNavigate();
 
-    // Egyszerű ellenőrzés, hogy be van-e jelentkezve a felhasználó
+    //ellenőrzés, hogy be van-e jelentkezve a felhasználó
     const isUserLoggedIn = () => {
         return localStorage.getItem('user') !== null;
     };
