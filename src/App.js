@@ -10,6 +10,7 @@ import About from "./pages/About.js";
 import FAQ from "./pages/FAQ.js";
 import Reviews from "./pages/Reviews.js";
 import Information from "./pages/Information.js";
+import './App.css'
 
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
         <Route path='/velemenyek' element={<Reviews/>} />
         <Route path='/informaciok' element={<Information/>} />
       </Routes>
-
+      
       <Footer/>
     </div>
     </BrowserRouter>
