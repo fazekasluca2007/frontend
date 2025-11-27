@@ -59,7 +59,7 @@ export default function Reviews() {
 
     const loggedIn = localStorage.getItem("loggedIn") === "true";
 
-    const csillagok = (db) => "⭐".repeat(db) + "☆".repeat(5 - db);
+    const csillagok = (db) => "⭐".repeat(db) + "".repeat(5 - db);
 
     return (
         <>
@@ -82,7 +82,7 @@ export default function Reviews() {
                                         backgroundColor: "#f9f9f9",
                                         borderRadius: "10px",
                                         padding: "20px",
-                                        boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                                        boxShadow: "0 0 10px #1a3c57",
                                     }}
                                 >
                                     <div style={{ color: "gold", fontSize: "20px" }}>
@@ -101,7 +101,7 @@ export default function Reviews() {
                             onClick={elozoOldal}
                             disabled={page === 1}
                             style={{
-                                border: "1px solid gray",
+                                border: "1px solid #1a3c57",
                                 borderRadius: "5px",
                                 padding: "5px 10px",
                                 marginRight: "10px",
@@ -115,7 +115,7 @@ export default function Reviews() {
                             onClick={kovetkezoOldal}
                             disabled={page === oldalakSzama}
                             style={{
-                                border: "1px solid gray",
+                                border: "1px solid #1a3c57",
                                 borderRadius: "5px",
                                 padding: "5px 10px",
                                 marginLeft: "10px",

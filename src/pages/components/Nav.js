@@ -43,10 +43,10 @@ export default function Nav() {
 
             {loggedIn && user && (
               <div className="ms-3 d-flex align-items-center text-white">
-                <span className="fw-bold">{user.fullName}</span>
+                <span className="fw-bold username">{user.fullName}</span>
                 <button
                   onClick={handleLogout}
-                  className="btn btn-sm btn-outline-light ms-2"
+                  className="btn btn-sm ms-2 logoutbtn"
                 >
                   Kijelentkezés
                 </button>

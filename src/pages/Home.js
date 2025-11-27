@@ -74,28 +74,28 @@ export default function Home() {
                 <div id="heroCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src="img/index kepek/gorog.avif" className="d-block w-100" alt="Görög" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/gorog.jpg" className="d-block w-100" alt="Görög" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/spanyol.avif" className="d-block w-100" alt="Spanyol" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/spanyol.jpg" className="d-block w-100" alt="Spanyol" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/Ausztria.avif" className="d-block w-100" alt="Ausztria" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/ausztria.jpg" className="d-block w-100" alt="Ausztria" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/magyar.avif" className="d-block w-100" alt="Magyar" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/magyar.jpg" className="d-block w-100" alt="Magyar" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/dubai.avif" className="d-block w-100" alt="Dubai" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/dubai.jpg" className="d-block w-100" alt="Dubai" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/egypt.avif" className="d-block w-100" alt="Egyiptom" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/egyipt.jpg" className="d-block w-100" alt="Egyiptom" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/olasz.avif" className="d-block w-100" alt="Olasz" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/olasz.jpg" className="d-block w-100" alt="Olasz" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
                         <div className="carousel-item">
-                            <img src="img/index kepek/francia.avif" className="d-block w-100" alt="Francia" style={{ height: '500px', objectFit: 'cover' }} />
+                            <img src="img/index kepek/francia.jpg" className="d-block w-100" alt="Francia" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
 
                         <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
