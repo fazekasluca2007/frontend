@@ -79,7 +79,25 @@ export default function Home() {
                         <div className="carousel-item">
                             <img src="img/index kepek/spanyol.avif" className="d-block w-100" alt="Spanyol" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
-                        {/* ... további carousel elemek ... */}
+                        <div className="carousel-item">
+                            <img src="img/index kepek/Ausztria.avif" className="d-block w-100" alt="Ausztria" style={{ height: '500px', objectFit: 'cover' }} />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="img/index kepek/magyar.avif" className="d-block w-100" alt="Magyar" style={{ height: '500px', objectFit: 'cover' }} />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="img/index kepek/dubai.avif" className="d-block w-100" alt="Dubai" style={{ height: '500px', objectFit: 'cover' }} />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="img/index kepek/egypt.avif" className="d-block w-100" alt="Egyiptom" style={{ height: '500px', objectFit: 'cover' }} />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="img/index kepek/olasz.avif" className="d-block w-100" alt="Olasz" style={{ height: '500px', objectFit: 'cover' }} />
+                        </div>
+                        <div className="carousel-item">
+                            <img src="img/index kepek/francia.avif" className="d-block w-100" alt="Francia" style={{ height: '500px', objectFit: 'cover' }} />
+                        </div>
+
                         <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                             <span className="carousel-control-prev-icon"></span>
                             <span className="visually-hidden">Előző</span>
