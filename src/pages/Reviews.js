@@ -60,6 +60,9 @@ export default function Reviews() {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
 
     const csillagok = (db) => "⭐".repeat(db) + "".repeat(5 - db);
+    useEffect(() => {
+        document.title = "EcoTrip – Vélemények";
+      }, []);
 
     return (
         <>

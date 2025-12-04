@@ -24,6 +24,9 @@ export default function Home() {
     };
 
     useEffect(() => {
+        document.title = "EcoTrip";
+      }, []);
+    useEffect(() => {
         const defaultIcon = L.icon({
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',

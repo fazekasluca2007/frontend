@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
@@ -36,6 +36,10 @@ const Trip = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [positions, setPositions] = useState({});
   const [openModalId, setOpenModalId] = useState(null);
+
+  useEffect(() => {
+    document.title = "EcoTrip – Útjaink";
+  }, []);
 
   const moveSlide = (country, step) => {
     const countryData = data.find((c) => c.country === country);
@@ -85,6 +89,7 @@ const Trip = () => {
               </select>
             </div>
           </div>
+
           <div className="filter-field">
             <label>Város</label>
             <div className="filter-input-wrapper">
@@ -111,6 +116,7 @@ const Trip = () => {
             const filteredHotels = selectedCity
               ? country.hotels.filter(h => h.city === selectedCity)
               : country.hotels;
+
             const pos = positions[country.country] || 0;
             const movePercent = -(pos * 100);
 
@@ -128,6 +134,7 @@ const Trip = () => {
 
                 <div className="slider-wrapper">
                   <button className="slider-btn left" onClick={() => moveSlide(country.country, -1)}>{"\u276E"}</button>
+
                   <div className="slider-container">
                     <div className="slider-track" style={{ transform: `translateX(${movePercent}%)` }}>
                       {filteredHotels.map(hotel => (
@@ -139,10 +146,10 @@ const Trip = () => {
                       ))}
                     </div>
                   </div>
+
                   <button className="slider-btn right" onClick={() => moveSlide(country.country, 1)}>{"\u276F"}</button>
                 </div>
 
-                {/* React modál minden hotelhez */}
                 {filteredHotels.map(hotel =>
                   openModalId === hotel.modalId && (
                     <div className="modal-backdrop" key={hotel.modalId}>
@@ -152,10 +159,12 @@ const Trip = () => {
                             <h5 className="modal-title">{hotel.name}</h5>
                             <button type="button" className="btn-close" onClick={() => setOpenModalId(null)}></button>
                           </div>
+
                           <div className="modal-body">
                             <img src={hotel.img} alt={hotel.name} className="img-fluid mb-3"/>
                             <p>Város: {hotel.city}</p>
                             <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
+
                             <button className="btn btn-primary btn-lg mt-3" onClick={handleBooking}>
                               Foglalás
                             </button>
@@ -174,3 +183,4 @@ const Trip = () => {
 };
 
 export default Trip;
+

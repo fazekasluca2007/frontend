@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Information.css";
 import Nav from './components/Nav';
 import Footer from './components/Footer';
@@ -24,6 +24,9 @@ export default function SzallasOldal() {
   const [napok, setNapok] = useState(1);
   const [fo, setFo] = useState(1);
 
+useEffect(() => {
+    document.title = "EcoTrip – Információk";
+  }, []);
   return (
     <div>
         <div className="container py-5">

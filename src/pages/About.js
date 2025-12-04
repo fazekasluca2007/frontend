@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./About.css";
 
 const About = () => {
+  useEffect(() => {
+      document.title = "EcoTrip – Rólunk";
+    }, []);
   return (
     <div>
       {/* Hero szekció */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './FAQ.css';
 
 export default function FAQ() {
@@ -35,6 +35,9 @@ export default function FAQ() {
   const toggleAnswer = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+  useEffect(() => {
+      document.title = "EcoTrip – Gyakori kérdések";
+    }, []);
 
   return (
     <div>

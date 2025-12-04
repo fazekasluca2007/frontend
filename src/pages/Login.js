@@ -70,6 +70,12 @@ export default function AuthCard() {
     setPassword("");
     setPassword2("");
   };
+    useEffect(() => {
+    document.title = isLogin
+      ? "EcoTrip – Bejelentkezés"
+      : "EcoTrip – Regisztráció";
+  }, [isLogin]);
+
 
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
