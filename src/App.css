@@ -28,7 +28,7 @@
   color: #61dafb;
 }
 body{
-  font-family: Georgia, Times, Times New Roman, serif;
+  font-family: Georgia, Times, Times New Roman, serif !important;
 }
 
 @keyframes App-logo-spin {

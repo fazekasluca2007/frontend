@@ -60,8 +60,15 @@ const Trip = () => {
     : [];
 
   const handleBooking = () => {
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+    if (!loggedIn) {
+      alert("A foglaláshoz kérlek jelentkezz be.");
+      return;
+    }
+
     setOpenModalId(null);
-    navigate("/informaciok");
+    navigate("/informaciok"); 
   };
 
   return (
@@ -153,7 +160,7 @@ const Trip = () => {
                 {filteredHotels.map(hotel =>
                   openModalId === hotel.modalId && (
                     <div className="modal-backdrop" key={hotel.modalId}>
-                      <div className="modal-dialog">
+                      <div className="modal-dialog modal-sm">
                         <div className="modal-content">
                           <div className="modal-header">
                             <h5 className="modal-title">{hotel.name}</h5>
