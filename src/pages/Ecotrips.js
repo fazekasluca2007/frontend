@@ -2,23 +2,26 @@ import React, { useState ,useEffect} from "react";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
 
-
 const Trip = () => {
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [ecotrips, setEcotrips] = useState([]);
-
   const [positions, setPositions] = useState({});
 
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch("https://localhost:7267/api/EcoTrip")
       .then(response => response.json())
       .then(json => {
         setEcotrips(json.result);
+        setError(false); 
       })
-      .catch(err => console.error("Fetch error:", err));
+      .catch(err => {
+        console.error("Fetch error:", err);
+        setError(true); 
+      });
   }, []);
 
   useEffect(() => {
@@ -47,15 +50,19 @@ const Trip = () => {
     )]
     : [];
 
-
   return (
     <>
+
+      {/* Hibaüzenet, ha a fetch nem sikerült */}
+      {error && (
+        <p className="error text-center my-4">
+          Hiba az adatok lekérése során. Kérlek, próbáld újra később.
+        </p>
+      )}
 
       {/*Szűrő box*/}
       <div className="trip-filter container my-4">
         <div className="trip-filter-inner">
-
-
           <h2 className="filter-title">Hová utazna?</h2>
 
           <div className="filter-field">
