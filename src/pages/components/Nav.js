@@ -32,7 +32,7 @@ export default function Nav() {
 
           <div className="d-flex align-items-center">
             <NavLink className="navbar-brand" to="/">
-              <img src="./img/logo.svg" alt="Logo" />
+              <img src="./img/ecologo.png" alt="Logo" />
             </NavLink>
 
             {!loggedIn && (

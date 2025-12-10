@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // <- importálni kell
+import { useNavigate } from "react-router-dom"; 
+
 
 export default function AuthCard() {
   const [isLogin, setIsLogin] = useState(true);
