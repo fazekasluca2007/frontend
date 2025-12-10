@@ -13,25 +13,52 @@ export default function Information() {
     document.title = "EcoTrip – Információk";
   }, []);
 
+  const handleNapokChange = (e) => {
+    const value = Number(e.target.value);
+    if (value > 10) {
+      setNapok(10);
+    } else if (value < 1) {
+      setNapok(1);
+    } else {
+      setNapok(value);
+    }
+  };
+
+  const handleFoChange = (e) => {
+    const value = Number(e.target.value);
+    if (value > 10) {
+      setFo(10);
+    } else if (value < 1) {
+      setFo(1);
+    } else {
+      setFo(value);
+    }
+  };
+
   return (
     <div>
       <div className="container py-5">
         <div className="row g-4">
           <div className="col-lg-6">
             {hotel && (
-              <img src={hotel.img} alt={hotel.name} className="w-100 rounded shadow" />
+              <img
+                src={hotel.img}
+                alt={hotel.name}
+                className="w-100 rounded shadow"
+              />
             )}
           </div>
 
           <div className="col-lg-6">
-
             {hotel && (
               <>
                 <h2 className="mb-3 border-bottom pb-2">
                   {hotel.city} – {hotel.name}
                 </h2>
 
-                <p><strong>{"★".repeat(hotel.stars)}</strong></p>
+                <p>
+                  <strong>{"★".repeat(hotel.stars)}</strong>
+                </p>
 
                 {hotel.description && <p>{hotel.description}</p>}
 
@@ -57,8 +84,9 @@ export default function Information() {
                   type="number"
                   className="form-control"
                   min={1}
+                  max={10}
                   value={napok}
-                  onChange={(e) => setNapok(Number(e.target.value))}
+                  onChange={handleNapokChange}
                 />
               </div>
 
@@ -68,20 +96,18 @@ export default function Information() {
                   type="number"
                   className="form-control"
                   min={1}
+                  max={10}
                   value={fo}
-                  onChange={(e) => setFo(Number(e.target.value))}
+                  onChange={handleFoChange}
                 />
               </div>
 
-              <Link 
-                to="/foglalas"
-                state={{ hotel, napok, fo }}
-              >
-                <button className="btn btn-primary btn-lg mt-2">Foglalás</button>
+              <Link to="/foglalas" state={{ hotel, napok, fo }}>
+                <button className="btn btn-primary btn-lg mt-2">
+                  Foglalás
+                </button>
               </Link>
-
             </div>
-
           </div>
         </div>
       </div>
