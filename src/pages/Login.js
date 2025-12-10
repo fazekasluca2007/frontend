@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
-
+import { useNavigate } from "react-router-dom";
+import "./Login.css"; 
 
 export default function AuthCard() {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,19 +10,17 @@ export default function AuthCard() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const navigate = useNavigate(); // <- navigációhoz
+  const navigate = useNavigate();
 
-  // Ellenőrzés, hogy be van-e jelentkezve → Home page-re navigál
   useEffect(() => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const storedUser = JSON.parse(localStorage.getItem("user") || "null");
 
     if (loggedIn && storedUser) {
-      navigate("/"); // Home page
+      navigate("/");
     }
   }, [navigate]);
 
-  // Bejelentkezés logika
   const handleLogin = (e) => {
     e.preventDefault();
     const users = JSON.parse(localStorage.getItem("users")) || [];
@@ -38,10 +36,9 @@ export default function AuthCard() {
     localStorage.setItem("loggedIn", "true");
     localStorage.setItem("user", JSON.stringify(user));
     alert(`Üdv újra, ${user.fullName}!`);
-    navigate("/"); // Home page
+    navigate("/");
   };
 
-  // Regisztráció logika
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -71,19 +68,16 @@ export default function AuthCard() {
     setPassword("");
     setPassword2("");
   };
-    useEffect(() => {
+
+  useEffect(() => {
     document.title = isLogin
       ? "EcoTrip – Bejelentkezés"
       : "EcoTrip – Regisztráció";
   }, [isLogin]);
 
-
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-      <div
-        className="card shadow p-4 rounded-4"
-        style={{ width: "380px", backgroundColor: "white" }}
-      >
+    <div className="auth-background">
+      <div className="card shadow p-4 rounded-4 auth-card">
         <h2 className="text-center fw-semibold mb-4" id="formTitle">
           {isLogin ? "Bejelentkezés" : "Regisztráció"}
         </h2>
@@ -118,11 +112,7 @@ export default function AuthCard() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="btn w-100"
-              style={{ backgroundColor: "darkcyan", color: "white" }}
-            >
+            <button type="submit" className="btn w-100 auth-button">
               Bejelentkezés
             </button>
           </form>
@@ -203,11 +193,7 @@ export default function AuthCard() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="btn w-100"
-              style={{ backgroundColor: "darkcyan", color: "white" }}
-            >
+            <button type="submit" className="btn w-100 auth-button">
               Regisztráció
             </button>
           </form>
@@ -220,7 +206,7 @@ export default function AuthCard() {
               <button
                 type="button"
                 onClick={() => setIsLogin(false)}
-                className="btn btn-link p-0 text-decoration-underline text-primary"
+                className="btn btn-link auth-link text-primary"
               >
                 Regisztrálj be!
               </button>
@@ -231,7 +217,7 @@ export default function AuthCard() {
               <button
                 type="button"
                 onClick={() => setIsLogin(true)}
-                className="btn btn-link p-0 text-decoration-underline text-primary"
+                className="btn btn-link auth-link text-primary"
               >
                 Jelentkezz be!
               </button>

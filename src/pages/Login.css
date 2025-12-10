@@ -1,0 +1,30 @@
+.auth-background {
+    min-height: 100vh;
+    height: auto;
+    background-image: url("/public/img/login.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
+  .auth-card {
+    width: 380px;
+    background-color: white;
+  }
+  
+
+  .auth-button {
+    background-color: darkcyan;
+    color: white;
+  }
+  
+
+  .auth-link {
+    padding: 0;
+    text-decoration: underline;
+  }
+  
