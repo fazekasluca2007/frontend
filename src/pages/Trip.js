@@ -59,7 +59,7 @@ const Trip = () => {
     ? data.find((c) => c.country === selectedCountry)?.hotels.map(h => h.city)
     : [];
 
-  const handleBooking = () => {
+  const handleBooking = (hotel) => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
 
     if (!loggedIn) {
@@ -68,7 +68,10 @@ const Trip = () => {
     }
 
     setOpenModalId(null);
-    navigate("/informaciok"); 
+
+    navigate("/informaciok", {
+      state: { hotel }   
+    });
   };
 
   return (
@@ -76,6 +79,7 @@ const Trip = () => {
       <div className="trip-filter container my-4">
         <div className="trip-filter-inner">
           <h2 className="filter-title">Hová utazna?</h2>
+
           <div className="filter-field">
             <label>Ország</label>
             <div className="filter-input-wrapper">
@@ -172,7 +176,10 @@ const Trip = () => {
                             <p>Város: {hotel.city}</p>
                             <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
 
-                            <button className="btn btn-primary btn-lg mt-3" onClick={handleBooking}>
+                            <button
+                              className="btn btn-primary btn-lg mt-3"
+                              onClick={() => handleBooking(hotel)}
+                            >
                               Foglalás
                             </button>
                           </div>
@@ -190,4 +197,3 @@ const Trip = () => {
 };
 
 export default Trip;
-

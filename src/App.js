@@ -11,6 +11,7 @@ import FAQ from "./pages/FAQ.js";
 import Reviews from "./pages/Reviews.js";
 import Information from "./pages/Information.js";
 import './App.css'
+import Booking from './pages/Booking.js';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path='/gyik' element={<FAQ/>} />
         <Route path='/velemenyek' element={<Reviews/>} />
         <Route path='/informaciok' element={<Information/>} />
+        <Route path='/foglalas' element={<Booking/>}/>
       </Routes>
       
       <Footer/>
