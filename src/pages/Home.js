@@ -7,25 +7,24 @@ import './Home.css';
 // Szállások adatai
 const szallasok = `Olaszország;Róma;Hotel Artemide;4;Központi elhelyezkedés, modern szobák, tetőtéri étterem csodás panorámával.;41.90084354818584, 12.49365002410819
 Olaszország;Toszkána;Agriturismo La Poggiolina;3;Vidéki hangulat szőlőültetvények között, családias vendéglátással.;43.99701257911789, 11.442121308635462
-... (itt a többi szállás adatai ugyanúgy, ahogy a Te kódodban van)
-`;
+...`;
 
 const okoszallasok = `Olaszország;Milánó;E.c.ho. Hotel;4;Fenntartható szálloda energiatakarékos szobákkal, organikus étteremmel.;45.484808508540624, 9.207629347243794
 Olaszország;Szicília;Rifugio Lanzagallo;3;Vidéki menedékház organikus reggelivel, bio kozmetikumokkal.;36.77512650495378, 14.86641430199616
-... (itt a többi öko-szállás adatai)
-`;
+...`;
 
 export default function Home() {
     const navigate = useNavigate();
 
-    //ellenőrzés, hogy be van-e jelentkezve a felhasználó
     const isUserLoggedIn = () => {
         return localStorage.getItem('user') !== null;
     };
 
     useEffect(() => {
         document.title = "EcoTrip";
-      }, []);
+    }, []);
+
+    // Leaflet térkép
     useEffect(() => {
         const defaultIcon = L.icon({
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -49,7 +48,7 @@ export default function Home() {
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution: '&copy; OpenStreetMap'
         }).addTo(map);
 
         const addMarkers = (data, icon) => {
@@ -70,11 +69,25 @@ export default function Home() {
         return () => map.remove();
     }, []);
 
+    
+    useEffect(() => {
+        const carouselElement = document.querySelector('#heroCarousel');
+
+        if (carouselElement && window.bootstrap) {
+            new window.bootstrap.Carousel(carouselElement, {
+                interval: 3000,
+                ride: "carousel" 
+            });
+        }
+    }, []);
+
     return (
         <div>
             <div className="position-relative text-center">
+
                 {/* Carousel */}
-                <div id="heroCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                <div id="heroCarousel" className="carousel slide">
+
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <img src="img/index kepek/gorog.jpg" className="d-block w-100" alt="Görög" style={{ height: '500px', objectFit: 'cover' }} />
@@ -100,18 +113,19 @@ export default function Home() {
                         <div className="carousel-item">
                             <img src="img/index kepek/francia.jpg" className="d-block w-100" alt="Francia" style={{ height: '500px', objectFit: 'cover' }} />
                         </div>
-
-                        <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon"></span>
-                            <span className="visually-hidden">Előző</span>
-                        </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                            <span className="carousel-control-next-icon"></span>
-                            <span className="visually-hidden">Következő</span>
-                        </button>
                     </div>
 
-                    {/* Hero text */}
+                    {/* Vissza/Előre gombok */}
+                    <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon"></span>
+                        <span className="visually-hidden">Előző</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                        <span className="carousel-control-next-icon"></span>
+                        <span className="visually-hidden">Következő</span>
+                    </button>
+
+                    {/* Szöveg ráhelyezve */}
                     <div className="position-absolute top-50 start-50 translate-middle text-white bg-dark bg-opacity-50 p-4 rounded" style={{ maxWidth: '600px' }}>
                         <h1>Üdvözlünk az EcoTrip oldalán!</h1>
                         <NavLink
@@ -129,9 +143,10 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Info + Map */}
+                {/* Info + Térkép */}
                 <div className="container my-5">
                     <div className="row align-items-center">
+
                         <div className="col-md-5">
                             <div id="map" style={{ height: '400px', width: '100%', borderRadius: '10px' }}></div>
                         </div>
@@ -142,17 +157,19 @@ export default function Home() {
 
                         <div className="col-md-4">
                             <div className="text-block blue">
-                                <p>🌊A kék a tiszta vizeket és az utazás szabadságát jelképezi, mindezt felelősen.</p>
+                                <p>🌊A kék a tiszta vizeket és az utazás szabadságát jelképezi.</p>
                             </div>
                             <div className="text-block green">
                                 <p>🍃A zöld az öko-szemlélet színe, a fenntartható kalandok jelképe.</p>
                             </div>
                             <div className="text-block brown">
-                                <p>⛰️A barna a föld erejét és stabilitását idézi, amelyre minden tudatos utazás épül.</p>
+                                <p>⛰️A barna a föld erejét és stabilitását idézi.</p>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     );
