@@ -1,5 +1,5 @@
 .footer-custom {
-  background-image: url("/public/img/footer.png"); 
+  background-image: url("/public/img/aerial-shot-sea-waves-hitting-sandy-shore.jpg"); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -16,7 +16,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 40, 60, 0.55); /* enyhe kékes sötétítés */
+  background: rgba(0, 40, 60, 0.323); /* enyhe kékes sötétítés */
   z-index: -1;
 }
 
