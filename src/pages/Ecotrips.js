@@ -12,7 +12,7 @@ const Trip = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("https://localhost:7267/api/EcoTrip")
+    fetch("https://localhost:7267/api/EcoTrip/ecotripcards")
       .then(response => response.json())
       .then(json => {
         setEcotrips(json.result);
@@ -24,6 +24,7 @@ const Trip = () => {
       });
   }, []);
 
+  console.log(ecotrips)
   useEffect(() => {
       document.title = "EcoTrip – Ökoútjaink";
     }, []);

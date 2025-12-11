@@ -42,7 +42,7 @@ export default function Information() {
           <div className="col-lg-6">
             {hotel && (
               <img
-                src={hotel.img}
+                src={hotel.image_url}
                 alt={hotel.name}
                 className="w-100 rounded shadow"
               />

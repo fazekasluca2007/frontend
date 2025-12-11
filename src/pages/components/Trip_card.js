@@ -65,7 +65,7 @@ const Trip_card = ({ hotel, onClick }) => {
             onClick={onClick}
         >
             <img
-                src={hotel.img}
+                src={hotel.image_url}
                 alt={hotel.name}
                 className="szallaskepek"
             />
