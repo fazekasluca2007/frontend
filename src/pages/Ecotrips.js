@@ -1,33 +1,38 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
 
 const Trip = () => {
 
+  const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [ecotrips, setEcotrips] = useState([]);
   const [positions, setPositions] = useState({});
+  const [openModalId, setOpenModalId] = useState(null);
 
   const [error, setError] = useState(false);
 
+
+  //Ecotrip adatok kártyákoz
   useEffect(() => {
     fetch("https://localhost:7267/api/EcoTrip/ecotripcards")
       .then(response => response.json())
       .then(json => {
         setEcotrips(json.result);
-        setError(false); 
+        setError(false);
       })
       .catch(err => {
         console.error("Fetch error:", err);
-        setError(true); 
+        setError(true);
       });
   }, []);
 
   console.log(ecotrips)
   useEffect(() => {
-      document.title = "EcoTrip – Ökoútjaink";
-    }, []);
+    document.title = "EcoTrip – Ökoútjaink";
+  }, []);
 
   const moveSlide = (country, step) => {
     const countryData = ecotrips.find((c) => c.country === country);
@@ -50,6 +55,21 @@ const Trip = () => {
         ?.hotels.map(h => h.city) || []
     )]
     : [];
+
+  const handleBooking = (hotel) => {
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+    if (!loggedIn) {
+      alert("A foglaláshoz kérlek jelentkezz be.");
+      return;
+    }
+
+    setOpenModalId(null);
+
+    navigate("/informaciok", {
+      state: { ecotrip_id: hotel.id }
+    });
+  };
 
   return (
     <>
@@ -145,11 +165,38 @@ const Trip = () => {
                       style={{ transform: `translateX(${movePercent}%)` }}
                     >
                       {filteredHotels.map(hotel => (
-                        <Trip_card key={hotel.modalId} hotel={hotel} />
+                        <Trip_card key={hotel.modalId} hotel={hotel} onClick={() => setOpenModalId(hotel.modalId)} />
                       ))}
                     </div>
                   </div>
                 </div>
+                {filteredHotels.map(hotel =>
+                  openModalId === hotel.modalId && (
+                    <div className="modal-backdrop" key={hotel.modalId}>
+                      <div className="modal-dialog modal-sm">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title">{hotel.hotel_name}</h5>
+                            <button type="button" className="btn-close" onClick={() => setOpenModalId(null)}></button>
+                          </div>
+
+                          <div className="modal-body">
+                            <img src={hotel.image_url} alt={hotel.hotel_name} className="img-fluid mb-3" />
+                            <p>Város: {hotel.city}</p>
+                            <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
+
+                            <button
+                              className="btn btn-primary btn-lg mt-3"
+                              onClick={() => handleBooking(hotel)}
+                            >
+                              Foglalás
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                )}
 
               </div>
             );

@@ -3,32 +3,32 @@ import { useNavigate } from "react-router-dom";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
 
-const data = [
-  {
-    country: "Magyarország",
-    flag: "img/zaszlok/hu.png",
-    description:
-      "„Magyarország a történelem, a kultúra és a vendégszeretet találkozása – ahol minden város egy új történetet mesél, és minden táj egy új élményt kínál.”",
-    hotels: [
-      { city: "Budapest", name: "Aria Hotel", stars: 5, image_url: "img/utjaink kepek/hu_ariahotel.jpg", modalId: "budapestModal" },
-      { city: "Lillafüred", name: "Hunguest Hotel Palota", stars: 4, image_url: "img/utjaink kepek/hu_palotaszallo.jpg", modalId: "lillafuredModal" },
-      { city: "Szeged", name: "Danubius Hotel Helia", stars: 4, image_url: "img/utjaink kepek/hu_danubis.jpg", modalId: "szegedModal" },
-      { city: "Pécs", name: "Palatinus Grand Hotel", stars: 4, image_url: "img/utjaink kepek/hu_platinus.jpg", modalId: "pecsModal" },
-    ],
-  },
-  {
-    country: "Olaszország",
-    flag: "img/zaszlok/it.png",
-    description:
-      "„Olaszország a művészet, a gasztronómia és a dolce vita hazája – ahol minden utca egy festmény, minden étel egy élmény, és minden pillanat egy emlék.”",
-    hotels: [
-      { city: "Róma", name: "Hotel Artemide", stars: 4, image_url: "img/utjaink kepek/it_artemide.jpg", modalId: "romaModal" },
-      { city: "Toszkána", name: "Agriturismo La Poggiolina", stars: 3, image_url: "img/utjaink kepek/it_lapoggiolina.jpg", modalId: "toszkanaModal" },
-      { city: "Nápoly", name: "Grand Hotel Vesuvio", stars: 5, image_url: "img/utjaink kepek/it_grandhotel.jpg", modalId: "napolyModal" },
-      { city: "Firenze", name: "Hotel Bernini Palace", stars: 5, image_url: "img/utjaink kepek/it_hotelnbernini.jpg", modalId: "firenzeModal" },
-    ],
-  },
-];
+// const data = [
+//   {
+//     country: "Magyarország",
+//     flag: "img/zaszlok/hu.png",
+//     description:
+//       "„Magyarország a történelem, a kultúra és a vendégszeretet találkozása – ahol minden város egy új történetet mesél, és minden táj egy új élményt kínál.”",
+//     hotels: [
+//       { city: "Budapest", name: "Aria Hotel", stars: 5, image_url: "img/utjaink kepek/hu_ariahotel.jpg", modalId: "budapestModal" },
+//       { city: "Lillafüred", name: "Hunguest Hotel Palota", stars: 4, image_url: "img/utjaink kepek/hu_palotaszallo.jpg", modalId: "lillafuredModal" },
+//       { city: "Szeged", name: "Danubius Hotel Helia", stars: 4, image_url: "img/utjaink kepek/hu_danubis.jpg", modalId: "szegedModal" },
+//       { city: "Pécs", name: "Palatinus Grand Hotel", stars: 4, image_url: "img/utjaink kepek/hu_platinus.jpg", modalId: "pecsModal" },
+//     ],
+//   },
+//   {
+//     country: "Olaszország",
+//     flag: "img/zaszlok/it.png",
+//     description:
+//       "„Olaszország a művészet, a gasztronómia és a dolce vita hazája – ahol minden utca egy festmény, minden étel egy élmény, és minden pillanat egy emlék.”",
+//     hotels: [
+//       { city: "Róma", name: "Hotel Artemide", stars: 4, image_url: "img/utjaink kepek/it_artemide.jpg", modalId: "romaModal" },
+//       { city: "Toszkána", name: "Agriturismo La Poggiolina", stars: 3, image_url: "img/utjaink kepek/it_lapoggiolina.jpg", modalId: "toszkanaModal" },
+//       { city: "Nápoly", name: "Grand Hotel Vesuvio", stars: 5, image_url: "img/utjaink kepek/it_grandhotel.jpg", modalId: "napolyModal" },
+//       { city: "Firenze", name: "Hotel Bernini Palace", stars: 5, image_url: "img/utjaink kepek/it_hotelnbernini.jpg", modalId: "firenzeModal" },
+//     ],
+//   },
+// ];
 
 const Trip = () => {
   const navigate = useNavigate();
@@ -36,6 +36,23 @@ const Trip = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [positions, setPositions] = useState({});
   const [openModalId, setOpenModalId] = useState(null);
+
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(false);
+
+  //Tripek lekérése
+  useEffect(() => {
+    fetch("https://localhost:7267/api/Trips/tripcards")
+      .then(response => response.json())
+      .then(json => {
+        setData(json.result);
+        setError(false);
+      })
+      .catch(err => {
+        console.error("Fetch error:", err);
+        setError(true);
+      });
+  }, []);
 
   useEffect(() => {
     document.title = "EcoTrip – Útjaink";
@@ -62,6 +79,8 @@ const Trip = () => {
   const handleBooking = (hotel) => {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
 
+    console.log("HOTEL OBJECT:", hotel);
+
     if (!loggedIn) {
       alert("A foglaláshoz kérlek jelentkezz be.");
       return;
@@ -70,7 +89,7 @@ const Trip = () => {
     setOpenModalId(null);
 
     navigate("/informaciok", {
-      state: { hotel }   
+      state: { trip_id: hotel.id }
     });
   };
 
@@ -167,12 +186,12 @@ const Trip = () => {
                       <div className="modal-dialog modal-sm">
                         <div className="modal-content">
                           <div className="modal-header">
-                            <h5 className="modal-title">{hotel.name}</h5>
+                            <h5 className="modal-title">{hotel.hotel_name}</h5>
                             <button type="button" className="btn-close" onClick={() => setOpenModalId(null)}></button>
                           </div>
 
                           <div className="modal-body">
-                            <img src={hotel.image_url} alt={hotel.name} className="img-fluid mb-3"/>
+                            <img src={hotel.image_url} alt={hotel.hotel_name} className="img-fluid mb-3" />
                             <p>Város: {hotel.city}</p>
                             <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
 

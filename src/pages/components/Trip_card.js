@@ -72,7 +72,7 @@ const Trip_card = ({ hotel, onClick }) => {
             <div className="text-center p-3 bg-white">
                 <h6 className="mb-1 text-muted">{hotel.city}</h6>
                 <p className="mb-0 fw-bold">
-                    {hotel.name} <span style={{ color: '#f8b400' }}>{'★'.repeat(hotel.stars)}</span>
+                    {hotel.hotel_name} <span style={{ color: '#f8b400' }}>{'★'.repeat(hotel.stars)}</span>
                 </p>
             </div>
         </div>
