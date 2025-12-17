@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"; 
+import DotLoader from "react-spinners/DotLoader";
+import "./Login.css";
 
 export default function AuthCard() {
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -23,6 +26,7 @@ export default function AuthCard() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const user = users.find(
       (u) => u.username === username && u.password === password
@@ -35,8 +39,12 @@ export default function AuthCard() {
 
     localStorage.setItem("loggedIn", "true");
     localStorage.setItem("user", JSON.stringify(user));
-    alert(`Üdv újra, ${user.fullName}!`);
-    navigate("/");
+
+    setLoading(true);
+
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
 
   const handleRegister = (e) => {
@@ -46,6 +54,7 @@ export default function AuthCard() {
       alert("Kérlek, tölts ki minden mezőt!");
       return;
     }
+
     if (password !== password2) {
       alert("A két jelszó nem egyezik!");
       return;
@@ -61,12 +70,16 @@ export default function AuthCard() {
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
 
-    alert("Sikeres regisztráció! Most bejelentkezhetsz.");
-    setIsLogin(true);
-    setFullName("");
-    setEmail("");
-    setPassword("");
-    setPassword2("");
+    setLoading(true);
+
+    setTimeout(() => {
+      setIsLogin(true);
+      setLoading(false);
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      setPassword2("");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -74,6 +87,15 @@ export default function AuthCard() {
       ? "EcoTrip – Bejelentkezés"
       : "EcoTrip – Regisztráció";
   }, [isLogin]);
+
+
+  if (loading) {
+    return (
+      <div className="auth-background d-flex justify-content-center align-items-center">
+        <DotLoader color="white" size={70} />
+      </div>
+    );
+  }
 
   return (
     <div className="auth-background">
@@ -126,7 +148,6 @@ export default function AuthCard() {
                 type="text"
                 id="fullName"
                 className="form-control"
-                placeholder="Add meg a teljes neved"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -141,7 +162,6 @@ export default function AuthCard() {
                 type="text"
                 id="regUsername"
                 className="form-control"
-                placeholder="Válassz felhasználónevet"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -156,7 +176,6 @@ export default function AuthCard() {
                 type="email"
                 id="regEmail"
                 className="form-control"
-                placeholder="Add meg az e-mail címed"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -171,7 +190,6 @@ export default function AuthCard() {
                 type="password"
                 id="regPassword"
                 className="form-control"
-                placeholder="Írj be egy jelszót"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -186,7 +204,6 @@ export default function AuthCard() {
                 type="password"
                 id="regPassword2"
                 className="form-control"
-                placeholder="Írd be újra a jelszót"
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
                 required
