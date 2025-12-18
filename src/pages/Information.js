@@ -14,7 +14,6 @@ export default function Information() {
   const [fo, setFo] = useState(1);
   const [error, setError] = useState(false);
 
-  // Tripek betöltése
   useEffect(() => {
     if (trip_id) {
       fetch(`https://localhost:7267/api/Trips/detailed/${trip_id}`)
@@ -26,14 +25,28 @@ export default function Information() {
         .then(res => res.json())
         .then(data => setData(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));
-    } else {
-      console.log("Nincs ID");
     }
   }, [trip_id, ecotrip_id]);
 
   useEffect(() => {
     document.title = "EcoTrip – Információk";
   }, []);
+
+  const formatWord = (word) =>
+    word.charAt(0).toUpperCase() + word.slice(1);
+
+  const getDestinationFromRoute = (route) => {
+    const parts = route.split("_");
+    return formatWord(parts[parts.length - 1]);
+  };
+
+  const getRouteInfoFromRoute = (route) => {
+    const parts = route.split("_");
+    return parts
+      .slice(0, -1)
+      .map(formatWord)
+      .join(" ");
+  };
 
   const handleNapokChange = (e) => {
     const value = Number(e.target.value);
@@ -50,10 +63,10 @@ export default function Information() {
 
     navigate("/foglalas", {
       state: {
-        trip_id: trip_id,
-        ecotrip_id: ecotrip_id,
-        napok: napok,
-        fo: fo
+        trip_id,
+        ecotrip_id,
+        napok,
+        fo
       }
     });
   };
@@ -62,67 +75,111 @@ export default function Information() {
   if (!data) return <p>Adatok betöltése...</p>;
 
   return (
-    <div>
-      <div className="container py-5">
-        <div className="row g-4">
-          <div className="col-lg-6">
-            <img
-              src={data.image_url}
-              alt={data.hotel_name}
-              className="w-100 rounded shadow"
-            />
-          </div>
+    <div className="container py-5">
+      <div className="row g-4">
+        <div className="col-lg-6">
+          <img
+            src={data.main_image}
+            alt={data.hotel_name}
+            className="w-100 rounded shadow"
+          />
+        </div>
 
-          <div className="col-lg-6">
-            <h2 className="mb-3 border-bottom pb-2">
-              {data.city} – {data.hotel_name}
-            </h2>
+        <div className="col-lg-6">
+          <h2 className="mb-3 border-bottom pb-2">
+            {data.city} – {data.hotel_name}
+          </h2>
 
-            <p><strong>{"★".repeat(data.stars)}</strong></p>
+          <p><strong>{"★".repeat(data.stars)}</strong></p>
 
-            {data.long_description && <p>{data.long_description}</p>}
+          {data.long_description && <p>{data.long_description}</p>}
 
-            {data.services && (
-              <>
-                <h5 className="mt-4">Szolgáltatások:</h5>
-                <p>{data.services}</p>
-              </>
-            )}
+          {data.services && (
+            <>
+              <h5 className="mt-4">Szolgáltatások:</h5>
+              <p>{data.services}</p>
+            </>
+          )}
 
-            <h5 className="mt-4">Foglalás</h5>
+          {data.routes && (
+            <>
+              <h5 className="mt-4">Úticélok:</h5>
 
-            <div className="d-flex flex-column gap-3">
-              <div>
-                <label className="form-label">Hány napra:</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  min={1}
-                  max={10}
-                  value={napok}
-                  onChange={handleNapokChange}
-                />
+              <div className="accordion" id="routesAccordion">
+                {(Array.isArray(data.routes)
+                  ? data.routes
+                  : data.routes.split(",")
+                ).map((route, index) => (
+                  <div className="accordion-item" key={index}>
+                    <h2 className="accordion-header">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#route-${index}`}
+                      >
+                        📍 {getDestinationFromRoute(route.trim())}
+                      </button>
+                    </h2>
+
+                    <div
+                      id={`route-${index}`}
+                      className="accordion-collapse collapse"
+                      data-bs-parent="#routesAccordion"
+                    >
+                      <div className="accordion-body">
+                        <p><strong>🏨 Hotel:</strong> {data.hotel_name}</p>
+
+                        <p>
+                          <strong>🛣️ Útvonal:</strong>{" "}
+                          {getRouteInfoFromRoute(route.trim())}
+                        </p>
+
+                        <p>
+                          <strong>📍 Végállomás:</strong>{" "}
+                          {getDestinationFromRoute(route.trim())}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
+            </>
+          )}
 
-              <div>
-                <label className="form-label">Hány főre:</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  min={1}
-                  max={10}
-                  value={fo}
-                  onChange={handleFoChange}
-                />
-              </div>
+          <h5 className="mt-4">Foglalás</h5>
 
-              <button
-                className="btn btn-primary btn-lg mt-2"
-                onClick={handleBooking}
-              >
-                Foglalás
-              </button>
+          <div className="d-flex flex-column gap-3">
+            <div>
+              <label className="form-label">Hány napra:</label>
+              <input
+                type="number"
+                className="form-control"
+                min={1}
+                max={10}
+                value={napok}
+                onChange={handleNapokChange}
+              />
             </div>
+
+            <div>
+              <label className="form-label">Hány főre:</label>
+              <input
+                type="number"
+                className="form-control"
+                min={1}
+                max={10}
+                value={fo}
+                onChange={handleFoChange}
+              />
+            </div>
+
+            <button
+              className="btn btn-primary btn-lg mt-2"
+              onClick={handleBooking}
+            >
+              Foglalás
+            </button>
           </div>
         </div>
       </div>
