@@ -31,6 +31,57 @@ body {
   color: #333;
   animation: slideDown 0.3s ease;
 }
+/* ===== ECO UNIQUE SECTION ===== */
+
+.eco-tips-unique {
+  background: #ffffff;
+  border-left: 6px solid #7dbf7d;
+  border-radius: 12px;
+  padding: 30px 35px;
+}
+
+.eco-unique-title {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.eco-unique-intro {
+  font-size: 0.95rem;
+  color: #5d6d7e;
+  max-width: 720px;
+  margin-bottom: 25px;
+}
+
+.eco-unique-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eco-unique-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  color: #34495e;
+}
+
+.eco-unique-item span {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.eco-unique-item strong {
+  color: #2c3e50;
+}
+
+.eco-unique-item.emphasis {
+  background: #f0f6fb;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
 
 
 .arrow {
