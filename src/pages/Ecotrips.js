@@ -80,6 +80,7 @@ const Trip = () => {
           Hiba az adatok lekérése során. Kérlek, próbáld újra később.
         </p>
       )}
+      
 
       {/*Szűrő box*/}
       <div className="trip-filter container my-4">
@@ -153,7 +154,7 @@ const Trip = () => {
                     <img src={country.flag} alt={country.country} className="zaszlokep" />
                   </div>
                   <div>
-                    <h3 className="mb-1">{country.country}</h3>
+                    <h3 className="mb-1 text-white">{country.country}</h3>
                     <p className="fst-italic mb-0">{country.description}</p>
                   </div>
                 </div>
