@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"; 
 import { useLocation, useNavigate } from "react-router-dom";
-import { DotLoader } from "react-spinners"; // ← Spinner import
+import { DotLoader } from "react-spinners"; 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Booking.css";
 
 export default function Booking() {
@@ -13,9 +15,8 @@ export default function Booking() {
   const [napok, setNapok] = useState(location.state?.napok ?? 1);
   const [fo, setFo] = useState(location.state?.fo ?? 1);
   const [error, setError] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // ← új state a spinnerhez
+  const [isSubmitting, setIsSubmitting] = useState(false); 
 
-  // Űrlap state-ek
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,7 +27,6 @@ export default function Booking() {
   const [errors, setErrors] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("card");
 
-  // Formázások
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length > 15) value = value.slice(0, 15);
@@ -57,12 +57,10 @@ export default function Booking() {
     setPaymentMethod(e.target.value);
   };
 
-  // Dokumentum cím
   useEffect(() => {
     document.title = "EcoTrip – Foglalás";
   }, []);
 
-  // Fetch a backendből az ID alapján
   useEffect(() => {
     if (trip_id) {
       fetch(`https://localhost:7267/api/Trips/detailed/${trip_id}`)
@@ -97,32 +95,47 @@ export default function Booking() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      setIsSubmitting(true); // ← spinner elindítása
+      setIsSubmitting(true); 
 
-      // Szimuláljuk a foglalás feldolgozását (itt lehetne fetch POST)
+     
       setTimeout(() => {
-        alert(`Sikeres foglalás! Fizetési mód: ${paymentMethod === "card" ? "Bankkártya" : "Készpénz"}`);
-        navigate("/");
+        const success = true;
+
+        if (success) {
+          toast.success("Sikeres foglalás!", { position: "top-right", autoClose: 3000, theme: "colored" });
+          setTimeout(() => navigate("/"), 1500);
+        }
+        setIsSubmitting(false);
       }, 2000);
     }
   };
 
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-lg-8 p-4 rounded shadow booking-card">
             <h2 className="mb-4 text-center border-bottom pb-3">Foglalási adatok</h2>
             <h3 className="text-center mb-4">{hotel.city} – {hotel.hotel_name}</h3>
-            <div className="mb-3">
-              <p><strong>Fő:</strong> {fo}</p>
-              <p><strong>Éj:</strong> {napok}</p>
-            </div>
+            <p><strong>Fő:</strong> {fo}</p>
+            <p><strong>Éj:</strong> {napok}</p>
             <p><strong>Ár / éj:</strong> {hotel.price} Ft</p>
             <p className="fs-5"><strong>Teljes összeg:</strong> {totalPrice} Ft</p>
             <hr className="my-4" />
 
-            <form onSubmit={handleSubmit}>
+             <form onSubmit={handleSubmit}>
               <h4 className="mb-3">Személyes adatok</h4>
               <div className="row g-3">
                 <div className="col-md-6">
