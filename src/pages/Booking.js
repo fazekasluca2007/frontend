@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import { useLocation, useNavigate } from "react-router-dom";
+import { DotLoader } from "react-spinners"; // ← Spinner import
 import "./Booking.css";
 
 export default function Booking() {
@@ -12,6 +13,7 @@ export default function Booking() {
   const [napok, setNapok] = useState(location.state?.napok ?? 1);
   const [fo, setFo] = useState(location.state?.fo ?? 1);
   const [error, setError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // ← új state a spinnerhez
 
   // Űrlap state-ek
   const [firstName, setFirstName] = useState("");
@@ -22,7 +24,7 @@ export default function Booking() {
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
   const [errors, setErrors] = useState({});
-  const [paymentMethod, setPaymentMethod] = useState("card"); // alapértelmezett kártya
+  const [paymentMethod, setPaymentMethod] = useState("card");
 
   // Formázások
   const handlePhoneChange = (e) => {
@@ -95,8 +97,13 @@ export default function Booking() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      alert(`Sikeres foglalás! Fizetési mód: ${paymentMethod === "card" ? "Bankkártya" : "Készpénz"}`);
-      navigate("/");
+      setIsSubmitting(true); // ← spinner elindítása
+
+      // Szimuláljuk a foglalás feldolgozását (itt lehetne fetch POST)
+      setTimeout(() => {
+        alert(`Sikeres foglalás! Fizetési mód: ${paymentMethod === "card" ? "Bankkártya" : "Készpénz"}`);
+        navigate("/");
+      }, 2000);
     }
   };
 
@@ -244,9 +251,15 @@ export default function Booking() {
                 </div>
               )}
 
-              <button className="btn btn-success btn-lg w-100 mt-4" type="submit">
-                Foglalás megerősítése
-              </button>
+              {isSubmitting ? (
+                <div className="d-flex justify-content-center mt-4">
+                  <DotLoader color=" #7dbf7d" size={50} />
+                </div>
+              ) : (
+                <button className="btn btn-success btn-lg w-100 mt-4" type="submit">
+                  Foglalás megerősítése
+                </button>
+              )}
             </form>
           </div>
         </div>

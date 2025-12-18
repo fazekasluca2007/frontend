@@ -3,32 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Trip.css";
 import Trip_card from './components/Trip_card';
 
-// const data = [
-//   {
-//     country: "Magyarország",
-//     flag: "img/zaszlok/hu.png",
-//     description:
-//       "„Magyarország a történelem, a kultúra és a vendégszeretet találkozása – ahol minden város egy új történetet mesél, és minden táj egy új élményt kínál.”",
-//     hotels: [
-//       { city: "Budapest", name: "Aria Hotel", stars: 5, image_url: "img/utjaink kepek/hu_ariahotel.jpg", modalId: "budapestModal" },
-//       { city: "Lillafüred", name: "Hunguest Hotel Palota", stars: 4, image_url: "img/utjaink kepek/hu_palotaszallo.jpg", modalId: "lillafuredModal" },
-//       { city: "Szeged", name: "Danubius Hotel Helia", stars: 4, image_url: "img/utjaink kepek/hu_danubis.jpg", modalId: "szegedModal" },
-//       { city: "Pécs", name: "Palatinus Grand Hotel", stars: 4, image_url: "img/utjaink kepek/hu_platinus.jpg", modalId: "pecsModal" },
-//     ],
-//   },
-//   {
-//     country: "Olaszország",
-//     flag: "img/zaszlok/it.png",
-//     description:
-//       "„Olaszország a művészet, a gasztronómia és a dolce vita hazája – ahol minden utca egy festmény, minden étel egy élmény, és minden pillanat egy emlék.”",
-//     hotels: [
-//       { city: "Róma", name: "Hotel Artemide", stars: 4, image_url: "img/utjaink kepek/it_artemide.jpg", modalId: "romaModal" },
-//       { city: "Toszkána", name: "Agriturismo La Poggiolina", stars: 3, image_url: "img/utjaink kepek/it_lapoggiolina.jpg", modalId: "toszkanaModal" },
-//       { city: "Nápoly", name: "Grand Hotel Vesuvio", stars: 5, image_url: "img/utjaink kepek/it_grandhotel.jpg", modalId: "napolyModal" },
-//       { city: "Firenze", name: "Hotel Bernini Palace", stars: 5, image_url: "img/utjaink kepek/it_hotelnbernini.jpg", modalId: "firenzeModal" },
-//     ],
-//   },
-// ];
 
 const Trip = () => {
   const navigate = useNavigate();
