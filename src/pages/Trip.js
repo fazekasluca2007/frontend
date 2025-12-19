@@ -172,6 +172,7 @@ const Trip = () => {
                           <div className="modal-body">
                             <img src={hotel.image_url} alt={hotel.hotel_name} className="img-fluid mb-3" />
                             <p>Város: {hotel.city}</p>
+                            <p>Leírás: {hotel.short_description}</p>
                             <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
 
                             <button

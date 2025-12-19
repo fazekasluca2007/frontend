@@ -35,7 +35,7 @@ export default function Nav() {
               <img src="./img/ecologo.png" alt="Logo" />
             </NavLink>
 
-            
+
           </div>
 
           {/* Hamburger gomb */}
@@ -66,53 +66,54 @@ export default function Nav() {
                 </NavLink>
               </li>
 
-            <li className="nav-item">
+              <li className="nav-item">
                 <NavLink className="nav-link" to="/rolunk">
                   Rólunk
                 </NavLink>
               </li>
 
-               <li className="nav-item">
+              <li className="nav-item">
                 <NavLink className="nav-link" to="/gyik">
                   GYIK
                 </NavLink>
-                </li>
+              </li>
 
-                 <li className="nav-item">
+              <li className="nav-item">
                 <NavLink className="nav-link" to="/velemenyek">
                   Vélemények
                 </NavLink>
               </li>
 
-             
+
             </ul>
           </div>
-            <div className="d-none d-lg-flex">
+          <div className="d-none d-lg-flex">
             <ul className="navbar-nav d-flex flex-row">
 
-  {!loggedIn && (
-              <NavLink className="nav-link ms-2" to="/bejelentkezes">
-                Bejelentkezés
-              </NavLink>
-            )}
+              {!loggedIn && (
+                <NavLink className="nav-link login-btn ms-2" to="/bejelentkezes">
+                  Bejelentkezés
+                </NavLink>
 
-            {loggedIn && user && (
-              <div className="ms-3 d-flex align-items-center text-white">
-                <span className="fw-bold username">{user.fullName}</span>
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-sm ms-2 logoutbtn"
-                >
-                  Kijelentkezés
-                </button>
-              </div>
-            )}
+              )}
+
+              {loggedIn && user && (
+                <div className="ms-3 d-flex align-items-center text-white">
+                  <span className="fw-bold username">{user.fullName}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-sm ms-2 logoutbtn"
+                  >
+                    Kijelentkezés
+                  </button>
+                </div>
+              )}
             </ul>
-            </div>
+          </div>
 
-        
 
-       
+
+
         </div>
 
         {/* Hamburger menü (mobil) */}

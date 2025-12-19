@@ -148,7 +148,8 @@ export default function Home() {
                     <div className="row align-items-center">
 
                         <div className="col-md-5">
-                            <div id="map" style={{ height: '400px', width: '100%', borderRadius: '10px' }}></div>
+                             <h3 className="map-title mb-3">Hol járhatsz velünk?</h3>
+                             <div id="map"></div>
                         </div>
 
                         <div className="col-md-3 text-center">
