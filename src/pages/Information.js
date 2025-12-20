@@ -5,6 +5,7 @@ import "./Information.css";
 export default function Information() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [currentImage, setCurrentImage] = useState(0);
 
   const trip_id = location.state?.trip_id;
   const ecotrip_id = location.state?.ecotrip_id;
@@ -13,6 +14,11 @@ export default function Information() {
   const [napok, setNapok] = useState(1);
   const [fo, setFo] = useState(1);
   const [error, setError] = useState(false);
+
+  const images = data
+    ? [data.main_image, ...(data.gallery_images || [])]
+    : [];
+
 
   useEffect(() => {
     if (trip_id) {
@@ -78,11 +84,42 @@ export default function Information() {
     <div className="container py-5">
       <div className="row g-4">
         <div className="col-lg-6">
-          <img
-            src={data.main_image}
-            alt={data.hotel_name}
-            className="w-100 rounded shadow"
-          />
+          <div style={{ position: "relative" }}>
+            <img
+              src={`/${images[currentImage]}`}
+              alt={data.hotel_name}
+              className="w-100 rounded shadow"
+              style={{ height: "380px", objectFit: "cover" }}
+            />
+
+            {images.length > 1 && (
+              <>
+                <button
+                  className="slider-btn left"
+                  onClick={() =>
+                    setCurrentImage(
+                      currentImage === 0 ? images.length - 1 : currentImage - 1
+                    )
+                  }
+                >
+                  ❮
+                </button>
+
+                <button
+                  className="slider-btn right"
+                  onClick={() =>
+                    setCurrentImage(
+                      currentImage === images.length - 1 ? 0 : currentImage + 1
+                    )
+                  }
+                >
+                  ❯
+                </button>
+              </>
+            )}
+
+          </div>
+
         </div>
 
         <div className="col-lg-6">
