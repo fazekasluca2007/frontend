@@ -19,18 +19,26 @@
 
 .slider-track {
   display: flex;
-  transition: transform 0.4s ease;
   gap: 1.2rem;
   padding: 0 10px;
+  align-items: stretch;
+  transition: transform 0.4s ease;
 }
+
 
 .hotel-card {
   border: 1px solid #ddd !important;
   border-radius: 12px;
   overflow: hidden;
-  transition: 0.3s all;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: 0.3s all;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 320px;
+  height: 100%;
 }
 
 .hotel-card:hover {
@@ -45,10 +53,23 @@
   display: block;
 }
 
+
+.hotel-card-body {
+  flex: 1;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hotel-card-body button {
+  margin-top: auto;
+}
+
 .zaszlokep {
   width: 70px;
   height: 45px;
 }
+
 
 .slider-btn {
   position: absolute;
@@ -71,16 +92,13 @@
   right: -20px;
 }
 
-/*Szűrő*/
-
 .trip-filter {
   display: flex;
   justify-content: center;
 }
 
 .trip-filter-inner {
-  background: linear-gradient(135deg, #7dbf7d,
-#6daedb);
+  background: linear-gradient(135deg, #7dbf7d, #6daedb);
   border-radius: 20px;
   padding: 25px 30px;
   display: flex;
@@ -90,7 +108,7 @@
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
   border: 1px solid #e5e7eb;
   transition: 0.3s;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 .trip-filter-inner:hover {
@@ -158,9 +176,13 @@
     gap: 20px;
     padding: 20px;
   }
+
+  .hotel-card {
+    width: 100%;
+  }
 }
 
-/* Modal háttér */
+/* === MODAL === */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -174,7 +196,6 @@
   z-index: 1050;
 }
 
-/* Modal ablak */
 .modal-dialog {
   max-width: 600px;
   width: 90%;
@@ -184,13 +205,26 @@
   animation: fadeIn 0.3s ease;
 }
 
-/* Modal tartalom */
 .modal-content {
   padding: 1rem;
   border-radius: 0.5rem;
 }
 
-/* Modal fejléc */
+
+.modal-content img {
+  width: 100%;
+  height: 350px;       
+  object-fit: cover;   
+  border-radius: 10px;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .modal-content img {
+    height: 220px;
+  }
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -199,7 +233,6 @@
   padding-bottom: 0.5rem;
 }
 
-/* Bezáró gomb */
 .btn-close {
   background: transparent;
   border: none;
@@ -207,8 +240,7 @@
   cursor: pointer;
 }
 
-/* Animáció */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px);}
-  to { opacity: 1; transform: translateY(0);}
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

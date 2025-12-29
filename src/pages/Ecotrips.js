@@ -85,7 +85,7 @@ const Trip = () => {
       {/*Szűrő box*/}
       <div className="trip-filter container my-4">
         <div className="trip-filter-inner">
-          <h2 className="filter-title">Hová utazna?</h2>
+          <h2 className="filter-title">Válassza ki az úticélját!</h2>
 
           <div className="filter-field">
             <label>Ország</label>
