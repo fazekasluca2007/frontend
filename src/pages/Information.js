@@ -15,10 +15,7 @@ export default function Information() {
   const [fo, setFo] = useState(1);
   const [error, setError] = useState(false);
 
-  const images = data
-    ? [data.main_image, ...(data.gallery_images || [])]
-    : [];
-
+  const images = data ? [data.main_image, ...(data.gallery_images || [])] : [];
 
   useEffect(() => {
     if (trip_id) {
@@ -68,12 +65,7 @@ export default function Information() {
     if (!data) return;
 
     navigate("/foglalas", {
-      state: {
-        trip_id,
-        ecotrip_id,
-        napok,
-        fo
-      }
+      state: { trip_id, ecotrip_id, napok, fo }
     });
   };
 
@@ -84,42 +76,28 @@ export default function Information() {
     <div className="container py-5">
       <div className="row g-4">
         <div className="col-lg-6">
-          <div style={{ position: "relative" }}>
-            <img
-              src={`/${images[currentImage]}`}
-              alt={data.hotel_name}
-              className="w-100 rounded shadow"
-              style={{ height: "380px", objectFit: "cover" }}
-            />
-
+          <div className="image-gallery">
+            <div className="main-image">
+              <img
+                src={`/${images[currentImage]}`}
+                alt={data.hotel_name}
+                className="w-100 rounded shadow"
+              />
+            </div>
             {images.length > 1 && (
-              <>
-                <button
-                  className="slider-btn left"
-                  onClick={() =>
-                    setCurrentImage(
-                      currentImage === 0 ? images.length - 1 : currentImage - 1
-                    )
-                  }
-                >
-                  ❮
-                </button>
-
-                <button
-                  className="slider-btn right"
-                  onClick={() =>
-                    setCurrentImage(
-                      currentImage === images.length - 1 ? 0 : currentImage + 1
-                    )
-                  }
-                >
-                  ❯
-                </button>
-              </>
+              <div className="thumbnail-row mt-2 d-flex gap-2">
+                {images.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={`/${img}`}
+                    alt={`Thumbnail ${idx}`}
+                    className={`thumbnail rounded ${currentImage === idx ? "active" : ""}`}
+                    onClick={() => setCurrentImage(idx)}
+                  />
+                ))}
+              </div>
             )}
-
           </div>
-
         </div>
 
         <div className="col-lg-6">
@@ -128,7 +106,6 @@ export default function Information() {
           </h2>
 
           <p><strong>{"★".repeat(data.stars)}</strong></p>
-
           {data.long_description && <p>{data.long_description}</p>}
 
           {data.services && (
@@ -141,12 +118,8 @@ export default function Information() {
           {data.routes && (
             <>
               <h5 className="mt-4">Úticélok:</h5>
-
               <div className="accordion" id="routesAccordion">
-                {(Array.isArray(data.routes)
-                  ? data.routes
-                  : data.routes.split(",")
-                ).map((route, index) => (
+                {(Array.isArray(data.routes) ? data.routes : data.routes.split(",")).map((route, index) => (
                   <div className="accordion-item" key={index}>
                     <h2 className="accordion-header">
                       <button
@@ -166,16 +139,8 @@ export default function Information() {
                     >
                       <div className="accordion-body">
                         <p><strong>🏨 Hotel:</strong> {data.hotel_name}</p>
-
-                        <p>
-                          <strong>🛣️ Útvonal:</strong>{" "}
-                          {getRouteInfoFromRoute(route.trim())}
-                        </p>
-
-                        <p>
-                          <strong>📍 Végállomás:</strong>{" "}
-                          {getDestinationFromRoute(route.trim())}
-                        </p>
+                        <p><strong>🛣️ Útvonal:</strong> {getRouteInfoFromRoute(route.trim())}</p>
+                        <p><strong>📍 Végállomás:</strong> {getDestinationFromRoute(route.trim())}</p>
                       </div>
                     </div>
                   </div>
@@ -185,7 +150,6 @@ export default function Information() {
           )}
 
           <h5 className="mt-4">Foglalás</h5>
-
           <div className="d-flex flex-column gap-3">
             <div>
               <label className="form-label">Hány napra:</label>

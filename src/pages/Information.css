@@ -3,7 +3,6 @@ body {
   color: #2c3e50;
 }
 
-/* Kép és layout */
 .w-100 {
   width: 100%;
 }
@@ -16,7 +15,6 @@ body {
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 
-/* Cím és elválasztó */
 h2 {
   font-weight: 600;
 }
@@ -25,12 +23,10 @@ h2 {
   border-bottom: 3px solid #6daedb !important;
 }
 
-/* Lista */
 ul {
   padding-left: 20px;
 }
 
-/* Form input mezők */
 .form-control {
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -43,7 +39,6 @@ ul {
   margin-bottom: 4px;
 }
 
-/* Gombok */
 .btn-primary,
 .btn.btn-primary.btn-lg {
   background-color: #6daedb;
@@ -88,19 +83,15 @@ ul {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
   width: 46px;
   height: 46px;
   border-radius: 50%;
-
   border: none;
   background: rgba(0, 0, 0, 0.55);
   color: white;
-
   font-size: 22px;
   font-weight: bold;
   cursor: pointer;
-
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: all 0.25s ease;
 }
@@ -116,4 +107,58 @@ ul {
 .slider-btn:hover {
   background: rgba(0, 0, 0, 0.8);
   transform: translateY(-50%) scale(1.1);
+}
+
+.image-gallery {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-image img {
+  height: 400px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.thumbnail-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: scroll;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #7bc96f #e0e0e0;
+}
+
+.thumbnail {
+  height: 80px;
+  width: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border 0.2s, transform 0.2s;
+}
+
+.thumbnail:hover {
+  border-color: #7bc96f;
+  transform: scale(1.05);
+}
+
+.thumbnail.active {
+  border-color: #7bc96f;
+}
+
+.thumbnail-row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.thumbnail-row::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 4px;
+}
+
+.thumbnail-row::-webkit-scrollbar-thumb {
+  background-color: #7bc96f;
+  border-radius: 4px;
 }
