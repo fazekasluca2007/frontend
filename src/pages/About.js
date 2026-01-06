@@ -9,35 +9,41 @@ const About = () => {
     <div>
       {/* Hero szekció */}
       <section
-        className="rolunk-hero text-center text-white"
-        style={{
-          position: "relative",
-          background: "url('img/index kepek/folyo.avif') center center/cover no-repeat",
-          minHeight: "350px",
-        }}
-      >
-        <div
-        
-          className="hero-content"
-          style={{
-            position: "relative",
-            zIndex: 2,
-            padding: "100px 20px",
-            background: "rgba(0,0,0,0.4)",
-            borderRadius: "16px",
-            display: "inline-block",
-            maxWidth: "600px",
-            margin: "0 auto",
-          }}
-        >
-          <h1 style={{ fontSize: "2.5rem", wordBreak: "break-word" }}>
-            Ismerj meg minket közelebbről
-          </h1>
-          <p style={{ fontSize: "1.25rem", wordBreak: "break-word" }}>
-            Utazz zölden, fedezd fel a világot felelősen!
-          </p>
-        </div>
-      </section>
+  className="rolunk-hero text-center"
+  style={{
+    position: "relative",
+    background: "url('img/index kepek/folyo.avif') center center/cover no-repeat",
+    minHeight: "350px",
+  }}
+>
+  <div
+    className="hero-content d-flex flex-column justify-content-center align-items-center text-center"
+    style={{
+      position: "relative",
+      zIndex: 2,
+      width: "400px",            
+      aspectRatio: "1 / 1",       
+      borderRadius: "50%",        
+      backgroundColor: "rgba(255,255,255,0.7)", 
+      padding: "2rem",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      textAlign: "center",
+      margin: "0 auto",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.2)", // opcionális árnyék
+    }}
+  >
+    <h1 style={{ fontSize: "2rem", color: "#1a3c57", wordBreak: "break-word" }}>
+      Ismerj meg minket közelebbről
+    </h1>
+
+    <p style={{ fontSize: "1.3rem", color: "#1a3c57", wordBreak: "break-word", fontStyle:'italic'}}>
+      „A legjobb emlékek gyakran ott kezdődnek, ahol a térkép véget ér.”
+    </p>
+  </div>
+</section>
 
       {/* Kik vagyunk szekció */}
       <section className="container my-5">
@@ -150,7 +156,7 @@ const About = () => {
           <div className="col-md-3 text-center">
             <div className="team-card">
               <img
-                src="img/rolunk kepek/flora.jpg"
+                src="img/rolunk kepek/flora.jpeg"
                 alt="Flóra"
                 className="img-fluid rounded mb-3"
               />

@@ -17,7 +17,7 @@ h2, h3, h4 {
 }
 
 .border-bottom {
-  border-bottom: 3px solid #6daedb !important;
+  border-bottom: 3px solid darkcyan !important;
 }
 
 .form-control {
@@ -43,8 +43,8 @@ h2, h3, h4 {
 }
 
 .btn-success {
-  background-color: #6daedb;
-  border-color: #6daedb;
+  background-color: darkcyan;
+  border-color: darkcyan;
   font-size: 1.2rem;
   padding: 12px;
   border-radius: 10px;

@@ -101,7 +101,7 @@ export default function Information() {
         </div>
 
         <div className="col-lg-6">
-          <h2 className="mb-3 border-bottom pb-2">
+          <h2 className="mb-3 custom-border pb-2">
             {data.city} – {data.hotel_name}
           </h2>
 

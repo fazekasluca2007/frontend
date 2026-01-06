@@ -19,8 +19,8 @@ h2 {
   font-weight: 600;
 }
 
-.border-bottom {
-  border-bottom: 3px solid #6daedb !important;
+.custom-border {
+  border-bottom: 3px solid darkcyan ;
 }
 
 ul {

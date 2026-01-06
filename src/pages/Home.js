@@ -126,21 +126,40 @@ export default function Home() {
                     </button>
 
                     {/* Szöveg ráhelyezve */}
-                    <div className="position-absolute top-50 start-50 translate-middle text-white bg-dark bg-opacity-50 p-4 rounded" style={{ maxWidth: '600px' }}>
-                        <h1>Üdvözlünk az EcoTrip oldalán!</h1>
-                        <NavLink
-                            to={isUserLoggedIn() ? '/utjaink' : '/bejelentkezes'}
-                            className="btn btn-primary btn-lg mt-3"
-                        >
-                            Foglalj most
-                        </NavLink>
-                        <p className="mt-3 text-start">
-                            Több száz szálláslehetőség, inspiráló úticélok, és öko-tudatos tippek – mindezt egy helyen!
-                        </p>
-                        <p className="mt-3 text-start">
-                            Csatlakozz az EcoTrip közösséghez, és fedezd fel, hogyan teheted utazásaidat környezetbaráttá!
-                        </p>
-                    </div>
+                    <div
+  className="position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-center align-items-center text-center"
+  style={{
+    width: '100%',
+    aspectRatio: '1 / 1',
+    maxWidth: '450px',
+    padding:'2rem',
+    textAlign: 'center',
+    height: '100%',
+    maxHeight : '450px',
+    borderRadius: '50%',
+    backgroundColor : 'rgba(255, 255, 255, 0.7)',
+    color: '#1a3c57'
+  }}
+>
+  <h1>Üdvözlünk az EcoTrip oldalán!</h1>
+
+  <NavLink
+    to={isUserLoggedIn() ? '/utjaink' : '/bejelentkezes'}
+    className="btn btn-primary btn-lg mt-3"
+  >
+    Foglalj most
+  </NavLink>
+
+  <p className="mt-3">
+    Több száz szálláslehetőség, inspiráló úticélok, és öko-tudatos tippek – mindezt egy helyen!
+  </p>
+
+  <p className="mt-3">
+    Csatlakozz az EcoTrip közösséghez, és fedezd fel, hogyan teheted utazásaidat környezetbaráttá!
+  </p>
+</div>
+
+
                 </div>
 
                 {/* Info + Térkép */}
