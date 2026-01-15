@@ -1,41 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Trip.css";
-import Trip_card from './components/Trip_card';
+import Trip_card from "./components/Trip_card";
 
-const Trip = () => {
-
+const EcoTrip = () => {
   const navigate = useNavigate();
+
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [ecotrips, setEcotrips] = useState([]);
   const [positions, setPositions] = useState({});
-  const [openModalId, setOpenModalId] = useState(null);
-
   const [error, setError] = useState(false);
 
-
-  //Ecotrip adatok kártyákoz
   useEffect(() => {
     fetch("https://localhost:7267/api/EcoTrip/ecotripcards")
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         setEcotrips(json.result);
         setError(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Fetch error:", err);
         setError(true);
       });
   }, []);
 
-  console.log(ecotrips)
   useEffect(() => {
     document.title = "EcoTrip – Ökoútjaink";
   }, []);
 
   const moveSlide = (country, step) => {
     const countryData = ecotrips.find((c) => c.country === country);
+    if (!countryData) return;
+
     const cards = countryData.hotels.length;
     const visible = 4;
     const maxPos = Math.max(0, cards - visible);
@@ -49,11 +46,13 @@ const Trip = () => {
   };
 
   const cities = selectedCountry
-    ? [...new Set(
-      ecotrips
-        .find((c) => c.country === selectedCountry)
-        ?.hotels.map(h => h.city) || []
-    )]
+    ? [
+        ...new Set(
+          ecotrips
+            .find((c) => c.country === selectedCountry)
+            ?.hotels.map((h) => h.city) || []
+        ),
+      ]
     : [];
 
   const handleBooking = (hotel) => {
@@ -64,25 +63,19 @@ const Trip = () => {
       return;
     }
 
-    setOpenModalId(null);
-
     navigate("/informaciok", {
-      state: { ecotrip_id: hotel.id }
+      state: { ecotrip_id: hotel.id },
     });
   };
 
   return (
     <>
-
-      {/* Hibaüzenet, ha a fetch nem sikerült */}
       {error && (
         <p className="error text-center my-4">
           Hiba az adatok lekérése során. Kérlek, próbáld újra később.
         </p>
       )}
-      
 
-      {/*Szűrő box*/}
       <div className="trip-filter container my-4">
         <div className="trip-filter-inner">
           <h2 className="filter-title">Válassza ki az úticélját!</h2>
@@ -126,21 +119,17 @@ const Trip = () => {
               </select>
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* ORSZÁGOK + HOTELEK*/}
-      <div className="container my-5" id="countries-container">
-
+      <div className="container my-5">
         {ecotrips
-          .filter(country =>
+          .filter((country) =>
             selectedCountry ? country.country === selectedCountry : true
           )
-          .map(country => {
-
+          .map((country) => {
             const filteredHotels = selectedCity
-              ? country.hotels.filter(h => h.city === selectedCity)
+              ? country.hotels.filter((h) => h.city === selectedCity)
               : country.hotels;
 
             const pos = positions[country.country] || 0;
@@ -148,64 +137,56 @@ const Trip = () => {
 
             return (
               <div key={country.country} className="my-5">
-
                 <div className="country-banner d-flex align-items-center mb-4">
-                  <div className="flag-box me-3">
-                    <img src={country.flag} alt={country.country} className="zaszlokep" />
-                  </div>
+                  <img
+                    src={country.flag}
+                    alt={country.country}
+                    className="zaszlokep me-3"
+                  />
                   <div>
-                    <h3 className="mb-1 text-white">{country.country}</h3>
-                    <p className="fst-italic mb-0">{country.description}</p>
+                    <h3 className="text-white">{country.country}</h3>
+                    <p className="fst-italic">{country.description}</p>
                   </div>
                 </div>
 
                 <div className="slider-wrapper">
+                  <button
+                    className="slider-btn left"
+                    onClick={() => moveSlide(country.country, -1)}
+                  >
+                    ❮
+                  </button>
+
                   <div className="slider-container">
                     <div
                       className="slider-track"
-                      style={{ transform: `translateX(${movePercent}%)` }}
+                      style={{
+                        transform: `translateX(${movePercent}%)`,
+                      }}
                     >
-                      {filteredHotels.map(hotel => (
-                        <Trip_card key={hotel.modalId} hotel={hotel} onClick={() => setOpenModalId(hotel.modalId)} />
+                      {filteredHotels.map((hotel) => (
+                        <Trip_card
+                          key={hotel.id}
+                          hotel={hotel}
+                          onClick={() => handleBooking(hotel)}
+                        />
                       ))}
                     </div>
                   </div>
+
+                  <button
+                    className="slider-btn right"
+                    onClick={() => moveSlide(country.country, 1)}
+                  >
+                    ❯
+                  </button>
                 </div>
-                {filteredHotels.map(hotel =>
-                  openModalId === hotel.modalId && (
-                    <div className="modal-backdrop" key={hotel.modalId}>
-                      <div className="modal-dialog modal-sm">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title">{hotel.hotel_name}</h5>
-                            <button type="button" className="btn-close" onClick={() => setOpenModalId(null)}></button>
-                          </div>
-
-                          <div className="modal-body">
-                            <img src={hotel.image_url} alt={hotel.hotel_name} className="img-fluid mb-3" />
-                            <p>Város: {hotel.city}</p>
-                            <p>Csillagok: {'★'.repeat(hotel.stars)}</p>
-
-                            <button
-                              className="btn btn-primary btn-lg mt-3"
-                              onClick={() => handleBooking(hotel)}
-                            >
-                              Foglalás
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                )}
-
               </div>
             );
           })}
       </div>
-
     </>
   );
 };
 
-export default Trip;
+export default EcoTrip;
