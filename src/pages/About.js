@@ -3,49 +3,57 @@ import "./About.css";
 
 const About = () => {
   useEffect(() => {
-      document.title = "EcoTrip – Rólunk";
-    }, []);
+    document.title = "EcoTrip – Rólunk";
+  }, []);
+
   return (
     <div>
       {/* Hero szekció */}
       <section
-  className="rolunk-hero text-center"
-  style={{
-    position: "relative",
-    background: "url('img/index kepek/folyo.avif') center center/cover no-repeat",
-    minHeight: "350px",
-  }}
->
-  <div
-    className="hero-content d-flex flex-column justify-content-center align-items-center text-center"
-    style={{
-      position: "relative",
-      zIndex: 2,
-      width: "400px",            
-      aspectRatio: "1 / 1",       
-      borderRadius: "50%",        
-      backgroundColor: "rgba(255,255,255,0.7)", 
-      padding: "2rem",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      textAlign: "center",
-      margin: "0 auto",
-      boxShadow: "0 8px 20px rgba(0,0,0,0.2)", // opcionális árnyék
-    }}
-  >
-    <h1 style={{ fontSize: "2rem", color: "#1a3c57", wordBreak: "break-word" }}>
-      Ismerj meg minket közelebbről
-    </h1>
+        className="rolunk-hero text-center"
+        style={{
+          position: "relative",
+          background: "url('img/index kepek/folyo.avif') center center/cover no-repeat",
+          minHeight: "350px",
+        }}
+      >
+        <div
+          className="hero-content d-flex flex-column justify-content-center align-items-center text-center"
+          style={{
+            position: "relative",
+            zIndex: 2,
+            width: "400px",
+            aspectRatio: "1 / 1",
+            borderRadius: "50%",
+            backgroundColor: "rgba(255,255,255,0.7)",
+            padding: "2rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            margin: "0 auto",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+          }}
+        >
+          <h1 style={{ fontSize: "2rem", color: "#1a3c57", wordBreak: "break-word" }}>
+            Ismerj meg minket közelebbről
+          </h1>
 
-    <p style={{ fontSize: "1.3rem", color: "#1a3c57", wordBreak: "break-word", fontStyle:'italic'}}>
-      „A legjobb emlékek gyakran ott kezdődnek, ahol a térkép véget ér.”
-    </p>
-  </div>
-</section>
+          <p
+            style={{
+              fontSize: "1.3rem",
+              color: "#1a3c57",
+              wordBreak: "break-word",
+              fontStyle: "italic",
+            }}
+          >
+            „A legjobb emlékek gyakran ott kezdődnek, ahol a térkép véget ér.”
+          </p>
+        </div>
+      </section>
 
-      {/* Kik vagyunk szekció */}
+    
       <section className="container my-5">
         <div className="row align-items-center gy-4">
           <div className="col-md-6">
@@ -55,6 +63,7 @@ const About = () => {
               className="img-fluid rounded shadow-lg earth-img-hover"
             />
           </div>
+
           <div className="col-md-6">
             <h2 className="mb-3 text-gradient">Kik vagyunk?</h2>
             <p className="lead">
@@ -62,6 +71,7 @@ const About = () => {
               szenvedélye a fenntartható turizmus. Küldetésünk, hogy
               megmutassuk: utazni lehet tudatosan is.
             </p>
+
             <p>
               Célunk, hogy minden utazás élmény legyen – nemcsak a résztvevők,
               hanem a bolygó számára is. Törekszünk arra, hogy programjaink
@@ -73,40 +83,33 @@ const About = () => {
         </div>
       </section>
 
-      {/* Értékeink szekció */}
-      <section className="values-section py-5 text-center">
+
+      <section className="values-section py-5">
         <div className="container">
-          <h2 className="mb-5 text-gradient">Értékeink</h2>
-          <div className="row gy-4">
-            <div className="col-md-4">
-              <div className="value-card">
-                <i className="fa-solid fa-leaf fa-2x mb-3"></i>
-                <h5>Fenntarthatóság</h5>
-                <p>
-                  Környezettudatos döntéseket hozunk minden utazás
-                  tervezésekor – a közlekedéstől a szállásig.
-                </p>
+          <div className="row justify-content-center align-items-center gy-4">
+
+            <div className="col-md-6">
+              <div className="text-block blue">
+                <p>🌊 A kék a tiszta vizeket és az utazás szabadságát jelképezi.</p>
+              </div>
+
+              <div className="text-block green">
+                <p>🍃 A zöld az öko-szemlélet színe, a fenntartható kalandok jelképe.</p>
+              </div>
+
+              <div className="text-block brown">
+                <p>⛰️ A barna a föld erejét és stabilitását idézi.</p>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="value-card">
-                <i className="fa-solid fa-globe fa-2x mb-3"></i>
-                <h5>Felfedezés</h5>
-                <p>
-                  Utazásaink új kultúrákat, rejtett helyeket és valódi
-                  élményeket kínálnak a világ minden tájáról.
-                </p>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="value-card">
-                <i className="fa-solid fa-heart fa-2x mb-3"></i>
-                <h5>Közösség</h5>
-                <p>
-                  Hisszük, hogy az utazás összeköt – embereket, kultúrákat, és
-                  természetet egyaránt.
-                </p>
-              </div>
+
+
+            <div className="col-md-3 text-center">
+              <img
+                src="img/foldgomb.png"
+                alt="EcoTrip"
+                id="foldgomb"
+                className="img-fluid"
+              />
             </div>
           </div>
         </div>
@@ -117,6 +120,7 @@ const About = () => {
         <h2 className="text-center mb-5 text-gradient">
           Ismerd meg a csapatunkat
         </h2>
+
         <div className="row gy-4 justify-content-center">
           <div className="col-md-3 text-center">
             <div className="team-card">

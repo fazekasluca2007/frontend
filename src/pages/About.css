@@ -2,6 +2,7 @@ body {
   background-color: #f0f6fb;
   color: #2c3e50;
 }
+
 .rolunk-hero {
   position: relative;
   height: 60vh;
@@ -10,58 +11,89 @@ body {
   justify-content: center;
 }
 
-.rolunk-hero .overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(26, 60, 87, 0.5);
+
+#foldgomb {
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.15));
+  transition: transform 0.2s ease;
 }
 
-.rolunk-hero .hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-.rolunk-hero h1 {
-  font-size: 2.8rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.rolunk-hero p {
-  font-size: 1.2rem;
-  font-weight: 300;
+#foldgomb:hover {
+  transform: scale(1.1);
 }
 
 
-
-
-.value-card {
-  background: #fff;
+.text-block {
+  margin-bottom: 20px;
+  padding: 20px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-size: 0.95rem;
+  color: #fff;
+  text-align: left;
   border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.value-card:hover {
+.text-block:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-.value-card i {
-  color: darkcyan;
+.text-block.blue {
+  background: linear-gradient(135deg, darkcyan);
 }
+
+.text-block.green {
+  background: linear-gradient(135deg, #7dbf7d);
+}
+
+.text-block.brown {
+  background: linear-gradient(135deg, #a87c5c);
+}
+
+.text-block p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+
+.leaflet-popup-content {
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.leaflet-popup-content b {
+  color: #2c3e50;
+}
+
+.leaflet-popup-content i {
+  color: #555;
+}
+
+.eco-popup .leaflet-popup-content-wrapper {
+  background: #e8fce8;
+  border: 2px solid #3ba94d;
+}
+
 
 .team-card {
   background: #fff;
   border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
-
+.team-card:hover {
+  transform: scale(1.05);
+}
 
 .team-card img {
   width: 100%;
@@ -77,37 +109,31 @@ body {
   margin-right: auto;
 }
 
-
-
 .team-card p {
-  display: none;              
+  display: none;
   opacity: 0;
   transition: opacity 0.3s ease;
-  text-align: center;        
-  margin-top: 10px;           
+  text-align: center;
+  margin-top: 10px;
 }
 
 .team-card:hover p {
-  display: block;            
+  display: block;
   opacity: 1;
 }
 
 
-.team-card {
-  transition: transform 0.3s ease;
+.earth-img-hover {
+  transition: transform 0.2s ease;
 }
 
-.team-card:hover {
-  transform: scale(1.05);
+.earth-img-hover:hover {
+  transform: scale(1.06);
 }
+
+
 @media (max-width: 768px) {
   .rolunk-hero h1 {
     font-size: 2rem;
   }
 }
-.earth-img-hover {
-      transition: transform 0.2s ease;
-    }
-    .earth-img-hover:hover {
-      transform: scale(1.06);
-    }
