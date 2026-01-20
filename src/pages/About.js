@@ -58,9 +58,9 @@ const About = () => {
         <div className="row align-items-center gy-4">
           <div className="col-md-6">
             <img
-              src="img/index kepek/earth.avif"
+              src="img/rolunk kepek/adventure.jpg"
               alt="földgömb"
-              className="img-fluid rounded shadow-lg earth-img-hover"
+              className="img-fluid rounded shadow-lg adventure-img-hover"
             />
           </div>
 
