@@ -35,22 +35,6 @@ export default function Information() {
     document.title = "EcoTrip – Információk";
   }, []);
 
-  const formatWord = (word) =>
-    word.charAt(0).toUpperCase() + word.slice(1);
-
-  const getDestinationFromRoute = (route) => {
-    const parts = route.split("_");
-    return formatWord(parts[parts.length - 1]);
-  };
-
-  const getRouteInfoFromRoute = (route) => {
-    const parts = route.split("_");
-    return parts
-      .slice(0, -1)
-      .map(formatWord)
-      .join(" ");
-  };
-
   const handleNapokChange = (e) => {
     const value = Number(e.target.value);
     setNapok(value < 1 ? 1 : value > 10 ? 10 : value);
@@ -84,14 +68,15 @@ export default function Information() {
                 className="w-100 rounded shadow"
               />
             </div>
+
             {images.length > 1 && (
-              <div className="thumbnail-row mt-2 d-flex gap-2">
+              <div className="thumbnail-row">
                 {images.map((img, idx) => (
                   <img
                     key={idx}
                     src={`/${img}`}
                     alt={`Thumbnail ${idx}`}
-                    className={`thumbnail rounded ${currentImage === idx ? "active" : ""}`}
+                    className={`thumbnail ${currentImage === idx ? "active" : ""}`}
                     onClick={() => setCurrentImage(idx)}
                   />
                 ))}
@@ -108,50 +93,10 @@ export default function Information() {
           <p><strong>{"★".repeat(data.stars)}</strong></p>
           {data.long_description && <p>{data.long_description}</p>}
 
-          {data.services && (
-            <>
-              <h5 className="mt-4">Szolgáltatások:</h5>
-              <p>{data.services}</p>
-            </>
-          )}
-
-          {data.routes && (
-            <>
-              <h5 className="mt-4">Úticélok:</h5>
-              <div className="accordion" id="routesAccordion">
-                {(Array.isArray(data.routes) ? data.routes : data.routes.split(",")).map((route, index) => (
-                  <div className="accordion-item" key={index}>
-                    <h2 className="accordion-header">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#route-${index}`}
-                      >
-                        📍 {getDestinationFromRoute(route.trim())}
-                      </button>
-                    </h2>
-
-                    <div
-                      id={`route-${index}`}
-                      className="accordion-collapse collapse"
-                      data-bs-parent="#routesAccordion"
-                    >
-                      <div className="accordion-body">
-                        <p><strong>🏨 Hotel:</strong> {data.hotel_name}</p>
-                        <p><strong>🛣️ Útvonal:</strong> {getRouteInfoFromRoute(route.trim())}</p>
-                        <p><strong>📍 Végállomás:</strong> {getDestinationFromRoute(route.trim())}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
           <h5 className="mt-4">Foglalás</h5>
-          <div className="d-flex flex-column gap-3">
-            <div>
+
+          <div className="d-flex gap-3 align-items-end">
+            <div className="booking-input">
               <label className="form-label">Hány napra:</label>
               <input
                 type="number"
@@ -163,7 +108,7 @@ export default function Information() {
               />
             </div>
 
-            <div>
+            <div className="booking-input">
               <label className="form-label">Hány főre:</label>
               <input
                 type="number"
@@ -176,7 +121,7 @@ export default function Information() {
             </div>
 
             <button
-              className="btn btn-primary btn-lg mt-2"
+              className="btn btn-primary btn-lg"
               onClick={handleBooking}
             >
               Foglalás
