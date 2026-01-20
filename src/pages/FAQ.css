@@ -31,11 +31,11 @@ body {
   color: #333;
   animation: slideDown 0.3s ease;
 }
-/* ===== ECO UNIQUE SECTION ===== */
+
 
 .eco-tips-unique {
   background: #ffffff;
-  border-left: 6px solid #7dbf7d;
+  border-left: 6px solid  #a87c5c;
   border-radius: 12px;
   padding: 30px 35px;
 }
