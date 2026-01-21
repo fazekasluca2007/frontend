@@ -4,13 +4,6 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
-// Szállások adatai
-const szallasok = `Olaszország;Róma;Hotel Artemide;4;Központi elhelyezkedés, modern szobák, tetőtéri étterem csodás panorámával.;41.90084354818584, 12.49365002410819
-Olaszország;Toszkána;Agriturismo La Poggiolina;3;Vidéki hangulat szőlőültetvények között, családias vendéglátással.;43.99701257911789, 11.442121308635462`;
-
-const okoszallasok = `Olaszország;Milánó;E.c.ho. Hotel;4;Fenntartható szálloda energiatakarékos szobákkal, organikus étteremmel.;45.484808508540624, 9.207629347243794
-Olaszország;Szicília;Rifugio Lanzagallo;3;Vidéki menedékház organikus reggelivel, bio kozmetikumokkal.;36.77512650495378, 14.86641430199616`;
-
 export default function Home() {
   const isUserLoggedIn = () => localStorage.getItem('user') !== null;
 
@@ -29,6 +22,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const map = L.map('map').setView([47.5, 19.04], 5);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
     const defaultIcon = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
@@ -43,31 +43,37 @@ export default function Home() {
       iconAnchor: [12, 41]
     });
 
-    const map = L.map('map').setView([47.5, 19.04], 5);
+    const addMarkersFromApi = async (url, icon) => {
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
+        data.forEach(szallas => {
+          const lat = Number(szallas.latitude);
+          const lng = Number(szallas.longitude);
+          if (!lat || !lng) return;
 
-    const addMarkers = (data, icon) => {
-      data.split('\n').forEach(line => {
-        if (!line.trim()) return;
-        const [orszag, varos, hotel, csillagok, leiras, coord] = line.split(';');
-        const [lat, lng] = coord.split(',').map(Number);
-
-        L.marker([lat, lng], { icon }).addTo(map)
-          .bindPopup(`<b>${hotel} (${csillagok}★)</b><br>${varos}, ${orszag}<br><i>${leiras}</i>`);
-      });
+          L.marker([lat, lng], { icon })
+            .addTo(map)
+            .bindPopup(`
+              <div style="min-width:220px">
+                <h6>${szallas.hotelName}</h6>
+                <strong>${szallas.stars} ★</strong><br/>
+                ${szallas.city}, ${szallas.country}
+                <hr/>
+                <p style="font-size:13px">${szallas.description}</p>
+              </div>
+            `);
+        });
+      } catch (error) {
+        console.error('Hiba a szállások betöltésekor:', error);
+      }
     };
 
-    addMarkers(szallasok, defaultIcon);
-    addMarkers(okoszallasok, greenIcon);
+    addMarkersFromApi('https://localhost:7267/api/TripsMap/Sima', defaultIcon);
+    addMarkersFromApi('https://localhost:7267/api/TripsMap/Eco', greenIcon);
 
-    
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
+    setTimeout(() => map.invalidateSize(), 200);
 
     return () => map.remove();
   }, []);
@@ -117,7 +123,6 @@ export default function Home() {
         </div>
       </div>
 
-      
       <section className="values-section py-5 text-center">
         <div className="container">
           <h2 className="mb-5 text-gradient">Értékeink</h2>
@@ -156,7 +161,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
