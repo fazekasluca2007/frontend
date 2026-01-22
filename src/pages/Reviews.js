@@ -13,31 +13,40 @@ export default function Reviews() {
     const [loadError, setLoadError] = useState(false);
 
     const perPage = 6;
-    const API_URL = "https://localhost:7267/api/Reviews";
 
-   
+
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const userData = JSON.parse(localStorage.getItem("user"));
     const loggedUserName = userData
         ? userData.fullName || userData.username
         : null;
 
-    
-    const fetchReviews = async () => {
-        try {
-            setLoadError(false);
-            const res = await fetch(API_URL);
-            if (!res.ok) throw new Error("Hiba a vélemények lekérésekor");
-            const data = await res.json();
-            setVelemenyek(data);
-        } catch (err) {
-            console.error(err);
-            setLoadError(true);
-        }
-    };
 
     useEffect(() => {
-        fetchReviews();
+        fetch("https://localhost:7267/api/Reviews")
+            .then((res) => res.json())
+            .then((data) => {
+                const apiVelemenyek = data.map((r) => ({
+                    id: r.id,
+                    name: r.name,
+                    review: r.review,
+                    stars: r.stars,
+                }));
+
+                const mentett =
+                    JSON.parse(localStorage.getItem("userReviews")) || [];
+
+                setVelemenyek([...apiVelemenyek, ...mentett]);
+                setLoadError(false);
+            })
+            .catch(() => {
+                const mentett =
+                    JSON.parse(localStorage.getItem("userReviews")) || [];
+
+                setVelemenyek(mentett);
+                setLoadError(true);
+            });
+
         document.title = "EcoTrip – Vélemények";
     }, []);
 
@@ -49,7 +58,7 @@ export default function Reviews() {
 
     const csillagok = (db) => "⭐".repeat(db);
 
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -72,7 +81,9 @@ export default function Reviews() {
 
         try {
             const response = await fetch(
-                editId ? `${API_URL}/${editId}` : API_URL,
+                editId
+                    ? `https://localhost:7267/api/Reviews/${editId}`
+                    : "https://localhost:7267/api/Reviews",
                 {
                     method: editId ? "PUT" : "POST",
                     headers: {
@@ -83,8 +94,6 @@ export default function Reviews() {
             );
 
             if (!response.ok) throw new Error("Mentési hiba");
-
-            await fetchReviews();
 
             setText("");
             setRating("");
@@ -103,7 +112,7 @@ export default function Reviews() {
         }
     };
 
-   
+
     const startEdit = (v) => {
         if (v.name !== loggedUserName) return;
 
