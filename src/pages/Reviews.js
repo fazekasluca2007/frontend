@@ -9,23 +9,27 @@ export default function Reviews() {
     const [page, setPage] = useState(1);
     const [text, setText] = useState("");
     const [rating, setRating] = useState("");
+    const [editId, setEditId] = useState(null);
     const [loadError, setLoadError] = useState(false);
 
     const perPage = 6;
     const API_URL = "https://localhost:7267/api/Reviews";
 
+   
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const loggedUserName = userData
+        ? userData.fullName || userData.username
+        : null;
+
+    
     const fetchReviews = async () => {
         try {
             setLoadError(false);
             const res = await fetch(API_URL);
             if (!res.ok) throw new Error("Hiba a vélemények lekérésekor");
             const data = await res.json();
-
-            const apiVelemenyek = data.map(
-                (r) => `${r.name};${r.review};${r.stars}`
-            );
-
-            setVelemenyek(apiVelemenyek);
+            setVelemenyek(data);
         } catch (err) {
             console.error(err);
             setLoadError(true);
@@ -34,9 +38,6 @@ export default function Reviews() {
 
     useEffect(() => {
         fetchReviews();
-    }, []);
-
-    useEffect(() => {
         document.title = "EcoTrip – Vélemények";
     }, []);
 
@@ -46,31 +47,40 @@ export default function Reviews() {
         page * perPage
     );
 
-    const loggedIn = localStorage.getItem("loggedIn") === "true";
-
     const csillagok = (db) => "⭐".repeat(db);
 
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const userData = JSON.parse(localStorage.getItem("user"));
-        const userName = userData.fullName || userData.username;
+        if (
+            editId &&
+            velemenyek.find((v) => v.id === editId)?.name !== loggedUserName
+        ) {
+            toast.error("Ezt a véleményt nem módosíthatod!", {
+                theme: "colored",
+            });
+            return;
+        }
 
-        const ujVelemeny = {
-            id: 0,
-            name: userName,
+        const velemenyObj = {
+            id: editId ?? 0,
+            name: loggedUserName,
             review: text,
             stars: Number(rating),
         };
 
         try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(ujVelemeny),
-            });
+            const response = await fetch(
+                editId ? `${API_URL}/${editId}` : API_URL,
+                {
+                    method: editId ? "PUT" : "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(velemenyObj),
+                }
+            );
 
             if (!response.ok) throw new Error("Mentési hiba");
 
@@ -78,24 +88,29 @@ export default function Reviews() {
 
             setText("");
             setRating("");
+            setEditId(null);
             setPage(1);
 
-            toast.success("A véleménye sikeresen rögzítve lett.", {
-                position: "top-right",
-                autoClose: 3000,
-                theme: "colored",
-            });
+            toast.success(
+                editId
+                    ? "A vélemény sikeresen frissítve lett."
+                    : "A vélemény sikeresen rögzítve lett.",
+                { theme: "colored" }
+            );
         } catch (err) {
             console.error(err);
-            toast.error(
-                "A vélemény elküldése sikertelen. Kérjük, próbálja újra később.",
-                {
-                    position: "top-right",
-                    autoClose: 3000,
-                    theme: "colored",
-                }
-            );
+            toast.error("A művelet sikertelen.", { theme: "colored" });
         }
+    };
+
+   
+    const startEdit = (v) => {
+        if (v.name !== loggedUserName) return;
+
+        setEditId(v.id);
+        setText(v.review);
+        setRating(v.stars.toString());
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     };
 
     return (
@@ -104,7 +119,7 @@ export default function Reviews() {
                 <div className="container">
                     {loadError && (
                         <p className="text-center my-4">
-                            Hiba az adatok lekérése során. Kérlek, próbáld újra később.
+                            Hiba az adatok lekérése során.
                         </p>
                     )}
 
@@ -113,19 +128,23 @@ export default function Reviews() {
                     </h2>
 
                     <div className="reviews-grid">
-                        {aktualisOldal.map((v, i) => {
-                            const [nev, szoveg, csill] = v.split(";");
-
-                            return (
-                                <div key={i} className="review-card">
-                                    <div className="review-stars">
-                                        {csillagok(Number(csill))}
-                                    </div>
-                                    <p className="review-text">"{szoveg}"</p>
-                                    <h6 className="review-author">{nev}</h6>
+                        {aktualisOldal.map((v) => (
+                            <div key={v.id} className="review-card">
+                                <div className="review-stars">
+                                    {csillagok(v.stars)}
                                 </div>
-                            );
-                        })}
+                                <p className="review-text">"{v.review}"</p>
+                                <h6 className="review-author">{v.name}</h6>
+
+                                {loggedIn && v.name === loggedUserName && (
+                                    <i
+                                        className="bi bi-pencil edit-icon"
+                                        title="Szerkesztés"
+                                        onClick={() => startEdit(v)}
+                                    ></i>
+                                )}
+                            </div>
+                        ))}
                     </div>
 
                     <div className="pagination-container">
@@ -158,7 +177,9 @@ export default function Reviews() {
                 <section style={{ padding: "50px 0" }}>
                     <div className="container">
                         <h3 className="text-center mb-4">
-                            Oszd meg velünk az élményed
+                            {editId
+                                ? "Vélemény szerkesztése"
+                                : "Oszd meg velünk az élményed"}
                         </h3>
 
                         <form
@@ -188,25 +209,16 @@ export default function Reviews() {
                             </select>
 
                             <button className="btn btn-success w-100">
-                                Vélemény beküldése
+                                {editId
+                                    ? "Módosítás mentése"
+                                    : "Vélemény beküldése"}
                             </button>
                         </form>
                     </div>
                 </section>
             )}
 
-            <ToastContainer
-                position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
+            <ToastContainer theme="colored" />
         </>
     );
 }
