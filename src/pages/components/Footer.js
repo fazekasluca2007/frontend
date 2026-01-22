@@ -89,7 +89,7 @@ export default function Footer() {
         </div>
 
         <div className="text-center mt-3">
-          <small>&copy; 2025 EcoTrip - Minden jog fenntartva</small>
+          <small>&copy; 2026 EcoTrip - Minden jog fenntartva</small>
         </div>
       </div>
     </footer>
