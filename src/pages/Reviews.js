@@ -8,8 +8,7 @@ export default function Reviews() {
     const [rating, setRating] = useState("");
 
     const perPage = 6;
-
-
+    
     useEffect(() => {
         fetch("https://localhost:7267/api/Reviews")
             .then((res) => res.json())
@@ -17,17 +16,10 @@ export default function Reviews() {
                 const apiVelemenyek = data.map(
                     (r) => `${r.name};${r.review};${r.stars}`
                 );
-
-                const mentett =
-                    JSON.parse(localStorage.getItem("userReviews")) || [];
-
-                setVelemenyek([apiVelemenyek, mentett]);
+                setVelemenyek(apiVelemenyek);
             })
-            .catch(() => {
-                const mentett =
-                    JSON.parse(localStorage.getItem("userReviews")) || [];
-
-                setVelemenyek(mentett);
+            .catch((err) => {
+                console.error("Hiba a vélemények betöltésekor:", err);
             });
     }, []);
 
@@ -45,27 +37,42 @@ export default function Reviews() {
 
     const csillagok = (db) => "⭐".repeat(db);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const userData = JSON.parse(localStorage.getItem("user") || "null");
-        if (!loggedIn || !userData) {
-            alert("Csak bejelentkezett felhasználók írhatnak véleményt!");
-            return;
-        }
-
+        const userData = JSON.parse(localStorage.getItem("user"));
         const userName = userData.fullName || userData.username;
-        const uj = `${userName};${text};${rating}`;
 
-        setVelemenyek([uj, ...velemenyek]);
+        const ujVelemeny = {
+            id: 0,
+            name: userName,
+            review: text,
+            stars: Number(rating),
+        };
 
-        const mentett =
-            JSON.parse(localStorage.getItem("userReviews")) || [];
-        mentett.unshift(uj);
-        localStorage.setItem("userReviews", JSON.stringify(mentett));
+        try {
+            const response = await fetch("https://localhost:7267/api/Reviews", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(ujVelemeny),
+            });
 
-        setText("");
-        setRating("");
+            if (!response.ok) {
+                throw new Error("Hiba történt a mentés során");
+            }
+           
+            const uj = `${userName};${text};${rating}`;
+            setVelemenyek([uj, ...velemenyek]);
+
+            setText("");
+            setRating("");
+            setPage(1); 
+        } catch (error) {
+            console.error(error);
+            alert("A vélemény elküldése nem sikerült.");
+        }
     };
 
     return (
@@ -101,12 +108,12 @@ export default function Reviews() {
                         </button>
 
                         <span>
-                            Oldal {page}/{oldalakSzama}
+                            Oldal {page}/{oldalakSzama || 1}
                         </span>
 
                         <button
                             onClick={() => setPage(page + 1)}
-                            disabled={page === oldalakSzama}
+                            disabled={page === oldalakSzama || oldalakSzama === 0}
                         >
                             ▶
                         </button>
