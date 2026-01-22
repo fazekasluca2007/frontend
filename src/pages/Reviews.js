@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "./Reviews.css";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Reviews() {
     const [velemenyek, setVelemenyek] = useState([]);
     const [page, setPage] = useState(1);
     const [text, setText] = useState("");
     const [rating, setRating] = useState("");
+    const [loadError, setLoadError] = useState(false);
 
     const perPage = 6;
-    
+    const API_URL = "https://localhost:7267/api/Reviews";
+
+    const fetchReviews = async () => {
+        try {
+            setLoadError(false);
+            const res = await fetch(API_URL);
+            if (!res.ok) throw new Error("Hiba a vélemények lekérésekor");
+            const data = await res.json();
+
+            const apiVelemenyek = data.map(
+                (r) => `${r.name};${r.review};${r.stars}`
+            );
+
+            setVelemenyek(apiVelemenyek);
+        } catch (err) {
+            console.error(err);
+            setLoadError(true);
+        }
+    };
+
     useEffect(() => {
-        fetch("https://localhost:7267/api/Reviews")
-            .then((res) => res.json())
-            .then((data) => {
-                const apiVelemenyek = data.map(
-                    (r) => `${r.name};${r.review};${r.stars}`
-                );
-                setVelemenyek(apiVelemenyek);
-            })
-            .catch((err) => {
-                console.error("Hiba a vélemények betöltésekor:", err);
-            });
+        fetchReviews();
     }, []);
 
     useEffect(() => {
@@ -51,7 +64,7 @@ export default function Reviews() {
         };
 
         try {
-            const response = await fetch("https://localhost:7267/api/Reviews", {
+            const response = await fetch(API_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -59,19 +72,29 @@ export default function Reviews() {
                 body: JSON.stringify(ujVelemeny),
             });
 
-            if (!response.ok) {
-                throw new Error("Hiba történt a mentés során");
-            }
-           
-            const uj = `${userName};${text};${rating}`;
-            setVelemenyek([uj, ...velemenyek]);
+            if (!response.ok) throw new Error("Mentési hiba");
+
+            await fetchReviews();
 
             setText("");
             setRating("");
-            setPage(1); 
-        } catch (error) {
-            console.error(error);
-            alert("A vélemény elküldése nem sikerült.");
+            setPage(1);
+
+            toast.success("A véleménye sikeresen rögzítve lett.", {
+                position: "top-right",
+                autoClose: 3000,
+                theme: "colored",
+            });
+        } catch (err) {
+            console.error(err);
+            toast.error(
+                "A vélemény elküldése sikertelen. Kérjük, próbálja újra később.",
+                {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "colored",
+                }
+            );
         }
     };
 
@@ -79,6 +102,12 @@ export default function Reviews() {
         <>
             <section className="reviews-section">
                 <div className="container">
+                    {loadError && (
+                        <p className="text-center my-4">
+                            Hiba az adatok lekérése során. Kérlek, próbáld újra később.
+                        </p>
+                    )}
+
                     <h2 className="text-center mb-5">
                         Élmények és vélemények utazóinktól
                     </h2>
@@ -103,8 +132,9 @@ export default function Reviews() {
                         <button
                             onClick={() => setPage(page - 1)}
                             disabled={page === 1}
+                            className="pagination-btn"
                         >
-                            ◀
+                            <FaChevronLeft />
                         </button>
 
                         <span>
@@ -113,9 +143,12 @@ export default function Reviews() {
 
                         <button
                             onClick={() => setPage(page + 1)}
-                            disabled={page === oldalakSzama || oldalakSzama === 0}
+                            disabled={
+                                page === oldalakSzama || oldalakSzama === 0
+                            }
+                            className="pagination-btn"
                         >
-                            ▶
+                            <FaChevronRight />
                         </button>
                     </div>
                 </div>
@@ -161,6 +194,19 @@ export default function Reviews() {
                     </div>
                 </section>
             )}
+
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
         </>
     );
 }

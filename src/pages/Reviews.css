@@ -26,7 +26,6 @@
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }
 
-
 .review-stars {
     color: #f5b301;
     font-size: 18px;
@@ -44,26 +43,32 @@
     color: #1a3c57;
 }
 
-
 .pagination-container {
     text-align: center;
     margin-top: 30px;
 }
 
-.pagination-container button {
-    border: 1px solid #1a3c57;
-    border-radius: 5px;
-    padding: 6px 12px;
+
+.pagination-btn {
+    border: none;          
+    background-color: #ffffff; 
+    padding: 8px 12px;
     margin: 0 10px;
     cursor: pointer;
-    background-color: white;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    transition: background 0.2s, transform 0.2s;
 }
 
-.pagination-container button:disabled {
+.pagination-btn:hover:not(:disabled) {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
-
 
 @media (max-width: 992px) {
     .review-card {
