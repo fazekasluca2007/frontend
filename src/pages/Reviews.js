@@ -56,7 +56,6 @@ export default function Reviews() {
 
     const csillagok = (db) => "⭐".repeat(db);
 
-    // PUT / POST a véleményhez
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -119,7 +118,6 @@ export default function Reviews() {
         window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     };
 
-    // ✅ Új: DELETE fetch a JS részben
     const deleteReview = async (id) => {
         const toDelete = velemenyek.find((v) => v.id === id);
         if (!toDelete || toDelete.name !== loggedUserName) {
@@ -134,7 +132,6 @@ export default function Reviews() {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    // Ha auth kell: "Authorization": `Bearer ${token}`
                 },
             });
 
