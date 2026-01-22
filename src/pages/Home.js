@@ -1,25 +1,62 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
 export default function Home() {
+  const carouselRef = useRef(null);
+  const carouselInstance = useRef(null);
+
   const isUserLoggedIn = () => localStorage.getItem('user') !== null;
+
 
   useEffect(() => {
     document.title = 'EcoTrip';
   }, []);
 
+
   useEffect(() => {
-    const el = document.getElementById('heroCarousel');
-    if (el && window.bootstrap) {
-      new window.bootstrap.Carousel(el, {
-        interval: 3000,
-        ride: 'carousel'
-      });
+    if (!window.bootstrap || !carouselRef.current) return;
+
+    if (carouselInstance.current) {
+      carouselInstance.current.dispose();
     }
+
+    carouselInstance.current = new window.bootstrap.Carousel(
+      carouselRef.current,
+      {
+        interval: 3000,
+        pause: false,
+        wrap: true
+      }
+    );
+
+    carouselInstance.current.cycle();
+
+    return () => {
+      carouselInstance.current?.dispose();
+      carouselInstance.current = null;
+    };
   }, []);
+
+
+  useEffect(() => {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    elements.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
 
   useEffect(() => {
     const map = L.map('map').setView([47.5, 19.04], 5);
@@ -46,7 +83,12 @@ export default function Home() {
     const addMarkersFromApi = async (url, icon) => {
       try {
         const response = await fetch(url);
-        const data = await response.json();
+        if (!response.ok) return;
+
+        const text = await response.text();
+        if (!text) return;
+
+        const data = JSON.parse(text);
 
         data.forEach(szallas => {
           const lat = Number(szallas.latitude);
@@ -65,8 +107,8 @@ export default function Home() {
               </div>
             `);
         });
-      } catch (error) {
-        console.error('Hiba a szállások betöltésekor:', error);
+      } catch (e) {
+        console.error('Marker hiba:', e.message);
       }
     };
 
@@ -81,9 +123,10 @@ export default function Home() {
   return (
     <div className="position-relative text-center">
 
-      <div id="heroCarousel" className="carousel slide">
+    
+      <div id="heroCarousel" className="carousel slide" ref={carouselRef}>
         <div className="carousel-inner">
-          {['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia']
+          {['gorog','spanyol','ausztria','magyar','dubai','egyipt','olasz','francia']
             .map((img, i) => (
               <div key={img} className={`carousel-item ${i === 0 ? 'active' : ''}`}>
                 <img
@@ -123,13 +166,13 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="values-section py-5 text-center">
+      <section className="values-section py-5 text-center animate-on-scroll">
         <div className="container">
-          <h2 className="mb-5 text-gradient">Értékeink</h2>
+          <h2 className="mb-5">Értékeink</h2>
 
           <div className="row gy-4 justify-content-center">
             <div className="col-12 col-md-4 d-flex">
-              <div className="value-card w-100">
+              <div className="value-card w-100 animate-on-scroll">
                 <i className="fa-solid fa-leaf fa-2x mb-3"></i>
                 <h5>Fenntarthatóság</h5>
                 <p>
@@ -140,7 +183,7 @@ export default function Home() {
             </div>
 
             <div className="col-12 col-md-4 d-flex">
-              <div className="value-card w-100">
+              <div className="value-card w-100 animate-on-scroll">
                 <i className="fa-solid fa-globe fa-2x mb-3"></i>
                 <h5>Felfedezés</h5>
                 <p>
@@ -151,7 +194,7 @@ export default function Home() {
             </div>
 
             <div className="col-12 col-md-4 d-flex">
-              <div className="value-card w-100">
+              <div className="value-card w-100 animate-on-scroll">
                 <i className="fa-solid fa-heart fa-2x mb-3"></i>
                 <h5>Közösség</h5>
                 <p>
@@ -164,7 +207,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container my-5 text-center">
+      <section className="container my-5 text-center animate-on-scroll">
         <h3 className="mb-3">Hol járhatsz velünk?</h3>
         <div id="map"></div>
       </section>
