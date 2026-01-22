@@ -90,7 +90,10 @@ export default function Information() {
             {data.city} – {data.hotel_name}
           </h2>
 
-          <p><strong>{"★".repeat(data.stars)}</strong></p>
+          <p className="stars">
+            {"★".repeat(data.stars)}
+          </p>
+
           {data.long_description && <p>{data.long_description}</p>}
 
           <h5 className="mt-4">Foglalás</h5>
