@@ -2,14 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./Reviews.css";
 
 export default function Reviews() {
-    const velemenyekAlap = [
-        "Anna;Csodás élmény volt! A szervezés profi, a programok változatosak.;5",
-        "Balázs;Nagyon tetszett az ÖkoÚt koncepció! Jó érzés volt felelősen utazni.;4",
-        "Kata;Kiváló szervezés, kedves idegenvezetők és csodás helyszínek.;5",
-        "Dani;Minden flottul ment, de az időjárás közbeszólt. Ettől függetlenül szuper volt.;4",
-        "Réka;Első utam az EcoTrippel, és biztosan nem az utolsó!;5",
-    ];
-
     const [velemenyek, setVelemenyek] = useState([]);
     const [page, setPage] = useState(1);
     const [text, setText] = useState("");
@@ -17,9 +9,26 @@ export default function Reviews() {
 
     const perPage = 6;
 
+
     useEffect(() => {
-        const mentett = JSON.parse(localStorage.getItem("userReviews")) || [];
-        setVelemenyek([...velemenyekAlap, ...mentett]);
+        fetch("https://localhost:7267/api/Reviews")
+            .then((res) => res.json())
+            .then((data) => {
+                const apiVelemenyek = data.map(
+                    (r) => `${r.name};${r.review};${r.stars}`
+                );
+
+                const mentett =
+                    JSON.parse(localStorage.getItem("userReviews")) || [];
+
+                setVelemenyek([apiVelemenyek, mentett]);
+            })
+            .catch(() => {
+                const mentett =
+                    JSON.parse(localStorage.getItem("userReviews")) || [];
+
+                setVelemenyek(mentett);
+            });
     }, []);
 
     useEffect(() => {
@@ -27,9 +36,13 @@ export default function Reviews() {
     }, []);
 
     const oldalakSzama = Math.ceil(velemenyek.length / perPage);
-    const aktualisOldal = velemenyek.slice((page - 1) * perPage, page * perPage);
+    const aktualisOldal = velemenyek.slice(
+        (page - 1) * perPage,
+        page * perPage
+    );
 
     const loggedIn = localStorage.getItem("loggedIn") === "true";
+
     const csillagok = (db) => "⭐".repeat(db);
 
     const handleSubmit = (e) => {
@@ -46,7 +59,8 @@ export default function Reviews() {
 
         setVelemenyek([uj, ...velemenyek]);
 
-        const mentett = JSON.parse(localStorage.getItem("userReviews")) || [];
+        const mentett =
+            JSON.parse(localStorage.getItem("userReviews")) || [];
         mentett.unshift(uj);
         localStorage.setItem("userReviews", JSON.stringify(mentett));
 
@@ -58,7 +72,9 @@ export default function Reviews() {
         <>
             <section className="reviews-section">
                 <div className="container">
-                    <h2 className="text-center mb-5">Élmények és vélemények utazóinktól</h2>
+                    <h2 className="text-center mb-5">
+                        Élmények és vélemények utazóinktól
+                    </h2>
 
                     <div className="reviews-grid">
                         {aktualisOldal.map((v, i) => {
@@ -69,9 +85,7 @@ export default function Reviews() {
                                     <div className="review-stars">
                                         {csillagok(Number(csill))}
                                     </div>
-
                                     <p className="review-text">"{szoveg}"</p>
-
                                     <h6 className="review-author">{nev}</h6>
                                 </div>
                             );
@@ -79,12 +93,17 @@ export default function Reviews() {
                     </div>
 
                     <div className="pagination-container">
-                        <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+                        <button
+                            onClick={() => setPage(page - 1)}
+                            disabled={page === 1}
+                        >
                             ◀
                         </button>
+
                         <span>
                             Oldal {page}/{oldalakSzama}
                         </span>
+
                         <button
                             onClick={() => setPage(page + 1)}
                             disabled={page === oldalakSzama}
@@ -98,8 +117,9 @@ export default function Reviews() {
             {loggedIn && (
                 <section style={{ padding: "50px 0" }}>
                     <div className="container">
-                        <h3 className="text-center mb-4">Oszd meg velünk az élményed</h3>
-
+                        <h3 className="text-center mb-4">
+                            Oszd meg velünk az élményed
+                        </h3>
 
                         <form
                             onSubmit={handleSubmit}
@@ -125,7 +145,6 @@ export default function Reviews() {
                                 <option value="3">3 – Rendben volt</option>
                                 <option value="4">4 – Nagyon tetszett</option>
                                 <option value="5">5 – Fantasztikus élmény</option>
-
                             </select>
 
                             <button className="btn btn-success w-100">
