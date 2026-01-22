@@ -14,13 +14,11 @@ export default function Reviews() {
 
     const perPage = 6;
 
-
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const userData = JSON.parse(localStorage.getItem("user"));
     const loggedUserName = userData
         ? userData.fullName || userData.username
         : null;
-
 
     useEffect(() => {
         fetch("https://localhost:7267/api/Reviews")
@@ -58,7 +56,7 @@ export default function Reviews() {
 
     const csillagok = (db) => "⭐".repeat(db);
 
-
+    // PUT / POST a véleményhez
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -112,7 +110,6 @@ export default function Reviews() {
         }
     };
 
-
     const startEdit = (v) => {
         if (v.name !== loggedUserName) return;
 
@@ -120,6 +117,39 @@ export default function Reviews() {
         setText(v.review);
         setRating(v.stars.toString());
         window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    };
+
+    // ✅ Új: DELETE fetch a JS részben
+    const deleteReview = async (id) => {
+        const toDelete = velemenyek.find((v) => v.id === id);
+        if (!toDelete || toDelete.name !== loggedUserName) {
+            toast.error("Ezt a véleményt nem törölheted!", { theme: "colored" });
+            return;
+        }
+
+        if (!window.confirm("Biztosan törölni szeretnéd a véleményed?")) return;
+
+        try {
+            const response = await fetch(`https://localhost:7267/api/Reviews/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Ha auth kell: "Authorization": `Bearer ${token}`
+                },
+            });
+
+            if (response.ok) {
+                setVelemenyek(velemenyek.filter(v => v.id !== id));
+                toast.success("A vélemény sikeresen törölve lett.", { theme: "colored" });
+            } else {
+                const text = await response.text();
+                console.error("Törlés sikertelen:", text);
+                toast.error("A törlés sikertelen", { theme: "colored" });
+            }
+        } catch (err) {
+            console.error("Fetch hiba:", err);
+            toast.error("A törlés sikertelen.", { theme: "colored" });
+        }
     };
 
     return (
@@ -146,11 +176,20 @@ export default function Reviews() {
                                 <h6 className="review-author">{v.name}</h6>
 
                                 {loggedIn && v.name === loggedUserName && (
-                                    <i
-                                        className="bi bi-pencil edit-icon"
-                                        title="Szerkesztés"
-                                        onClick={() => startEdit(v)}
-                                    ></i>
+                                    <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                                        <i
+                                            className="bi bi-pencil edit-icon"
+                                            title="Szerkesztés"
+                                            onClick={() => startEdit(v)}
+                                            style={{ cursor: "pointer" }}
+                                        ></i>
+                                        <i
+                                            className="bi bi-trash delete-icon"
+                                            title="Törlés"
+                                            onClick={() => deleteReview(v.id)}
+                                            style={{ cursor: "pointer" }}
+                                        ></i>
+                                    </div>
                                 )}
                             </div>
                         ))}
@@ -171,9 +210,7 @@ export default function Reviews() {
 
                         <button
                             onClick={() => setPage(page + 1)}
-                            disabled={
-                                page === oldalakSzama || oldalakSzama === 0
-                            }
+                            disabled={page === oldalakSzama || oldalakSzama === 0}
                             className="pagination-btn"
                         >
                             <FaChevronRight />
