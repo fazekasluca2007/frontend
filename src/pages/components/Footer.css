@@ -27,3 +27,6 @@
 .footer-custom a:hover {
   color: #ffffff;
 }
+.sites li:hover{
+  transform: scale(1.1);
+}

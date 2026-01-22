@@ -20,7 +20,7 @@ export default function Footer() {
 
           {/* Linkek */}
           <div className="col-md-4 mb-3 text-center hover-szin">
-            <ul className="list-unstyled">
+            <ul className="list-unstyled sites">
               <li>
                 <NavLink 
                   to="/utjaink" 
@@ -72,7 +72,7 @@ export default function Footer() {
           {/* Social media */}
           <div className="col-md-4 mb-3 hover-szin text-center">
             <h5>Kövess minket!</h5>
-            <ul className="list-unstyled d-flex flex-column align-items-center gap-2 mt-2">
+            <ul className="list-unstyled d-flex flex-column align-items-center gap-2 mt-2 sites">
               <li>
                 <a href="https://facebook.com" className="text-white fs-4" target="_blank" rel="noreferrer">
                   <i className="fab fa-facebook"></i>
