@@ -24,26 +24,10 @@ export default function Reviews() {
         fetch("https://localhost:7267/api/Reviews")
             .then((res) => res.json())
             .then((data) => {
-                const apiVelemenyek = data.map((r) => ({
-                    id: r.id,
-                    name: r.name,
-                    review: r.review,
-                    stars: r.stars,
-                }));
-
-                const mentett =
-                    JSON.parse(localStorage.getItem("userReviews")) || [];
-
-                setVelemenyek([...apiVelemenyek, ...mentett]);
+                setVelemenyek(data);
                 setLoadError(false);
             })
-            .catch(() => {
-                const mentett =
-                    JSON.parse(localStorage.getItem("userReviews")) || [];
-
-                setVelemenyek(mentett);
-                setLoadError(true);
-            });
+            .catch(() => setLoadError(true));
 
         document.title = "EcoTrip – Vélemények";
     }, []);
@@ -54,20 +38,13 @@ export default function Reviews() {
         page * perPage
     );
 
-    const csillagok = (db) => "⭐".repeat(db);
+    const renderStars = (db) =>
+        Array.from({ length: db }).map((_, i) => (
+            <i key={i} className="bi bi-star-fill review-star"></i>
+        ));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (
-            editId &&
-            velemenyek.find((v) => v.id === editId)?.name !== loggedUserName
-        ) {
-            toast.error("Ezt a véleményt nem módosíthatod!", {
-                theme: "colored",
-            });
-            return;
-        }
 
         const velemenyObj = {
             id: editId ?? 0,
@@ -83,69 +60,21 @@ export default function Reviews() {
                     : "https://localhost:7267/api/Reviews",
                 {
                     method: editId ? "PUT" : "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(velemenyObj),
                 }
             );
 
-            if (!response.ok) throw new Error("Mentési hiba");
+            if (!response.ok) throw new Error();
 
             setText("");
             setRating("");
             setEditId(null);
             setPage(1);
 
-            toast.success(
-                editId
-                    ? "A vélemény sikeresen frissítve lett."
-                    : "A vélemény sikeresen rögzítve lett.",
-                { theme: "colored" }
-            );
-        } catch (err) {
-            console.error(err);
-            toast.error("A művelet sikertelen.", { theme: "colored" });
-        }
-    };
-
-    const startEdit = (v) => {
-        if (v.name !== loggedUserName) return;
-
-        setEditId(v.id);
-        setText(v.review);
-        setRating(v.stars.toString());
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    };
-
-    const deleteReview = async (id) => {
-        const toDelete = velemenyek.find((v) => v.id === id);
-        if (!toDelete || toDelete.name !== loggedUserName) {
-            toast.error("Ezt a véleményt nem törölheted!", { theme: "colored" });
-            return;
-        }
-
-        if (!window.confirm("Biztosan törölni szeretnéd a véleményed?")) return;
-
-        try {
-            const response = await fetch(`https://localhost:7267/api/Reviews/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (response.ok) {
-                setVelemenyek(velemenyek.filter(v => v.id !== id));
-                toast.success("A vélemény sikeresen törölve lett.", { theme: "colored" });
-            } else {
-                const text = await response.text();
-                console.error("Törlés sikertelen:", text);
-                toast.error("A törlés sikertelen", { theme: "colored" });
-            }
-        } catch (err) {
-            console.error("Fetch hiba:", err);
-            toast.error("A törlés sikertelen.", { theme: "colored" });
+            toast.success("A vélemény mentve.", { theme: "colored" });
+        } catch {
+            toast.error("Hiba történt.", { theme: "colored" });
         }
     };
 
@@ -153,12 +82,6 @@ export default function Reviews() {
         <>
             <section className="reviews-section">
                 <div className="container">
-                    {loadError && (
-                        <p className="text-center my-4">
-                            Hiba az adatok lekérése során.
-                        </p>
-                    )}
-
                     <h2 className="text-center mb-5">
                         Élmények és vélemények utazóinktól
                     </h2>
@@ -167,27 +90,10 @@ export default function Reviews() {
                         {aktualisOldal.map((v) => (
                             <div key={v.id} className="review-card">
                                 <div className="review-stars">
-                                    {csillagok(v.stars)}
+                                    {renderStars(v.stars)}
                                 </div>
                                 <p className="review-text">"{v.review}"</p>
                                 <h6 className="review-author">{v.name}</h6>
-
-                                {loggedIn && v.name === loggedUserName && (
-                                    <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-                                        <i
-                                            className="bi bi-pencil edit-icon"
-                                            title="Szerkesztés"
-                                            onClick={() => startEdit(v)}
-                                            style={{ cursor: "pointer" }}
-                                        ></i>
-                                        <i
-                                            className="bi bi-trash delete-icon"
-                                            title="Törlés"
-                                            onClick={() => deleteReview(v.id)}
-                                            style={{ cursor: "pointer" }}
-                                        ></i>
-                                    </div>
-                                )}
                             </div>
                         ))}
                     </div>
@@ -207,7 +113,7 @@ export default function Reviews() {
 
                         <button
                             onClick={() => setPage(page + 1)}
-                            disabled={page === oldalakSzama || oldalakSzama === 0}
+                            disabled={page === oldalakSzama}
                             className="pagination-btn"
                         >
                             <FaChevronRight />
@@ -220,9 +126,7 @@ export default function Reviews() {
                 <section style={{ padding: "50px 0" }}>
                     <div className="container">
                         <h3 className="text-center mb-4">
-                            {editId
-                                ? "Vélemény szerkesztése"
-                                : "Oszd meg velünk az élményed"}
+                            Vélemény írása
                         </h3>
 
                         <form
@@ -237,6 +141,7 @@ export default function Reviews() {
                                 className="form-control mb-3"
                             />
 
+                       
                             <select
                                 required
                                 value={rating}
@@ -244,17 +149,16 @@ export default function Reviews() {
                                 className="form-control mb-3"
                             >
                                 <option value="">Válassz értékelést...</option>
-                                <option value="1">1 – Csalódás</option>
-                                <option value="2">2 – Lehetne jobb</option>
-                                <option value="3">3 – Rendben volt</option>
-                                <option value="4">4 – Nagyon tetszett</option>
-                                <option value="5">5 – Fantasztikus élmény</option>
+                                <option value="1">★ – Csalódás</option>
+                                <option value="2">★★ – Lehetne jobb</option>
+                                <option value="3">★★★ – Rendben volt</option>
+                                <option value="4">★★★★ – Nagyon tetszett</option>
+                                <option value="5">★★★★★ – Fantasztikus élmény</option>
                             </select>
 
+
                             <button className="btn btn-success w-100">
-                                {editId
-                                    ? "Módosítás mentése"
-                                    : "Vélemény beküldése"}
+                                Vélemény beküldése
                             </button>
                         </form>
                     </div>
