@@ -4,81 +4,64 @@ body {
 }
 
 .rolunk-hero {
-  position: relative;
   height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
-#foldgomb {
-  background: none ;
-  box-shadow: none ;
-  border-radius: 0;
-  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.15));
-  transition: transform 0.2s ease;
+.hero-content {
+  width: 400px;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-#foldgomb:hover {
-  transform: scale(1.1);
+.hero-content h1 {
+  color: #1a3c57;
+  font-size: 2rem;
+}
+
+.hero-content p {
+  font-style: italic;
+  font-size: 1.2rem;
 }
 
 .text-block {
-  margin-bottom: 20px;
-  padding: 20px 16px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  font-size: 0.95rem;
+  margin-bottom: 15px;
+  padding: 18px;
   color: #fff;
-  text-align: left;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s;
 }
 
 .text-block:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-.text-block.blue {
+.blue {
   background: linear-gradient(135deg, darkcyan);
 }
 
-.text-block.green {
+.green {
   background: linear-gradient(135deg, #7dbf7d);
 }
 
-.text-block.brown {
+.brown {
   background: linear-gradient(135deg, #a87c5c);
 }
 
-.text-block p {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.5;
+#foldgomb {
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
+  transition: transform 0.2s;
 }
 
-
-.leaflet-popup-content {
-  font-family: "Arial", sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.leaflet-popup-content b {
-  color: #2c3e50;
-}
-
-.leaflet-popup-content i {
-  color: #555;
-}
-
-.eco-popup .leaflet-popup-content-wrapper {
-  background: #e8fce8;
-  border: 2px solid #3ba94d;
+#foldgomb:hover {
+  transform: scale(1.1);
 }
 
 
@@ -87,7 +70,7 @@ body {
   border-radius: 30px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
 }
 
 .team-card:hover {
@@ -95,34 +78,30 @@ body {
 }
 
 .team-card img {
-  width: 100%;
-  max-width: 155px;
+  width: 155px;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border: 3px solid  #2c3e50;
-  margin-bottom: 15px;
-  transition: transform 0.3s ease;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  border-radius: 50%;
+  margin-bottom: 10px;
 }
 
+
 .team-card p {
-  display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  text-align: center;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  font-size: 0.95rem;
   margin-top: 10px;
 }
 
 .team-card:hover p {
-  display: block;
   opacity: 1;
+  transform: translateY(0);
 }
 
 
 .adventure-img-hover {
-  transition: transform 0.2s ease;
+  transition: transform 0.2s;
 }
 
 .adventure-img-hover:hover {
@@ -131,7 +110,7 @@ body {
 
 
 @media (max-width: 768px) {
-  .rolunk-hero h1 {
-    font-size: 2rem;
+  .hero-content {
+    width: 280px;
   }
 }

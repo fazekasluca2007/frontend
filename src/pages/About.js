@@ -8,7 +8,7 @@ const About = () => {
 
   return (
     <div>
-      {/* Hero szekció */}
+
       <section
         className="rolunk-hero text-center"
         style={{
@@ -53,25 +53,24 @@ const About = () => {
         </div>
       </section>
 
-    
+
       <section className="container my-5">
         <div className="row align-items-center gy-4">
           <div className="col-md-6">
             <img
               src="img/rolunk kepek/adventure.jpg"
-              alt="földgömb"
+              alt="kaland"
               className="img-fluid rounded shadow-lg adventure-img-hover"
             />
           </div>
 
           <div className="col-md-6">
-            <h2 className="mb-3 text-gradient">Kik vagyunk?</h2>
+            <h2 className="text-gradient mb-3">Kik vagyunk?</h2>
             <p className="lead">
               Az <strong>EcoTrip</strong> egy magyar utazási iroda, amelynek
               szenvedélye a fenntartható turizmus. Küldetésünk, hogy
               megmutassuk: utazni lehet tudatosan is.
             </p>
-
             <p>
               Célunk, hogy minden utazás élmény legyen – nemcsak a résztvevők,
               hanem a bolygó számára is. Törekszünk arra, hogy programjaink
@@ -86,22 +85,12 @@ const About = () => {
 
       <section className="values-section py-5">
         <div className="container">
-          <div className="row justify-content-center align-items-center gy-4">
-
+          <div className="row align-items-center gy-4">
             <div className="col-md-6">
-              <div className="text-block blue">
-                <p>🌊 A kék a tiszta vizeket és az utazás szabadságát jelképezi.</p>
-              </div>
-
-              <div className="text-block green">
-                <p>🍃 A zöld az öko-szemlélet színe, a fenntartható kalandok jelképe.</p>
-              </div>
-
-              <div className="text-block brown">
-                <p>⛰️ A barna a föld erejét és stabilitását idézi.</p>
-              </div>
+              <div className="text-block blue">🌊 A kék a szabadságot jelképezi</div>
+              <div className="text-block green">🍃 A zöld a fenntarthatóság színe</div>
+              <div className="text-block brown">⛰️ A barna a stabilitást idézi</div>
             </div>
-
 
             <div className="col-md-3 text-center">
               <img
@@ -115,65 +104,41 @@ const About = () => {
         </div>
       </section>
 
-      {/* Csapat szekció */}
+
       <section className="container py-5">
         <h2 className="text-center mb-5 text-gradient">
           Ismerd meg a csapatunkat
         </h2>
 
         <div className="row gy-4 justify-content-center">
-          <div className="col-md-3 text-center">
-            <div className="team-card">
-              <img
-                src="img/rolunk kepek/luca.jpeg"
-                alt="Luca"
-                className="img-fluid rounded mb-3"
-              />
-              <h5>Fazekas Luca</h5>
-              <p>
-                Az EcoTrip csapat egyik lelkes tagja vagyok. Bárhová is utazom,
-                mindig figyelem, hogyan gondoskodnak az adott országban a
-                környezetről, és igyekszem ezt a szemléletet beépíteni az
-                utazási ajánlatainkba is. Célom, hogy minden utazás élmény
-                legyen, miközben a környezetre is figyelünk.
-              </p>
+          {[
+            {
+              name: "Fazekas Luca",
+              img: "img/rolunk kepek/luca.jpeg",
+              text:
+                "Az EcoTripnél hiszek abban, hogy az utazás akkor a legértékesebb, ha tisztelettel fordulunk a természet felé.",
+            },
+            {
+              name: "Poráczki Zsolt",
+              img: "img/rolunk kepek/zsolt.jpeg",
+              text:
+                "Hiszem, hogy az utazás nemcsak élmény, hanem lehetőség a tanulásra is, felelősséggel a környezet iránt.",
+            },
+            {
+              name: "Szabó Flóra",
+              img: "img/rolunk kepek/flora.jpeg",
+              text:
+                "Úgy gondolom, hogy az utazás akkor teljes, ha az élmények mellett a természet iránti felelősség is jelen van.",
+            },
+          ].map((member, index) => (
+            <div key={index} className="col-md-3 text-center">
+              <div className="team-card">
+                <img src={member.img} alt={member.name} />
+                <h5>{member.name}</h5>
+                <p>{member.text}</p>
+              </div>
             </div>
-          </div>
-
-          <div className="col-md-3 text-center">
-            <div className="team-card">
-              <img
-                src="img/rolunk kepek/zsolt.jpeg"
-                alt="Zsolt"
-                className="img-fluid rounded mb-3"
-              />
-              <h5>Poráczki Zsolt</h5>
-              <p>
-                Az utazás nem csupán kikapcsolódás, hanem egy tanulási folyamat
-                is számomra. Az EcoTripnél azon dolgozom, hogy az élmények
-                mellett a fenntarthatóság és a természet tisztelete is része
-                legyen minden útnak.
-              </p>
-            </div>
-          </div>
-
-          <div className="col-md-3 text-center">
-            <div className="team-card">
-              <img
-                src="img/rolunk kepek/flora.jpeg"
-                alt="Flóra"
-                className="img-fluid rounded mb-3"
-              />
-              <h5>Szabó Flóra</h5>
-              <p>
-                Az utazás számomra nemcsak kaland, hanem lehetőség is arra, hogy
-                tanuljak a világtól. Az EcoTripnél azon dolgozom, hogy minden
-                úti célunkban felfedezzük, hogyan lehet harmóniában élni a
-                természettel. Fontos számomra, hogy az élmények mellett a
-                környezet iránti tisztelet is helyet kapjon minden utazásban.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>
