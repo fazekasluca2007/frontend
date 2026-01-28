@@ -80,6 +80,11 @@ export default function Reviews() {
 
     return (
         <>
+        {loadError && (
+        <p className="error text-center my-4">
+          Hiba az adatok lekérése során. Kérjük, próbálja újra később.
+        </p>
+      )}
             <section className="reviews-section">
                 <div className="container">
                     <h2 className="text-center mb-5">

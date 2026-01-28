@@ -72,7 +72,7 @@ const EcoTrip = () => {
     <>
       {error && (
         <p className="error text-center my-4">
-          Hiba az adatok lekérése során. Kérlek, próbáld újra később.
+          Hiba az adatok lekérése során. Kérjük, próbálja újra később.
         </p>
       )}
 
