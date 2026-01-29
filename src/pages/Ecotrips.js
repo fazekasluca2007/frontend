@@ -58,7 +58,7 @@ const EcoTrip = () => {
     : [];
 
   const handleBooking = (hotel) => {
-    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const loggedIn = localStorage.getItem("user") !== null;
 
     if (!loggedIn) {
       alert("A foglaláshoz kérlek jelentkezz be.");
