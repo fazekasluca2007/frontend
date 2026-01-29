@@ -16,7 +16,7 @@ export default function Reviews() {
 
     const perPage = 6;
 
-    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const loggedIn = localStorage.getItem("user") !== null;
     const userData = JSON.parse(localStorage.getItem("user"));
     const loggedUserName = userData
         ? userData.fullName || userData.username
