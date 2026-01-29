@@ -68,7 +68,7 @@ export default function FAQ() {
       </div>
       <div className="container eco-tips-unique mb-5">
         <h3 className="eco-unique-title">
-          🌍 Utazz környezettudatosan – tippek, amikkel tehetsz a bolygóért
+          <i class="bi bi-globe-americas text-success"></i> Utazz környezettudatosan – tippek, amikkel tehetsz a bolygóért
 
         </h3>
 
@@ -80,7 +80,7 @@ export default function FAQ() {
 
         <div className="eco-unique-list">
           <div className="eco-unique-item">
-            <span>💧</span>
+            <span><i class="bi bi-droplet-half text-primary"></i></span>
             <p>
               <strong>Újratölthető kulacs</strong> – Mindig vigyél magaddal egy kulacsot, így elkerülheted az egyszer használatos műanyag palackokat. Útközben a csapvíz vagy a vízszűrő alkalmazása segít, hogy mindig legyen friss ivóvízed, miközben kevesebb hulladékot termelsz.
 
@@ -88,14 +88,14 @@ export default function FAQ() {
           </div>
 
           <div className="eco-unique-item">
-            <span>👜</span>
+            <span><i class="bi bi-bag text-warning"></i></span>
             <p>
               <strong>Vászon vagy textil táska</strong> – könnyű és újrahasználható, ideális a boltokhoz, piacokhoz, vagy akár a napi kirándulásokhoz. Egyszerre csökkenti a műanyag hulladékot, és stílusos kiegészítője lehet az utazásnak.
             </p>
           </div>
 
           <div className="eco-unique-item">
-            <span>🚲</span>
+            <span><i class="bi bi-bicycle text-danger"></i></span>
             <p>
               <strong>Tömegközlekedés</strong> – gyalog, biciklivel vagy
               tömegközlekedéssel nemcsak zöldebb, de élménydúsabb is az utazás.
@@ -103,7 +103,7 @@ export default function FAQ() {
           </div>
 
           <div className="eco-unique-item">
-            <span>🏨</span>
+            <span><i class="bi bi-buildings text-success"></i></span>
             <p>
               <strong>Környezettudatos szálláshelyek választása</strong> – Keresd a zöld tanúsítvánnyal rendelkező szállodákat vagy öko-lodge-okat. Ezeknél gyakran helyi, organikus ételeket szolgálnak fel, energiatakarékos megoldásokat alkalmaznak, és aktívan törekednek a hulladékcsökkentésre.
 
@@ -111,14 +111,14 @@ export default function FAQ() {
           </div>
 
           <div className="eco-unique-item">
-            <span>🛍️</span>
+            <span><i class="bi bi-fork-knife"></i></span>
             <p>
               <strong>Helyi termékek vásárlása</strong> – Válassz kézműves ajándékokat és helyi termékeket a turistacikkek helyett. Így támogathatod a helyi gazdaságot, csökkentheted a szállításból származó környezeti terhelést, és autentikus élményeket is hazavihetsz.
             </p>
           </div>
 
           <div className="eco-unique-item">
-            <span>🌱</span>
+            <span><i class="bi bi-leaf-fill text-success"></i></span>
             <p>
               <strong>Kis lépések, nagy hatás</strong> – Már a legapróbb változtatások, mint a kulacs, táska, vagy környezettudatos választások, jelentősen csökkenthetik az utazásod ökológiai lábnyomát. A tudatos döntések révén az utazás nemcsak élménnyé, hanem felelősségteljes élménnyé is válik.
             </p>

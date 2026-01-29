@@ -80,7 +80,7 @@ const Trip = () => {
           <div className="filter-field">
             <label>Ország</label>
             <div className="filter-input-wrapper">
-              <span className="filter-icon">🌍</span>
+              <span className="filter-icon"><i class="bi bi-globe-americas text-dark"></i></span>
               <select
                 value={selectedCountry}
                 onChange={(e) => {
@@ -101,7 +101,7 @@ const Trip = () => {
           <div className="filter-field">
             <label>Város</label>
             <div className="filter-input-wrapper">
-              <span className="filter-icon">🏙️</span>
+              <span className="filter-icon"><i class="bi bi-buildings text-dark"></i></span>
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}

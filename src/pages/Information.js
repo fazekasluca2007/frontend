@@ -58,6 +58,17 @@ export default function Information() {
   if (error) return <p>Hiba történt az adatok betöltésekor.</p>;
   if (!data) return <p>Adatok betöltése...</p>;
 
+  // Segédfüggvények a routes-hoz
+  const formatWord = (word) => word.charAt(0).toUpperCase() + word.slice(1);
+  const getDestinationFromRoute = (route) => {
+    const parts = route.split("_");
+    return formatWord(parts[parts.length - 1]);
+  };
+  const getRouteInfoFromRoute = (route) => {
+    const parts = route.split("_");
+    return parts.slice(0, -1).map(formatWord).join(" ");
+  };
+
   return (
     <div className="container py-5">
       <div className="row g-4">
@@ -97,6 +108,42 @@ export default function Information() {
           </p>
 
           {data.long_description && <p>{data.long_description}</p>}
+
+          {/* Úticélok / routes */}
+          {data.routes && (
+            <>
+              <h5 className="mt-4">Úticélok:</h5>
+
+              <div className="accordion" id="routesAccordion">
+                {(Array.isArray(data.routes) ? data.routes : data.routes.split(",")).map((route, index) => (
+                  <div className="accordion-item" key={index}>
+                    <h2 className="accordion-header">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#route-${index}`}
+                      >
+                        <i class="bi bi-geo-alt-fill text-danger"></i> {getDestinationFromRoute(route.trim())}
+                      </button>
+                    </h2>
+
+                    <div
+                      id={`route-${index}`}
+                      className="accordion-collapse collapse"
+                      data-bs-parent="#routesAccordion"
+                    >
+                      <div className="accordion-body">
+                        <p><strong><i class="bi bi-buildings text-success"></i> Hotel:</strong> {data.hotel_name}</p>
+                        <p><strong><i class="bi bi-signpost-2 text-warning"></i> Útvonal:</strong> {getRouteInfoFromRoute(route.trim())}</p>
+                        <p><strong><i class="bi bi-geo-alt-fill text-danger"></i> Végállomás:</strong> {getDestinationFromRoute(route.trim())}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
           <h5 className="mt-4">Foglalás</h5>
 
