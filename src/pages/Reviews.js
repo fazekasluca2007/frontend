@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Reviews() {
+    const URL = process.env.REACT_APP_BACKEND_URL;
+
     const [velemenyek, setVelemenyek] = useState([]);
     const [page, setPage] = useState(1);
     const [text, setText] = useState("");
@@ -21,7 +23,7 @@ export default function Reviews() {
         : null;
 
     useEffect(() => {
-        fetch("https://localhost:7267/api/Reviews")
+        fetch(URL + "Reviews")
             .then((res) => res.json())
             .then((data) => {
                 setVelemenyek(data);
@@ -56,8 +58,8 @@ export default function Reviews() {
         try {
             const response = await fetch(
                 editId
-                    ? `https://localhost:7267/api/Reviews/${editId}`
-                    : "https://localhost:7267/api/Reviews",
+                    ? URL + `Reviews/${editId}`
+                    : URL + "Reviews",
                 {
                     method: editId ? "PUT" : "POST",
                     headers: { "Content-Type": "application/json" },

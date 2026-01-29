@@ -4,6 +4,8 @@ import "./Trip.css";
 import Trip_card from "./components/Trip_card";
 
 const EcoTrip = () => {
+  const URL = process.env.REACT_APP_BACKEND_URL; 
+  
   const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -13,7 +15,7 @@ const EcoTrip = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("https://localhost:7267/api/EcoTrip/ecotripcards")
+    fetch(URL + "EcoTrip/ecotripcards")
       .then((response) => response.json())
       .then((json) => {
         setEcotrips(json.result);

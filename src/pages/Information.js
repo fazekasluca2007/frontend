@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./Information.css";
 
 export default function Information() {
+  const URL = process.env.REACT_APP_BACKEND_URL;
+
   const location = useLocation();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
@@ -19,12 +21,12 @@ export default function Information() {
 
   useEffect(() => {
     if (trip_id) {
-      fetch(`https://localhost:7267/api/Trips/detailed/${trip_id}`)
+      fetch(URL + `Trips/detailed/${trip_id}`)
         .then(res => res.json())
         .then(data => setData(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));
     } else if (ecotrip_id) {
-      fetch(`https://localhost:7267/api/EcoTrip/detailed/${ecotrip_id}`)
+      fetch(URL + `EcoTrip/detailed/${ecotrip_id}`)
         .then(res => res.json())
         .then(data => setData(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));

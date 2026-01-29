@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
 export default function Home() {
+  const URL = process.env.REACT_APP_BACKEND_URL;
+
   const carouselRef = useRef(null);
   const carouselInstance = useRef(null);
 
@@ -112,8 +114,8 @@ export default function Home() {
       }
     };
 
-    addMarkersFromApi('https://localhost:7267/api/TripsMap/Sima', defaultIcon);
-    addMarkersFromApi('https://localhost:7267/api/TripsMap/Eco', greenIcon);
+    addMarkersFromApi(URL + 'TripsMap/Sima', defaultIcon);
+    addMarkersFromApi(URL + 'TripsMap/Eco', greenIcon);
 
     setTimeout(() => map.invalidateSize(), 200);
 

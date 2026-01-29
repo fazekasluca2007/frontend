@@ -4,6 +4,7 @@ import "./Trip.css";
 import Trip_card from "./components/Trip_card";
 
 const Trip = () => {
+  const URL = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -13,7 +14,7 @@ const Trip = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("https://localhost:7267/api/Trips/tripcards")
+    fetch(URL + "Trips/tripcards")
       .then((response) => response.json())
       .then((json) => {
         setTrips(json.result);
