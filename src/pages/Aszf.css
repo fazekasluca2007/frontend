@@ -1,0 +1,45 @@
+.aszf-page {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  color: #2c3e50;
+}
+
+.aszf-page h1 {
+  color: #1a3c57;
+  font-weight: bold;
+}
+
+.aszf-section {
+  margin-bottom: 35px;
+}
+
+.aszf-section h3 {
+  color: darkcyan;
+  margin-bottom: 15px;
+}
+
+.aszf-section p,
+.aszf-section li {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.aszf-section ul {
+  padding-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .aszf-page {
+    padding: 25px;
+  }
+
+  .aszf-page h1 {
+    font-size: 1.4rem;
+  }
+
+  .aszf-section h3 {
+    font-size: 1.1rem;
+  }
+}
