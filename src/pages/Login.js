@@ -19,6 +19,8 @@ export default function Login({ onLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
+  const [notRobot, setNotRobot] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +61,11 @@ export default function Login({ onLogin }) {
       return;
     }
 
+    if (!notRobot) {
+      toast.error("Kérlek, jelöld be, hogy nem vagy robot!");
+      return;
+    }
+
     if (password !== password2) {
       toast.error("A két jelszó nem egyezik!");
       return;
@@ -81,6 +88,7 @@ export default function Login({ onLogin }) {
     setEmail("");
     setPassword("");
     setPassword2("");
+    setNotRobot(false); 
   };
 
   useEffect(() => {
@@ -189,6 +197,19 @@ export default function Login({ onLogin }) {
                   >
                     {showPassword2 ? <FaEyeSlash /> : <FaEye />}
                   </span>
+                </div>
+
+                <div className={`fake-recaptcha ${notRobot ? "checked" : ""}`} onClick={() => setNotRobot(!notRobot)}>
+                <div className="fake-checkbox">
+                  {notRobot && <span className="checkmark">✔</span>}
+                </div>
+
+                <span className="fake-text">Nem vagyok robot</span>
+
+                <div className="fake-logo">
+                <div className="recaptcha-icon"></div>
+                <small>reCAPTCHA</small>
+                </div>
                 </div>
 
                 <button className="btn w-100 auth-button">

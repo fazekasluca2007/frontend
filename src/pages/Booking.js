@@ -133,8 +133,8 @@ export default function Booking() {
             <h3 className="text-center mb-4">{hotel.city} – {hotel.hotel_name}</h3>
             <p><strong>Fő:</strong> {fo}</p>
             <p><strong>Éj:</strong> {napok}</p>
-            <p><strong>Fő / éj:</strong> {hotel.price} Ft</p>
-            <p className="fs-5"><strong>Teljes összeg:</strong> {totalPrice} Ft</p>
+            <p><strong>Fő / éj:</strong> {hotel.price.toLocaleString('hu-HU')} Ft</p>
+            <p className="fs-5"><strong>Teljes összeg:</strong> {totalPrice.toLocaleString('hu-HU')} Ft</p>
             <hr className="my-4" />
 
              <form onSubmit={handleSubmit}>
