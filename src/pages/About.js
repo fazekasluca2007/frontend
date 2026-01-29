@@ -4,6 +4,7 @@ import "./About.css";
 const About = () => {
   useEffect(() => {
     document.title = "EcoTrip – Rólunk";
+        window.scrollTo(0, 0);
   }, []);
 
   return (

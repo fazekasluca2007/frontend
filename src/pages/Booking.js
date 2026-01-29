@@ -61,6 +61,7 @@ export default function Booking() {
 
   useEffect(() => {
     document.title = "EcoTrip – Foglalás";
+        window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {

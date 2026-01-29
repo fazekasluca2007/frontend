@@ -40,6 +40,7 @@ export default function FAQ() {
 
   useEffect(() => {
     document.title = "EcoTrip – Gyakori kérdések";
+        window.scrollTo(0, 0);
   }, []);
 
   return (

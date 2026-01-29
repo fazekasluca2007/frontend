@@ -32,6 +32,7 @@ export default function Reviews() {
             .catch(() => setLoadError(true));
 
         document.title = "EcoTrip – Vélemények";
+            window.scrollTo(0, 0);
     }, []);
 
     const oldalakSzama = Math.ceil(velemenyek.length / perPage);

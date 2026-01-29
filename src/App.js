@@ -11,6 +11,7 @@ import FAQ from "./pages/FAQ";
 import Reviews from "./pages/Reviews";
 import Information from "./pages/Information";
 import Booking from './pages/Booking';
+import Aszf from './pages/Aszf';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -42,6 +43,11 @@ function App() {
         <Route path='/velemenyek' element={<Reviews />} />
         <Route path='/informaciok' element={<Information />} />
         <Route path='/foglalas' element={<Booking />} />
+        <Route path='/aszf' element={<Aszf />} />
+        
+          
+        
+
       </Routes>
 
       <Footer />

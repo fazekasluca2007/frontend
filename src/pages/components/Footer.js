@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css'; 
+import './Footer.css';
 import { NavLink } from 'react-router-dom';
 
 export default function Footer() {
@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="footer-custom text-white">
       <div className="container py-4">
         <div className="row">
-          
+
           {/* Kapcsolat */}
           <div className="col-md-4 mb-3">
             <h5>Kapcsolat</h5>
@@ -22,8 +22,8 @@ export default function Footer() {
           <div className="col-md-4 mb-3 text-center hover-szin">
             <ul className="list-unstyled sites">
               <li>
-                <NavLink 
-                  to="/utjaink" 
+                <NavLink
+                  to="/utjaink"
                   className="text-white text-decoration-none"
                   activeclassname="active"
                 >
@@ -31,8 +31,8 @@ export default function Footer() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/okoutjaink" 
+                <NavLink
+                  to="/okoutjaink"
                   className="text-white text-decoration-none"
                   activeclassname="active"
                 >
@@ -40,8 +40,8 @@ export default function Footer() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/rolunk" 
+                <NavLink
+                  to="/rolunk"
                   className="text-white text-decoration-none"
                   activeclassname="active"
                 >
@@ -49,8 +49,8 @@ export default function Footer() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/gyik" 
+                <NavLink
+                  to="/gyik"
                   className="text-white text-decoration-none"
                   activeclassname="active"
                 >
@@ -58,12 +58,21 @@ export default function Footer() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/velemenyek" 
+                <NavLink
+                  to="/velemenyek"
                   className="text-white text-decoration-none"
                   activeclassname="active"
                 >
                   Vélemények
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/aszf"
+                  className="text-white text-decoration-none"
+                  activeclassname="active"
+                >
+                  ÁSZF
                 </NavLink>
               </li>
             </ul>

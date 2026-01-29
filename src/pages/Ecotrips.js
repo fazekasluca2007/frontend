@@ -29,6 +29,7 @@ const EcoTrip = () => {
 
   useEffect(() => {
     document.title = "EcoTrip – Ökoútjaink";
+        window.scrollTo(0, 0);
   }, []);
 
   const moveSlide = (country, step) => {
