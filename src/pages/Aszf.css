@@ -43,3 +43,35 @@
     font-size: 1.1rem;
   }
 }
+
+
+.field {
+  text-align: left;
+  margin-bottom: 0.8rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  color: #1a3c57;
+}
+
+.bookings {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.bookings ul {
+  list-style: none;
+  padding: 0;
+}
+
+.bookings li {
+  background: #fff;
+  padding: 0.6rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+}
+
