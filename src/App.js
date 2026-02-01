@@ -11,6 +11,7 @@ import FAQ from "./pages/FAQ";
 import Reviews from "./pages/Reviews";
 import Information from "./pages/Information";
 import Booking from './pages/Booking';
+import UserPage from './pages/UserPage';
 import Aszf from './pages/Aszf';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/bejelentkezes' element={<Login onLogin={login} />} />
+        <Route path="/profile" element={<UserPage/>}/>
         <Route path='/utjaink' element={<Trip />} />
         <Route path='/okoutjaink' element={<Ecotrips />} />
         <Route path='/rolunk' element={<About />} />
