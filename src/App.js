@@ -46,10 +46,6 @@ function App() {
         <Route path='/informaciok' element={<Information />} />
         <Route path='/foglalas' element={<Booking />} />
         <Route path='/aszf' element={<Aszf />} />
-        
-          
-        
-
       </Routes>
 
       <Footer />

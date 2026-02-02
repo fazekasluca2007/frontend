@@ -4,7 +4,7 @@ import "./About.css";
 const About = () => {
   useEffect(() => {
     document.title = "EcoTrip – Rólunk";
-        window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -88,9 +88,10 @@ const About = () => {
         <div className="container">
           <div className="row align-items-center gy-4">
             <div className="col-md-6">
-              <div className="text-block blue">🌊 A kék a szabadságot jelképezi</div>
-              <div className="text-block green">🍃 A zöld a fenntarthatóság színe</div>
-              <div className="text-block brown">⛰️ A barna a stabilitást idézi</div>
+              <div className="text-block blue">🌊 A kék a víz színe, amely az élet forrását és a tisztaság érzetét hordozza.</div>
+              <div className="text-block green">🍃 A zöld a környezetet és a természet élő világát jelképezi.</div>
+              <div className="text-block brown">⛰️ A barna a föld színe, amely a szilárd alapokat és a természetességet idézi.</div>
+
             </div>
 
             <div className="col-md-3 text-center">
