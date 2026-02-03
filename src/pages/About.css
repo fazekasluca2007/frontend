@@ -1,13 +1,19 @@
 body {
   background-color: #f0f6fb;
   color: #2c3e50;
+  margin: 0;
+  padding: 0;
 }
 
+/* Hero rész */
 .rolunk-hero {
-  height: 60vh;
+  height: 100vh; /* teljes képernyő magasság */
   display: flex;
   align-items: center;
   justify-content: center;
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }
 
 .hero-content {
@@ -18,17 +24,24 @@ body {
   padding: 2rem;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero-content h1 {
   color: #1a3c57;
   font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .hero-content p {
   font-style: italic;
   font-size: 1.2rem;
+  color: #1a3c57;
 }
+
 
 .text-block {
   margin-bottom: 15px;
@@ -54,6 +67,7 @@ body {
 .brown {
   background: linear-gradient(135deg, #a87c5c);
 }
+
 
 #foldgomb {
   filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
@@ -84,7 +98,6 @@ body {
   border-radius: 50%;
   margin-bottom: 10px;
 }
-
 
 .team-card p {
   opacity: 0;
