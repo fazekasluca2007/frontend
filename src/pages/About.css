@@ -5,9 +5,9 @@ body {
   padding: 0;
 }
 
-/* Hero rész */
+
 .rolunk-hero {
-  height: 100vh; /* teljes képernyő magasság */
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,7 +68,6 @@ body {
   background: linear-gradient(135deg, #a87c5c);
 }
 
-
 #foldgomb {
   filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
   transition: transform 0.2s;
@@ -112,13 +111,24 @@ body {
   transform: translateY(0);
 }
 
-
 .adventure-img-hover {
   transition: transform 0.2s;
 }
 
 .adventure-img-hover:hover {
   transform: scale(1.06);
+}
+
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.animate-on-scroll.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 

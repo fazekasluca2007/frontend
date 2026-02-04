@@ -2,19 +2,40 @@ import React, { useEffect } from "react";
 import "./About.css";
 
 const About = () => {
+
   useEffect(() => {
     document.title = "EcoTrip – Rólunk";
     window.scrollTo(0, 0);
   }, []);
 
+
+  useEffect(() => {
+    const elements = document.querySelectorAll(".animate-on-scroll");
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div>
 
-      {/* Hero*/}
+
       <section
         className="rolunk-hero text-center"
         style={{
-          position: "relative",
           background: "url('img/index kepek/folyo.avif') center center/cover no-repeat",
         }}
       >
@@ -24,9 +45,9 @@ const About = () => {
         </div>
       </section>
 
-      {/* Rólunk*/}
+
       <section className="container my-5">
-        <div className="row align-items-center gy-4">
+        <div className="row align-items-center gy-4 animate-on-scroll">
           <div className="col-md-6">
             <img
               src="img/rolunk kepek/adventure.jpg"
@@ -38,30 +59,31 @@ const About = () => {
             <h2 className="text-gradient mb-3">Kik vagyunk?</h2>
             <p className="lead">
               Az <strong>EcoTrip</strong> egy magyar utazási iroda, amelynek
-              szenvedélye a fenntartható turizmus. Küldetésünk, hogy
-              megmutassuk: utazni lehet tudatosan is.
+              szenvedélye a fenntartható turizmus.
             </p>
             <p>
               Célunk, hogy minden utazás élmény legyen – nemcsak a résztvevők,
-              hanem a bolygó számára is. Törekszünk arra, hogy programjaink
-              során minél kevesebb környezeti terhelést okozzunk. Az EcoTripnél
-              minden út arról szól, hogy jól érezzük magunkat, miközben
-              vigyázunk arra a világra, amit felfedezünk.
+              hanem a bolygó számára is.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Értékek */}
       <section className="values-section py-5">
         <div className="container">
           <div className="row align-items-center gy-4">
             <div className="col-md-6">
-              <div className="text-block blue">🌊 A kék a víz színe, amely az élet forrását és a tisztaság érzetét hordozza.</div>
-              <div className="text-block green">🍃 A zöld a környezetet és a természet élő világát jelképezi.</div>
-              <div className="text-block brown">⛰️ A barna a föld színe, amely a szilárd alapokat és a természetességet idézi.</div>
+              <div className="text-block blue animate-on-scroll">
+                🌊 A kék a víz színe, az élet forrása.
+              </div>
+              <div className="text-block green animate-on-scroll">
+                🍃 A zöld a természet élő világát jelképezi.
+              </div>
+              <div className="text-block brown animate-on-scroll">
+                ⛰️ A barna a föld színe és a stabilitásé.
+              </div>
             </div>
-            <div className="col-md-3 text-center">
+            <div className="col-md-3 text-center animate-on-scroll">
               <img
                 src="img/foldgomb.png"
                 alt="EcoTrip"
@@ -73,28 +95,35 @@ const About = () => {
         </div>
       </section>
 
-      {/* Csapat */}
+
       <section className="container py-5">
-        <h2 className="text-center mb-5 text-gradient">Ismerd meg a csapatunkat</h2>
+        <h2 className="text-center mb-5 text-gradient animate-on-scroll">
+          Ismerd meg a csapatunkat
+        </h2>
+
         <div className="row gy-4 justify-content-center">
           {[
             {
               name: "Fazekas Luca",
               img: "img/rolunk kepek/luca.jpeg",
-              text: "Az EcoTripnél hiszek abban, hogy az utazás akkor a legértékesebb, ha tisztelettel fordulunk a természet felé.",
+              text: "Hiszek abban, hogy az utazás akkor értékes, ha tiszteljük a természetet.",
             },
             {
               name: "Poráczki Zsolt",
               img: "img/rolunk kepek/zsolt.jpeg",
-              text: "Hiszem, hogy az utazás nemcsak élmény, hanem lehetőség a tanulásra is, felelősséggel a környezet iránt.",
+              text: "Az utazás tanulás és felelősség is egyben.",
             },
             {
               name: "Szabó Flóra",
               img: "img/rolunk kepek/flora.jpeg",
-              text: "Úgy gondolom, hogy az utazás akkor teljes, ha az élmények mellett a természet iránti felelősség is jelen van.",
+              text: "Az élmények mellett fontos a természet védelme is.",
             },
           ].map((member, index) => (
-            <div key={index} className="col-md-3 text-center">
+            <div
+              key={index}
+              className="col-md-3 text-center animate-on-scroll"
+              style={{ transitionDelay: `${index * 0.15}s` }}
+            >
               <div className="team-card">
                 <img src={member.img} alt={member.name} />
                 <h5>{member.name}</h5>
@@ -104,6 +133,7 @@ const About = () => {
           ))}
         </div>
       </section>
+
     </div>
   );
 };

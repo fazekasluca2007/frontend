@@ -157,14 +157,14 @@ export default function Home() {
           >
             Foglalj most
           </NavLink>
-
           <p>
-            Több száz szálláslehetőség, inspiráló úticélok, és öko-tudatos tippek – mindezt egy helyen!
+          Foglalj most, pár kattintással!
+          Gyors, egyszerű, fenntartható utazások egy helyen.
+          Kezdd el még ma, és indulhat a következő élményed!
           </p>
 
-          <p>
-            Csatlakozz az EcoTrip közösséghez, és fedezd fel a fenntartható utazást!
-          </p>
+          
+          
         </div>
       </div>
 
