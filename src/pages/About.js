@@ -58,11 +58,17 @@ const About = () => {
           <div className="col-md-6">
             <h2 className="text-gradient mb-3">Kik vagyunk?</h2>
             <p className="lead">
-              Az <strong>EcoTrip</strong> egy magyar utazási iroda, amelynek
+            Az <strong>EcoTrip</strong> egy magyar utazási iroda, amelynek
+              szenvedélye a fenntartható turizmus. Küldetésünk, hogy
+              megmutassuk: utazni lehet tudatosan is.
               szenvedélye a fenntartható turizmus.
             </p>
             <p>
-              Célunk, hogy minden utazás élmény legyen – nemcsak a résztvevők,
+            Célunk, hogy minden utazás élmény legyen – nemcsak a résztvevők,
+              hanem a bolygó számára is. Törekszünk arra, hogy programjaink
+              során minél kevesebb környezeti terhelést okozzunk. Az EcoTripnél
+              minden út arról szól, hogy jól érezzük magunkat, miközben
+              vigyázunk arra a világra, amit felfedezünk.
               hanem a bolygó számára is.
             </p>
           </div>
@@ -74,13 +80,13 @@ const About = () => {
           <div className="row align-items-center gy-4">
             <div className="col-md-6">
               <div className="text-block blue animate-on-scroll">
-                🌊 A kék a víz színe, az élet forrása.
+                🌊 A kék a víz színe, amely az élet forrását és a tisztaság érzetét hordozza.
               </div>
               <div className="text-block green animate-on-scroll">
-                🍃 A zöld a természet élő világát jelképezi.
+                🍃  A zöld a környezetet és a természet élő világát jelképezi.
               </div>
               <div className="text-block brown animate-on-scroll">
-                ⛰️ A barna a föld színe és a stabilitásé.
+                ⛰️ A barna a föld színe, amely a szilárd alapokat és a természetességet idézi.
               </div>
             </div>
             <div className="col-md-3 text-center animate-on-scroll">
@@ -106,17 +112,17 @@ const About = () => {
             {
               name: "Fazekas Luca",
               img: "img/rolunk kepek/luca.jpeg",
-              text: "Hiszek abban, hogy az utazás akkor értékes, ha tiszteljük a természetet.",
+              text: "Az EcoTripnél hiszek abban, hogy az utazás akkor a legértékesebb, ha tisztelettel fordulunk a természet felé.",
             },
             {
               name: "Poráczki Zsolt",
               img: "img/rolunk kepek/zsolt.jpeg",
-              text: "Az utazás tanulás és felelősség is egyben.",
+              text: "Hiszem, hogy az utazás nemcsak élmény, hanem lehetőség a tanulásra is, felelősséggel a környezet iránt.",
             },
             {
               name: "Szabó Flóra",
               img: "img/rolunk kepek/flora.jpeg",
-              text: "Az élmények mellett fontos a természet védelme is.",
+              text: "Úgy gondolom, hogy az utazás akkor teljes, ha az élmények mellett a természet iránti felelősség is jelen van.",
             },
           ].map((member, index) => (
             <div
