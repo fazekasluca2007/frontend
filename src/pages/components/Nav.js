@@ -1,24 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import './Nav.css';
 import { NavLink } from 'react-router-dom';
 
 export default function Nav({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [apiName, setApiName] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); 
+    
+    if (user && token) {
+      fetch('https://localhost:7267/api/Profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Hiba a lekérés során: ' + res.status);
+        return res.json();
+      })
+      .then(data => {
+        console.log("API válasz a Profile-tól:", data);
+
+        const extractedName = data.fullName || data.fullname || data.name || data.userName || data.username || data.email;
+        if (extractedName) {
+          setApiName(extractedName);
+        }
+      })
+      .catch(err => console.error("API hiba a Nav-ban:", err));
+    }
+  }, [user]);
+
+  if (user) console.log("Nav kapott user objektuma:", user);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const getName = () => {
+    if (!user) return "Felhasználó";
+    
+    return (
+      apiName ||          
+      user.fullName || 
+      user.fullname || 
+      user.username || 
+      user.userName || 
+      user.name || 
+      user.email || 
+      "Felhasználó"
+    );
+  };
+
+  const displayName = getName();
+  const displayInitial = displayName.charAt(0).toUpperCase();
 
   return (
     <nav className="navbar navbar-expand-lg position-relative">
       <div className="container-fluid d-flex justify-content-between align-items-center">
 
-        {/* LOGO – érintetlen */}
         <div className="d-flex align-items-center">
           <NavLink className="navbar-brand" to="/">
             <img src="./img/ecologo.png" alt="Logo" />
           </NavLink>
         </div>
 
-        {/* HAMBURGER */}
         <button
           className="navbar-toggler d-lg-none border-0"
           type="button"
@@ -28,7 +74,6 @@ export default function Nav({ user, onLogout }) {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* DESKTOP CENTER */}
         <div className="d-none d-lg-flex position-absolute start-50 translate-middle-x">
           <ul className="navbar-nav d-flex flex-row">
             <li className="nav-item"><NavLink className="nav-link" to="/utjaink">Útjaink</NavLink></li>
@@ -39,33 +84,27 @@ export default function Nav({ user, onLogout }) {
           </ul>
         </div>
 
-        {/* DESKTOP RIGHT */}
         <ul className="navbar-nav d-none d-lg-flex align-items-center">
-
-          {!user && (
+          {!user ? (
             <li className="nav-item">
               <NavLink className="nav-link login-btn ms-2" to="/bejelentkezes">
                 Bejelentkezés
               </NavLink>
             </li>
-          )}
-
-          {user && (
+          ) : (
             <li className="nav-item d-flex align-items-center ms-3 user-nav-item">
-
-            
               <NavLink to="/profile" className="profile-link">
                 <div className="profile-pic">
-                  {user.profileImage ? (
+                  {user?.profileImage ? (
                     <img src={user.profileImage} alt="Profilkép" />
                   ) : (
-                    <span>{user.fullName.charAt(0)}</span>
+                    <span>{displayInitial}</span>
                   )}
                 </div>
               </NavLink>
 
               <span className="username ms-2">
-                {user.fullName}
+                {displayName}
               </span>
 
               <button
@@ -74,14 +113,11 @@ export default function Nav({ user, onLogout }) {
               >
                 Kijelentkezés
               </button>
-
             </li>
           )}
-
         </ul>
       </div>
 
-      {/* MOBILE MENU */}
       {menuOpen && (
         <div className="mobile-menu d-lg-none text-center">
           <ul className="navbar-nav">
@@ -90,6 +126,11 @@ export default function Nav({ user, onLogout }) {
             <li className="nav-item"><NavLink className="nav-link" to="/rolunk" onClick={toggleMenu}>Rólunk</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/gyik" onClick={toggleMenu}>GYIK</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/velemenyek" onClick={toggleMenu}>Vélemények</NavLink></li>
+            {!user ? (
+               <li className="nav-item"><NavLink className="nav-link" to="/bejelentkezes" onClick={toggleMenu}>Bejelentkezés</NavLink></li>
+            ) : (
+               <li className="nav-item"><button onClick={() => { onLogout(); toggleMenu(); }} className="btn nav-link w-100">Kijelentkezés</button></li>
+            )}
           </ul>
         </div>
       )}

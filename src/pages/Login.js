@@ -28,7 +28,7 @@ export default function Login({ onLogin }) {
     if (storedUser) navigate("/");
   }, [navigate]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -36,24 +36,37 @@ export default function Login({ onLogin }) {
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-      (u) => u.username === username && u.password === password
-    );
-
-    if (!user) {
-      toast.error("Sikertelen bejelentkezés, próbáld újra!");
-      return;
-    }
-
-    onLogin(user);
-    toast.success("Sikeres bejelentkezés!");
-
     setLoading(true);
-    setTimeout(() => navigate("/"), 1500);
+    try {
+      const response = await fetch("https://localhost:7267/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const user = await response.json();
+
+        const token = user.token || (user.tokenDto && user.tokenDto.token);
+        if (token) {
+          localStorage.setItem("token", token);
+        }
+
+        onLogin(user);
+        toast.success("Sikeres bejelentkezés!");
+        setTimeout(() => navigate("/"), 1500);
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Sikertelen bejelentkezés!");
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error("Hiba a szerverrel való kapcsolatban!");
+      setLoading(false);
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (!fullName || !username || !email || !password || !password2) {
@@ -71,24 +84,31 @@ export default function Login({ onLogin }) {
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    if (users.some((u) => u.username === username)) {
-      toast.error("Ez a felhasználónév már foglalt!");
-      return;
+    setLoading(true);
+    try {
+      const response = await fetch("https://localhost:7267/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, username, email, password }),
+      });
+
+      if (response.ok) {
+        toast.success("Sikeres regisztráció! Most bejelentkezhetsz.");
+        setIsLogin(true);
+        setFullName("");
+        setEmail("");
+        setPassword("");
+        setPassword2("");
+        setNotRobot(false);
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "A regisztráció sikertelen!");
+      }
+    } catch (error) {
+      toast.error("Hiba a szerverrel való kapcsolatban!");
+    } finally {
+      setLoading(false);
     }
-
-    const newUser = { fullName, username, email, password };
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
-
-    toast.success("Sikeres regisztráció! Most bejelentkezhetsz.");
-
-    setIsLogin(true);
-    setFullName("");
-    setEmail("");
-    setPassword("");
-    setPassword2("");
-    setNotRobot(false); 
   };
 
   useEffect(() => {
@@ -118,7 +138,7 @@ export default function Login({ onLogin }) {
               <form onSubmit={handleLogin}>
                 <input
                   className="form-control mb-3"
-                  placeholder="Felhasználónév"
+                  placeholder="Felhasználónév / E-mail"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -140,7 +160,7 @@ export default function Login({ onLogin }) {
                   </span>
                 </div>
 
-                <button className="btn w-100 auth-button">
+                <button className="btn w-100 auth-button" type="submit">
                   Bejelentkezés
                 </button>
               </form>
@@ -200,19 +220,17 @@ export default function Login({ onLogin }) {
                 </div>
 
                 <div className={`fake-recaptcha ${notRobot ? "checked" : ""}`} onClick={() => setNotRobot(!notRobot)}>
-                <div className="fake-checkbox">
-                  {notRobot && <span className="checkmark">✔</span>}
+                  <div className="fake-checkbox">
+                    {notRobot && <span className="checkmark">✔</span>}
+                  </div>
+                  <span className="fake-text">Nem vagyok robot</span>
+                  <div className="fake-logo">
+                    <div className="recaptcha-icon"></div>
+                    <small>reCAPTCHA</small>
+                  </div>
                 </div>
 
-                <span className="fake-text">Nem vagyok robot</span>
-
-                <div className="fake-logo">
-                <div className="recaptcha-icon"></div>
-                <small>reCAPTCHA</small>
-                </div>
-                </div>
-
-                <button className="btn w-100 auth-button">
+                <button className="btn w-100 auth-button" type="submit">
                   Regisztráció
                 </button>
               </form>
@@ -238,7 +256,7 @@ export default function Login({ onLogin }) {
                     className="btn btn-link"
                     onClick={() => setIsLogin(true)}
                   >
-                    Jelentkezz be!
+                    Bejelentkezés
                   </button>
                 </>
               )}
