@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BeatLoader from "react-spinners/BeatLoader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Trip.css";
 import Trip_card from "./components/Trip_card";
 
@@ -28,7 +30,7 @@ const Trip = () => {
       .catch((err) => {
         console.error("Fetch error:", err);
         setError(true);
-
+        setLoading(false);
       });
   }, [URL]);
 
@@ -67,7 +69,7 @@ const Trip = () => {
     const loggedIn = localStorage.getItem("user") !== null;
 
     if (!loggedIn) {
-      alert("A foglaláshoz kérlek jelentkezz be.");
+      toast.error("A foglaláshoz kérlek jelentkezz be!");
       return;
     }
 
@@ -79,19 +81,19 @@ const Trip = () => {
   return (
     <>
 
+      <ToastContainer theme="colored" />
+
       {(loading || error) && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
       )}
 
-
       {error && (
         <p className="error text-center my-4">
           Hiba az adatok lekérése során. Kérjük, próbálja újra később.
         </p>
       )}
-
 
       {!error && !loading && (
         <>
