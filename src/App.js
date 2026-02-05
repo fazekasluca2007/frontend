@@ -13,6 +13,7 @@ import Information from "./pages/Information";
 import Booking from './pages/Booking';
 import UserPage from './pages/UserPage';
 import Aszf from './pages/Aszf';
+import Ecoinfo from './pages/Ecoinfo';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -45,6 +46,7 @@ function App() {
         <Route path='/velemenyek' element={<Reviews />} />
         <Route path='/informaciok' element={<Information />} />
         <Route path='/foglalas' element={<Booking />} />
+        <Route path='/okoleiras' element={<Ecoinfo />} />
         <Route path='/aszf' element={<Aszf />} />
       </Routes>
 

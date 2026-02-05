@@ -3,6 +3,45 @@ body {
   color: #2c3e50;
 }
 
+/* LOGIN PROMPT */
+.login-prompt {
+  display: flex;
+  align-items: center;       /* szöveg és nyíl középre */
+  justify-content: center;   /* teljes sorban középre */
+  gap: 10px;                 /* távolság a szöveg és nyíl között */
+  font-family: inherit;
+  color: #1a3c57 !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 auto 1rem;       /* középre és alsó margó */
+}
+
+.login-prompt span {
+  display: inline-block;
+}
+
+.login-btn-circle {
+  background-color: darkcyan !important;
+  border: none !important;
+  color: white !important;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.login-btn-circle:hover {
+  transform: scale(1.1) translateX(2px);
+  background-color: #007070 !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* BUTTONS */
 .btn-primary,
 .btn.btn-primary.btn-lg {
   background-color: darkcyan;
@@ -15,7 +54,7 @@ body {
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-
+/* CAROUSEL */
 #heroCarousel {
   height: 100vh;
   height: 100dvh;
@@ -40,7 +79,6 @@ body {
   border-radius: 50%;
   background: rgba(255,255,255,0.75);
   color: #1a3c57;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,7 +86,7 @@ body {
   text-align: center;
 }
 
-
+/* MAP */
 #map {
   width: 80%;
   height: 350px;
@@ -57,7 +95,7 @@ body {
   border-radius: 10px;
 }
 
-
+/* VALUES */
 .values-section {
   display: flex;
   justify-content: center;
@@ -82,6 +120,7 @@ body {
   color: darkcyan;
 }
 
+/* ANIMATION */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(40px);
@@ -93,7 +132,7 @@ body {
   transform: translateY(0);
 }
 
-
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .hero-overlay {
     width: 300px;

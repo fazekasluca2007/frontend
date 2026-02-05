@@ -84,12 +84,17 @@ export default function Footer() {
             <ul className="list-unstyled d-flex flex-column align-items-center gap-2 mt-2 sites">
               <li>
                 <a href="https://facebook.com" className="text-white fs-4" target="_blank" rel="noreferrer">
-                  <i className="fab fa-facebook"></i>
+                  <i class="bi bi-facebook"></i>
                 </a>
               </li>
               <li>
                 <a href="https://instagram.com" className="text-white fs-4" target="_blank" rel="noreferrer">
-                  <i className="fab fa-instagram"></i>
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com" className="text-white fs-4" rel="noreferrer">
+                  <i class="bi bi-twitter-x"></i>
                 </a>
               </li>
             </ul>

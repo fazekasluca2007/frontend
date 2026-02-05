@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import { FaArrowRight } from 'react-icons/fa';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
@@ -11,12 +12,11 @@ export default function Home() {
   const carouselInstance = useRef(null);
 
   const isUserLoggedIn = () => localStorage.getItem('user') !== null;
-
+  const loggedIn = isUserLoggedIn();
 
   useEffect(() => {
     document.title = 'EcoTrip';
   }, []);
-
 
   useEffect(() => {
     if (!window.bootstrap || !carouselRef.current) return;
@@ -42,7 +42,6 @@ export default function Home() {
     };
   }, []);
 
-
   useEffect(() => {
     const elements = document.querySelectorAll('.animate-on-scroll');
 
@@ -58,7 +57,6 @@ export default function Home() {
     elements.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
-
 
   useEffect(() => {
     const map = L.map('map').setView([47.5, 19.04], 5);
@@ -120,12 +118,11 @@ export default function Home() {
     setTimeout(() => map.invalidateSize(), 200);
 
     return () => map.remove();
-  }, []);
+  }, [URL]);
 
   return (
     <div className="position-relative text-center">
 
-    
       <div id="heroCarousel" className="carousel slide" ref={carouselRef}>
         <div className="carousel-inner">
           {['gorog','spanyol','ausztria','magyar','dubai','egyipt','olasz','francia']
@@ -152,19 +149,17 @@ export default function Home() {
           <h1>Üdvözlünk az EcoTrip oldalán!</h1>
 
           <NavLink
-            to={isUserLoggedIn() ? '/utjaink' : '/bejelentkezes'}
+            to={loggedIn ? '/utjaink' : '/bejelentkezes'}
             className="btn btn-primary btn-lg mt-3"
           >
             Foglalj most
           </NavLink>
-          <p>
-          Foglalj most, pár kattintással!
-          Gyors, egyszerű, fenntartható utazások egy helyen.
-          Kezdd el még ma, és indulhat a következő élményed!
-          </p>
 
-          
-          
+          <p>
+            Foglalj most, pár kattintással!
+            Gyors, egyszerű, fenntartható utazások egy helyen.
+            Kezdd el még ma, és indulhat a következő élményed!
+          </p>
         </div>
       </div>
 
@@ -208,6 +203,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {!loggedIn && (
+        <div className="login-prompt">
+          <span>
+            Szeretnél többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogass el erre az oldalra, hogy mindent megtudhass!
+          </span>
+          <Link to="/okoleiras" className="login-btn-circle">
+            <FaArrowRight size={12} />
+          </Link>
+        </div>
+      )}
 
       <section className="container my-5 text-center animate-on-scroll">
         <h3 className="mb-3">Hol járhatsz velünk?</h3>

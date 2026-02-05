@@ -1,0 +1,74 @@
+.eco-container {
+  font-family: inherit;
+  background-color: #f0f6fb;
+  color: #2c3e50;
+  padding: 2rem 1rem;
+  text-align: left;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.eco-hero {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.eco-hero h1 {
+  color: darkcyan;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.eco-hero p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+
+.eco-section h2 {
+  color: darkcyan;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.5rem;
+}
+
+.eco-section p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+.eco-footer {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-weight: 600;
+  color: #1a3c57;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .eco-container {
+    padding: 1rem;
+  }
+
+  .eco-hero {
+    padding: 1.5rem;
+  }
+
+  .eco-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .eco-section p {
+    font-size: 0.95rem;
+  }
+}
