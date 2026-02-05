@@ -2,12 +2,43 @@
     padding: 50px 0;
 }
 
+.login-prompt, 
+.login-prompt span {
+    font-family: inherit;
+    color: #1a3c57 !important; 
+    font-size: 0.9rem;
+    font-weight: 700; 
+    margin: 0;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.login-btn-circle {
+    background-color: darkcyan !important;
+    border: none !important;
+    color: white !important;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.login-btn-circle:hover {
+    transform: scale(1.1) translateX(2px);
+    background-color: #007070 !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
 .reviews-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
-
 
 .review-card {
     flex: 1 1 calc(33% - 20px);
@@ -15,7 +46,7 @@
     border-radius: 14px;
     padding: 24px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border-left: 10px solid #7bc96f;
+    border-left: 10px solid #7bc96f; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -27,7 +58,6 @@
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }
 
-
 .review-stars {
     margin-bottom: 10px;
 }
@@ -38,11 +68,11 @@
     margin-right: 3px;
 }
 
-
 .review-text {
     font-style: italic;
     color: #333;
     margin-bottom: 15px;
+    line-height: 1.6;
 }
 
 .review-author {
@@ -50,32 +80,84 @@
     color: #1a3c57;
 }
 
+.btn-success {
+    background-color: darkcyan !important;
+    border-color: darkcyan !important;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.btn-success:hover {  
+    transform: scale(1.02);
+    background-color: #007070 !important;
+}
+
+.cancel-btn {
+    background-color: #e0e0e0; 
+    color: #444;
+    border: none;
+    border-radius: 5px;
+    
+    width: fit-content;  
+    display: block;      
+    margin: 10px auto;   
+    padding: 8px 20px;   
+    
+    font-size: 15px;    
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+
+.cancel-btn:hover {
+    background-color: darkcyan; 
+    color: #ffffff;             
+    transform: scale(1.05);
+}
+
+.pointer-icon {
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pointer-icon:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+.mt-auto {
+    margin-top: auto;
+}
+
 .pagination-container {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .pagination-btn {
     border: none;
     background-color: #ffffff;
-    padding: 8px 12px;
-    margin: 0 10px;
+    padding: 10px 15px;
+    margin: 0 8px;
     cursor: pointer;
     font-size: 1.1rem;
-    border-radius: 5px;
-    transition: background 0.2s, transform 0.2s;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .pagination-btn:hover:not(:disabled) {
-    background-color: #f0f0f0;
+    background-color: #f8f9fa;
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .pagination-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
 }
-
 
 @media (max-width: 992px) {
     .review-card {
