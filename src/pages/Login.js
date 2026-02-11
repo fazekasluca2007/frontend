@@ -84,6 +84,22 @@ export default function Login({ onLogin }) {
       return;
     }
 
+    // EMAIL VALIDÁCIÓ
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Hibás e-mail formátum! (pl: valami@email.com)");
+      return;
+    }
+
+    // JELSZÓ ERŐSSÉG VALIDÁCIÓ
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      toast.error(
+        "A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell legalább 1 nagybetűt és 1 számot!"
+      );
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch("https://localhost:7267/api/auth/register", {
@@ -102,7 +118,15 @@ export default function Login({ onLogin }) {
         setNotRobot(false);
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || "A regisztráció sikertelen!");
+
+        if (
+          errorData.message &&
+          errorData.message.toLowerCase().includes("username")
+        ) {
+          toast.error("Ez a felhasználónév már foglalt!");
+        } else {
+          toast.error(errorData.message || "A regisztráció sikertelen!");
+        }
       }
     } catch (error) {
       toast.error("Hiba a szerverrel való kapcsolatban!");
@@ -138,7 +162,7 @@ export default function Login({ onLogin }) {
               <form onSubmit={handleLogin}>
                 <input
                   className="form-control mb-3"
-                  placeholder="Felhasználónév / E-mail"
+                  placeholder="Felhasználónév"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -219,7 +243,10 @@ export default function Login({ onLogin }) {
                   </span>
                 </div>
 
-                <div className={`fake-recaptcha ${notRobot ? "checked" : ""}`} onClick={() => setNotRobot(!notRobot)}>
+                <div
+                  className={`fake-recaptcha ${notRobot ? "checked" : ""}`}
+                  onClick={() => setNotRobot(!notRobot)}
+                >
                   <div className="fake-checkbox">
                     {notRobot && <span className="checkmark">✔</span>}
                   </div>
