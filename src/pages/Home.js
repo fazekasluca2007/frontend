@@ -204,16 +204,14 @@ export default function Home() {
         </div>
       </section>
 
-      {!loggedIn && (
-        <div className="login-prompt">
-          <span>
-            Szeretnél többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogass el erre az oldalra, hogy mindent megtudhass!
-          </span>
-          <Link to="/okoleiras" className="login-btn-circle">
-            <FaArrowRight size={12} />
-          </Link>
-        </div>
-      )}
+      <div className="login-prompt">
+        <span>
+          Szeretnél többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogass el erre az oldalra, hogy mindent megtudhass!
+        </span>
+        <Link to="/okoleiras" className="login-btn-circle">
+          <FaArrowRight size={12} />
+        </Link>
+      </div>
 
       <section className="container my-5 text-center animate-on-scroll">
         <h3 className="mb-3">Hol járhatsz velünk?</h3>
