@@ -1,59 +1,28 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState } from 'react';
 import './Nav.css';
 import { NavLink } from 'react-router-dom';
 
 export default function Nav({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [apiName, setApiName] = useState(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token'); 
-    
-    if (user && token) {
-      fetch('https://localhost:7267/api/Profile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(res => {
-        if (!res.ok) throw new Error('Hiba a lekérés során: ' + res.status);
-        return res.json();
-      })
-      .then(data => {
-        console.log("API válasz a Profile-tól:", data);
-
-        const extractedName = data.fullName || data.fullname || data.name || data.userName || data.username || data.email;
-        if (extractedName) {
-          setApiName(extractedName);
-        }
-      })
-      .catch(err => console.error("API hiba a Nav-ban:", err));
-    }
-  }, [user]);
-
-  if (user) console.log("Nav kapott user objektuma:", user);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   const getName = () => {
-    if (!user) return "Felhasználó";
-    
-    return (
-      apiName ||          
-      user.fullName || 
-      user.fullname || 
-      user.username || 
-      user.userName || 
-      user.name || 
-      user.email || 
-      "Felhasználó"
-    );
+    if (user?.user?.username) return user.user.username;
+    if (user?.user?.fullName) return user.user.fullName;
+    if (user?.user?.email) return user.user.email;
+
+    return "Felhasználó";
   };
 
   const displayName = getName();
   const displayInitial = displayName.charAt(0).toUpperCase();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user"); 
+    onLogout();
+  };
 
   return (
     <nav className="navbar navbar-expand-lg position-relative">
@@ -95,8 +64,8 @@ export default function Nav({ user, onLogout }) {
             <li className="nav-item d-flex align-items-center ms-3 user-nav-item">
               <NavLink to="/profile" className="profile-link">
                 <div className="profile-pic">
-                  {user?.profileImage ? (
-                    <img src={user.profileImage} alt="Profilkép" />
+                  {user?.user?.profileImage ? (
+                    <img src={user.user.profileImage} alt="Profilkép" />
                   ) : (
                     <span>{displayInitial}</span>
                   )}
@@ -108,7 +77,7 @@ export default function Nav({ user, onLogout }) {
               </span>
 
               <button
-                onClick={onLogout}
+                onClick={handleLogout}
                 className="btn btn-sm ms-2 logoutbtn"
               >
                 Kijelentkezés
@@ -126,10 +95,22 @@ export default function Nav({ user, onLogout }) {
             <li className="nav-item"><NavLink className="nav-link" to="/rolunk" onClick={toggleMenu}>Rólunk</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/gyik" onClick={toggleMenu}>GYIK</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/velemenyek" onClick={toggleMenu}>Vélemények</NavLink></li>
+
             {!user ? (
-               <li className="nav-item"><NavLink className="nav-link" to="/bejelentkezes" onClick={toggleMenu}>Bejelentkezés</NavLink></li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/bejelentkezes" onClick={toggleMenu}>
+                  Bejelentkezés
+                </NavLink>
+              </li>
             ) : (
-               <li className="nav-item"><button onClick={() => { onLogout(); toggleMenu(); }} className="btn nav-link w-100">Kijelentkezés</button></li>
+              <li className="nav-item">
+                <button
+                  onClick={() => { handleLogout(); toggleMenu(); }}
+                  className="btn nav-link w-100"
+                >
+                  Kijelentkezés
+                </button>
+              </li>
             )}
           </ul>
         </div>

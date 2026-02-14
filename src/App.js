@@ -27,9 +27,11 @@ function App() {
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-  };
+  localStorage.removeItem("user");
+  localStorage.removeItem("token"); 
+  setUser(null);
+};
+
 
   return (
     <BrowserRouter>

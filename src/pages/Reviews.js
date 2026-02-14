@@ -21,7 +21,13 @@ export default function Reviews() {
 
   const loggedIn = localStorage.getItem("user") !== null;
   const userData = JSON.parse(localStorage.getItem("user"));
-  const loggedUserName = userData ? userData.fullName || userData.username : null;
+
+  const loggedUserName = userData
+    ? userData?.user?.fullName ||
+      userData?.user?.username ||
+      userData?.user?.email ||
+      "Felhasználó"
+    : "Felhasználó";
 
   const fetchReviews = () => {
     setLoading(true);
@@ -105,12 +111,20 @@ export default function Reviews() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!loggedUserName) {
+      toast.error("Nem sikerült azonosítani a felhasználót. Jelentkezz be újra!");
+      return;
+    }
+
     const velemenyObj = {
-      id: editId ?? 0,
-      name: loggedUserName,
+      id: editId ?? 0,          
+      name: loggedUserName,     
       review: text,
       stars: Number(rating),
     };
+
+    console.log("Beküldött adat:", velemenyObj);
 
     try {
       const response = await fetch(
@@ -122,7 +136,11 @@ export default function Reviews() {
         }
       );
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.log("Backend válasz:", errorText);
+        throw new Error(errorText);
+      }
 
       setText("");
       setRating("");
