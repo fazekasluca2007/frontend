@@ -66,6 +66,48 @@ export default function Booking() {
     window.scrollTo(0, 0);
   }, []);
 
+
+  //GET-es kérés
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    fetch('https://localhost:7267/api/Bookings/my', {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+      });
+  }, []);
+
+  //POST-os kérés
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    fetch('https://localhost:7267/api/Bookings', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        tripId: 3,
+        seats: 2,
+        days: 5,
+        paymentType: "card"
+      })
+    })
+  }, []);
+
+
+
+
   useEffect(() => {
     if (trip_id) {
       fetch(URL + `Trips/detailed/${trip_id}`)
