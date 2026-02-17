@@ -25,7 +25,6 @@
   transition: transform 0.4s ease;
 }
 
-
 .hotel-card {
   border: 1px solid #ddd !important;
   border-radius: 12px;
@@ -36,9 +35,8 @@
 
   display: flex;
   flex-direction: column;
-
-  width: 320px;
-  height: 100%;
+  flex: 0 0 calc(25% - 1rem);
+  max-width: calc(25% - 1rem);
 }
 
 .hotel-card:hover {
@@ -52,7 +50,6 @@
   border-radius: 10px 10px 0 0;
   display: block;
 }
-
 
 .hotel-card-body {
   flex: 1;
@@ -69,7 +66,6 @@
   width: 70px;
   height: 45px;
 }
-
 
 .slider-btn {
   position: absolute;
@@ -170,19 +166,6 @@
   opacity: 0.8;
 }
 
-@media (max-width: 768px) {
-  .trip-filter-inner {
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-  }
-
-  .hotel-card {
-    width: 100%;
-  }
-}
-
-/* === MODAL === */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -210,19 +193,12 @@
   border-radius: 0.5rem;
 }
 
-
 .modal-content img {
   width: 100%;
   height: 350px;       
   object-fit: cover;   
   border-radius: 10px;
   display: block;
-}
-
-@media (max-width: 768px) {
-  .modal-content img {
-    height: 220px;
-  }
 }
 
 .modal-header {
@@ -243,4 +219,31 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+
+@media (max-width: 992px) {
+  .hotel-card {
+    flex: 0 0 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .trip-filter-inner {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hotel-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .modal-content img {
+    height: 220px;
+  }
 }
