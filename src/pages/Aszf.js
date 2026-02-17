@@ -7,6 +7,10 @@ export default function Aszf() {
     document.title = "EcoTrip – Általános Szerződési Feltételek";
      window.scrollTo(0, 0);
   }, []);
+  useEffect(() => {
+          document.title = 'EcoTrip-ÁSZF';
+      }, []);
+  
 
   return (
     <div className="aszf-page container my-5 animate-on-scroll show">
