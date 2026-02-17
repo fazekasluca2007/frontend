@@ -92,10 +92,11 @@ export default function Login({ onLogin }) {
     }
 
     // JELSZÓ ERŐSSÉG VALIDÁCIÓ
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     if (!passwordRegex.test(password)) {
       toast.error(
-        "A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell legalább 1 nagybetűt és 1 számot!"
+        "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
+
       );
       return;
     }
