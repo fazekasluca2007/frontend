@@ -144,43 +144,16 @@ export default function Information() {
               </div>
             </>
           )}
-
-          <h5 className="mt-4">Foglalás</h5>
-
-          <div className="d-flex gap-3 align-items-end">
-            <div className="booking-input">
-              <label className="form-label">Hány napra:</label>
-              <input
-                type="number"
-                className="form-control"
-                min={1}
-                max={10}
-                value={napok}
-                onChange={handleNapokChange}
-              />
-            </div>
-
-            <div className="booking-input">
-              <label className="form-label">Hány főre:</label>
-              <input
-                type="number"
-                className="form-control"
-                min={1}
-                max={10}
-                value={fo}
-                onChange={handleFoChange}
-              />
-            </div>
-
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={handleBooking}
-            >
-              Foglalás
-            </button>
-          </div>
+          <hr className="my-4" />
+          <button
+            className="btn btn-primary btn-lg"
+            onClick={handleBooking}
+          >
+            Foglalás
+          </button>
         </div>
       </div>
     </div>
+
   );
 }
