@@ -40,27 +40,16 @@ export default function UserPage() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        console.log("Profile response status:", response.status);
-
         if (!response.ok) {
-          if (response.status === 401 || response.status === 403) {
-            toast.error("A profil lekéréshez be kell jelentkezni!");
-          } else if (response.status === 404) {
-            toast.error("A profil nem található!");
-          } else {
-            toast.error("Hiba a profil lekérésekor!");
-          }
-          const text = await response.text();
-          console.error("Server profile response:", text);
+          toast.error("Hiba a profil lekérésekor!");
           return;
         }
 
         const data = await response.json();
-        console.log("Fetched profile:", data);
 
         setFullName(data.fullName || "");
         setEmail(data.email || "");
@@ -80,15 +69,16 @@ export default function UserPage() {
       if (!token) return;
 
       try {
-        const response = await fetch("https://localhost:7267/api/Booking/my", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-        });
-
-        console.log("Bookings response status:", response.status);
+        const response = await fetch(
+          "https://localhost:7267/api/Bookings/my",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           console.error("Hiba a foglalások lekérésekor:", response.status);
@@ -96,12 +86,9 @@ export default function UserPage() {
         }
 
         const data = await response.json();
-        console.log("Raw bookings response:", data);
 
         if (Array.isArray(data)) {
           setBookings(data);
-        } else if (data && Array.isArray(data.bookings)) {
-          setBookings(data.bookings);
         } else {
           setBookings([]);
         }
@@ -130,7 +117,7 @@ export default function UserPage() {
       fullName,
       email,
       avatar: customAvatar || selectedAvatar,
-      password: password ? "MÓDOSÍTVA" : "NEM változott",
+      password: password ? password : null,
     };
 
     console.log("Mentett adatok:", updatedUser);
@@ -246,9 +233,19 @@ export default function UserPage() {
           ) : (
             <ul>
               {bookings.map((booking) => (
-                <li key={booking.id}>
-                  <strong>{booking.title}</strong>
-                  <span>{booking.date}</span>
+                <li key={booking.id} className="booking-item">
+                  <strong>
+                    {booking.hotelName || booking.HotelName}
+                  </strong>
+                  <br />
+                  {(booking.startDate || booking.StartDate) &&
+                  (booking.endDate || booking.EndDate)
+                    ? `${new Date(
+                        booking.startDate || booking.StartDate
+                      ).toLocaleDateString()} - ${new Date(
+                        booking.endDate || booking.EndDate
+                      ).toLocaleDateString()}`
+                    : ""}
                 </li>
               ))}
             </ul>
