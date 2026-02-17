@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserPage.css";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -13,67 +13,128 @@ const defaultAvatars = [
   "/avatars/avatar6.png",
 ];
 
-const loggedInUser = {
-  username: "Luca",
-  email: "luca@email.hu",
-  avatar: "/avatars/avatar3.png",
-  bookings: [
-    { id: 1, title: "Wellness hétvége", date: "2026-03-12" },
-    { id: 2, title: "Városnéző túra", date: "2026-04-05" },
-  ],
-};
-
-
-const takenUsernames = ["admin", "test", "Luca123"];
-
 export default function UserPage() {
   const [editMode, setEditMode] = useState(false);
 
-  const [username, setUsername] = useState(loggedInUser.username);
-  const [email, setEmail] = useState(loggedInUser.email);
-
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
 
-  const [selectedAvatar, setSelectedAvatar] = useState(loggedInUser.avatar);
+  const [selectedAvatar, setSelectedAvatar] = useState("");
   const [customAvatar, setCustomAvatar] = useState(null);
+
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        toast.error("Nincs bejelentkezett felhasználó!");
+        return;
+      }
+
+      try {
+        const response = await fetch("https://localhost:7267/api/Profile/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        console.log("Profile response status:", response.status);
+
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            toast.error("A profil lekéréshez be kell jelentkezni!");
+          } else if (response.status === 404) {
+            toast.error("A profil nem található!");
+          } else {
+            toast.error("Hiba a profil lekérésekor!");
+          }
+          const text = await response.text();
+          console.error("Server profile response:", text);
+          return;
+        }
+
+        const data = await response.json();
+        console.log("Fetched profile:", data);
+
+        setFullName(data.fullName || "");
+        setEmail(data.email || "");
+        setSelectedAvatar(data.profileImage || defaultAvatars[0]);
+      } catch (error) {
+        console.error("Fetch profile error:", error);
+        toast.error("Hiba a szerverrel való kapcsolatban!");
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch("https://localhost:7267/api/Booking/my", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        console.log("Bookings response status:", response.status);
+
+        if (!response.ok) {
+          console.error("Hiba a foglalások lekérésekor:", response.status);
+          return;
+        }
+
+        const data = await response.json();
+        console.log("Raw bookings response:", data);
+
+        if (Array.isArray(data)) {
+          setBookings(data);
+        } else if (data && Array.isArray(data.bookings)) {
+          setBookings(data.bookings);
+        } else {
+          setBookings([]);
+        }
+      } catch (error) {
+        console.error("Fetch bookings error:", error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setCustomAvatar(URL.createObjectURL(file));
-    }
+    if (file) setCustomAvatar(URL.createObjectURL(file));
   };
 
   const handleSave = (e) => {
     e.preventDefault();
 
-  
     if (password !== passwordAgain) {
       toast.error("A két jelszó nem egyezik!");
       return;
     }
 
-   
-    if (
-      username !== loggedInUser.username &&
-      takenUsernames.includes(username)
-    ) {
-      toast.error("Ez a felhasználónév már foglalt!");
-      return;
-    }
-
     const updatedUser = {
-      username,
+      fullName,
       email,
       avatar: customAvatar || selectedAvatar,
       password: password ? "MÓDOSÍTVA" : "NEM változott",
     };
 
     console.log("Mentett adatok:", updatedUser);
-
     toast.success("Profil sikeresen frissítve!");
-
     setEditMode(false);
     setPassword("");
     setPasswordAgain("");
@@ -82,14 +143,8 @@ export default function UserPage() {
   return (
     <div className="profile-container">
       <div className="profile-card">
-    
-        <ToastContainer
-          theme="colored"
-          position="top-right"
-          autoClose={3000}
-        />
+        <ToastContainer theme="colored" position="top-right" autoClose={3000} />
 
-      
         <div className="profile-header">
           <h2>Felhasználói adatok</h2>
           {!editMode && (
@@ -103,14 +158,12 @@ export default function UserPage() {
           )}
         </div>
 
-        
         <img
           src={customAvatar || selectedAvatar}
           alt="Profilkép"
           className="profile-avatar"
         />
 
-      
         {editMode && (
           <>
             <div className="avatar-grid">
@@ -137,15 +190,14 @@ export default function UserPage() {
           </>
         )}
 
-   
         <form onSubmit={handleSave}>
           <div className="field">
-            <label>Felhasználónév</label>
+            <label>Teljes név</label>
             <input
               type="text"
-              value={username}
+              value={fullName}
               disabled={!editMode}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
 
@@ -189,11 +241,11 @@ export default function UserPage() {
         <div className="bookings">
           <h3>Foglalásaim</h3>
 
-          {loggedInUser.bookings.length === 0 ? (
+          {bookings.length === 0 ? (
             <p>Nincs még foglalásod.</p>
           ) : (
             <ul>
-              {loggedInUser.bookings.map((booking) => (
+              {bookings.map((booking) => (
                 <li key={booking.id}>
                   <strong>{booking.title}</strong>
                   <span>{booking.date}</span>
