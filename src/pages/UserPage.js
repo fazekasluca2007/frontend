@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./UserPage.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const defaultAvatars = [
   "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2876.jpg?t=st=1771404526~exp=1771408126~hmac=27629a3082f81d551eeb91de63a33eb72b01fb1bbb86f071f6fd681f4de5dfe6",
@@ -14,16 +15,18 @@ const defaultAvatars = [
 
 export default function UserPage({ user, updateProfileImage }) {
   const [editMode, setEditMode] = useState(false);
-
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState(() => user?.user?.username || "");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
-
+  const [oldPassword, setOldPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showPasswordAgain, setShowPasswordAgain] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [customAvatar, setCustomAvatar] = useState(null);
-
   const [bookings, setBookings] = useState([]);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -36,10 +39,7 @@ export default function UserPage({ user, updateProfileImage }) {
       try {
         const response = await fetch("https://localhost:7267/api/Profile/profile", {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
 
         if (!response.ok) {
@@ -53,7 +53,7 @@ export default function UserPage({ user, updateProfileImage }) {
         setSelectedAvatar(data.profileImage || defaultAvatars[0]);
         updateProfileImage(data.profileImage || defaultAvatars[0]);
       } catch (error) {
-        console.error("Fetch profile error:", error);
+        console.error(error);
         toast.error("Hiba a szerverrel való kapcsolatban!");
       }
     };
@@ -67,33 +67,19 @@ export default function UserPage({ user, updateProfileImage }) {
       if (!token) return;
 
       try {
-        const response = await fetch(
-          "https://localhost:7267/api/Bookings/my",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("https://localhost:7267/api/Bookings/my", {
+          method: "GET",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        });
 
-        if (!response.ok) {
-          console.error("Hiba a foglalások lekérésekor:", response.status);
-          return;
-        }
+        if (!response.ok) return;
 
         const data = await response.json();
-        if (Array.isArray(data)) {
-          setBookings(data);
-        } else {
-          setBookings([]);
-        }
+        setBookings(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error("Fetch bookings error:", error);
+        console.error(error);
       }
     };
-
     fetchBookings();
   }, []);
 
@@ -109,28 +95,34 @@ export default function UserPage({ user, updateProfileImage }) {
   const uploadProfileImage = async () => {
     if (!customAvatar) return;
     const token = localStorage.getItem("token");
+    const response = await fetch("https://localhost:7267/api/Profile/image", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ imageUrl: customAvatar }),
+    });
+    if (!response.ok) throw new Error("Hiba a kép feltöltésekor");
+    updateProfileImage(customAvatar);
+  };
 
-    try {
-      const response = await fetch(
-        "https://localhost:7267/api/Profile/image",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ imageUrl: customAvatar }),
-        }
-      );
+  const updateUsername = async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://localhost:7267/api/Profile/username", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ username }),
+    });
+    if (!response.ok) throw new Error("Hiba a felhasználónév frissítésekor");
+  };
 
-      if (!response.ok) throw new Error("Hiba a kép feltöltésekor");
-
-      toast.success("Profilkép sikeresen frissítve!");
-      updateProfileImage(customAvatar);
-    } catch (error) {
-      console.error(error);
-      toast.error("Hiba történt a kép feltöltésekor!");
-    }
+  const updatePassword = async () => {
+    if (!password || !oldPassword) return;
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://localhost:7267/api/Profile/password", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ oldPassword, newPassword: password }),
+    });
+    if (!response.ok) throw new Error("Hiba a jelszó frissítésekor");
   };
 
   const confirmDelete = (id) => {
@@ -159,14 +151,7 @@ export default function UserPage({ user, updateProfileImage }) {
           </button>
         </div>
       </div>,
-      {
-        position: "top-right",
-        autoClose: false,
-        closeOnClick: false,
-        closeButton: false,
-        draggable: false,
-        theme: "colored",
-      }
+      { position: "top-right", autoClose: false, closeOnClick: false, closeButton: false, draggable: false, theme: "colored" }
     );
   };
 
@@ -178,10 +163,10 @@ export default function UserPage({ user, updateProfileImage }) {
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7267/api/Bookings/${id}`,
-        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await fetch(`https://localhost:7267/api/Bookings/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (response.status === 403) {
         toast.error("Nincs jogosultságod!");
@@ -202,26 +187,23 @@ export default function UserPage({ user, updateProfileImage }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-
     if (password !== passwordAgain) {
       toast.error("A két jelszó nem egyezik!");
       return;
     }
 
-    const updatedUser = {
-      fullName,
-      email,
-      password: password ? password : null,
-    };
-
-    console.log("Mentett adatok:", updatedUser);
-    toast.success("Profil sikeresen frissítve!");
-
-    await uploadProfileImage();
-
-    setEditMode(false);
-    setPassword("");
-    setPasswordAgain("");
+    try {
+      await updateUsername();
+      await updatePassword();
+      await uploadProfileImage();
+      toast.success("Profil sikeresen frissítve!");
+      setEditMode(false);
+      setPassword("");
+      setPasswordAgain("");
+      setOldPassword("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -232,22 +214,14 @@ export default function UserPage({ user, updateProfileImage }) {
         <div className="profile-header">
           <h2>Felhasználói adatok</h2>
           {!editMode && (
-            <span
-              className="edit-icon"
-              onClick={() => setEditMode(true)}
-              title="Profil módosítása"
-            >
+            <span className="edit-icon" onClick={() => setEditMode(true)} title="Profil módosítása">
               <i className="bi bi-pencil"></i>
             </span>
           )}
         </div>
 
         {(customAvatar || selectedAvatar) && (
-          <img
-            src={customAvatar || selectedAvatar}
-            alt="Profilkép"
-            className="profile-avatar"
-          />
+          <img src={customAvatar || selectedAvatar} alt="Profilkép" className="profile-avatar" />
         )}
 
         {editMode && (
@@ -258,18 +232,11 @@ export default function UserPage({ user, updateProfileImage }) {
                   key={index}
                   src={avatar}
                   alt={`avatar-${index}`}
-                  className={`avatar-option ${
-                    selectedAvatar === avatar ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedAvatar(avatar);
-                    setCustomAvatar(null);
-                    updateProfileImage(avatar);
-                  }}
+                  className={`avatar-option ${selectedAvatar === avatar ? "active" : ""}`}
+                  onClick={() => { setSelectedAvatar(avatar); setCustomAvatar(null); updateProfileImage(avatar); }}
                 />
               ))}
             </div>
-
             <label className="upload-label">
               Saját kép feltöltése
               <input type="file" accept="image/*" onChange={handleImageUpload} />
@@ -280,47 +247,70 @@ export default function UserPage({ user, updateProfileImage }) {
         <form onSubmit={handleSave}>
           <div className="field">
             <label>Teljes név</label>
-            <input
-              type="text"
-              value={fullName}
-              disabled={!editMode}
-              onChange={(e) => setFullName(e.target.value)}
-            />
+            <input type="text" value={fullName} disabled className="readonly-input" />
+          </div>
+
+          <div className="field">
+            <label>Felhasználónév</label>
+            <input type="text" value={username} disabled={!editMode ? true : false} onChange={(e) => setUsername(e.target.value)} />
           </div>
 
           <div className="field">
             <label>Email / elérhetőség</label>
-            <input
-              type="email"
-              value={email}
-              disabled={!editMode}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <input type="email" value={email} disabled className="readonly-input" />
           </div>
 
           {editMode && (
             <>
-              <div className="field">
+              <div className="field mb-3 position-relative">
+                <label>Régi jelszó</label>
+                <input
+                  type={showOldPassword ? "text" : "password"}
+                  className="form-control pe-5"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+                <span
+                  className="password-eye"
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                >
+                  {showOldPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+
+              <div className="field mb-3 position-relative">
                 <label>Új jelszó</label>
                 <input
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
+                  className="form-control pe-5"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <span
+                  className="password-eye"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
-
-              <div className="field">
+              
+              <div className="field mb-3 position-relative">
                 <label>Új jelszó újra</label>
                 <input
-                  type="password"
+                  type={showPasswordAgain ? "text" : "password"}
+                  className="form-control pe-5"
                   value={passwordAgain}
                   onChange={(e) => setPasswordAgain(e.target.value)}
                 />
+                <span
+                  className="password-eye"
+                  onClick={() => setShowPasswordAgain(!showPasswordAgain)}
+                >
+                  {showPasswordAgain ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
 
-              <button type="submit" className="btn btn-primary btn-lg">
-                Mentés
-              </button>
+              <button type="submit" className="btn btn-primary btn-lg">Mentés</button>
             </>
           )}
 
@@ -328,9 +318,8 @@ export default function UserPage({ user, updateProfileImage }) {
 
         <div className="bookings">
           <h3>Foglalásaim</h3>
-
           {bookings.length === 0 ? (
-            <p>Nincs még foglalásod.</p>
+            <p>Nincs még foglalása.</p>
           ) : (
             <ul>
               {bookings.map((booking) => (
@@ -340,20 +329,11 @@ export default function UserPage({ user, updateProfileImage }) {
                       <strong>{booking.hotelName || booking.HotelName}</strong>
                       <br />
                       {(booking.startDate || booking.StartDate) &&
-                      (booking.endDate || booking.EndDate)
-                        ? `${new Date(
-                            booking.startDate || booking.StartDate
-                          ).toLocaleDateString()} - ${new Date(
-                            booking.endDate || booking.EndDate
-                          ).toLocaleDateString()}`
+                        (booking.endDate || booking.EndDate)
+                        ? `${new Date(booking.startDate || booking.StartDate).toLocaleDateString()} - ${new Date(booking.endDate || booking.EndDate).toLocaleDateString()}`
                         : ""}
                     </div>
-
-                    <span
-                      className="delete-icon"
-                      onClick={() => confirmDelete(booking.id)}
-                      title="Foglalás törlése"
-                    >
+                    <span className="delete-icon" onClick={() => confirmDelete(booking.id)} title="Foglalás törlése">
                       <i className="bi bi-trash"></i>
                     </span>
                   </div>
