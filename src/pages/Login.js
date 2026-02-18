@@ -23,6 +23,25 @@ export default function Login({ onLogin }) {
 
   const navigate = useNavigate();
 
+
+  const sendWelcomeEmail = async (email, name) => {
+    try {
+      await fetch("https://localhost:7267/api/Mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: email,
+          subject: "Sikeres regisztráció - EcoTrip 🌱",
+          body: `Köszönjük ${name}\n\n,hogy regisztrált az EcoTrip oldalunkra🎉`,
+        }),
+      });
+    } catch (err) {
+      console.error("Email küldési hiba:", err);
+    }
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) navigate("/");
@@ -84,19 +103,16 @@ export default function Login({ onLogin }) {
       return;
     }
 
-    // EMAIL VALIDÁCIÓ
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast.error("Hibás e-mail formátum! (pl: valami@email.com)");
       return;
     }
 
-    // JELSZÓ ERŐSSÉG VALIDÁCIÓ
-   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     if (!passwordRegex.test(password)) {
       toast.error(
         "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
-
       );
       return;
     }
@@ -110,7 +126,9 @@ export default function Login({ onLogin }) {
       });
 
       if (response.ok) {
-        toast.success("Sikeres regisztráció! Most bejelentkezhetsz.");
+       
+        await sendWelcomeEmail(email, fullName);
+        toast.success("Sikeres regisztráció!");
         setIsLogin(true);
         setFullName("");
         setEmail("");
