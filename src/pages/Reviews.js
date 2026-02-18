@@ -118,13 +118,11 @@ export default function Reviews() {
     }
 
     const velemenyObj = {
-      id: editId ?? 0,          
-      name: loggedUserName,     
+      id: editId ?? 0,
+      name: loggedUserName,
       review: text,
       stars: Number(rating),
     };
-
-    console.log("Beküldött adat:", velemenyObj);
 
     try {
       const response = await fetch(
@@ -136,16 +134,32 @@ export default function Reviews() {
         }
       );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log("Backend válasz:", errorText);
-        throw new Error(errorText);
-      }
+      if (!response.ok) throw new Error();
 
       setText("");
       setRating("");
       setEditId(null);
-      fetchReviews();
+
+      const data = await fetch(URL + "Reviews").then((res) => res.json());
+      setVelemenyek(data);
+
+      const newIndex = data.findIndex(
+        (v) =>
+          v.name === velemenyObj.name &&
+          v.review === velemenyObj.review &&
+          v.stars === velemenyObj.stars
+      );
+      if (newIndex !== -1) {
+        const newPage = Math.ceil((newIndex + 1) / perPage);
+        setPage(newPage);
+
+       
+        setTimeout(() => {
+          const elem = document.querySelector(".reviews-grid");
+          if (elem) elem.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+
       toast.success("A vélemény mentve.", { theme: "colored" });
     } catch {
       toast.error("Hiba történt a mentés során.", { theme: "colored" });
