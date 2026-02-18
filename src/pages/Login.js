@@ -34,7 +34,7 @@ export default function Login({ onLogin }) {
         body: JSON.stringify({
           to: email,
           subject: "Sikeres regisztráció - EcoTrip 🌱",
-          body: `Köszönjük ${name}\n\n,hogy regisztrált az EcoTrip oldalunkra🎉`,
+          body: `Köszönjük ${name}\n\n,hogy regisztrált az EcoTrip oldalunkra!🎉`,
         }),
       });
     } catch (err) {
