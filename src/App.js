@@ -27,11 +27,20 @@ function App() {
   };
 
   const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token"); 
-  setUser(null);
-};
+    localStorage.removeItem("user");
+    localStorage.removeItem("token"); 
+    setUser(null);
+  };
 
+  const updateProfileImage = (newImage) => {
+    setUser((prev) => ({
+      ...prev,
+      user: {
+        ...prev.user,
+        profileImage: newImage,
+      },
+    }));
+  };
 
   return (
     <BrowserRouter>
@@ -40,7 +49,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/bejelentkezes' element={<Login onLogin={login} />} />
-        <Route path="/profile" element={<UserPage/>}/>
+        <Route path="/profile"element={<UserPage user={user} updateProfileImage={updateProfileImage} />}/>
         <Route path='/utjaink' element={<Trip />} />
         <Route path='/okoutjaink' element={<Ecotrips />} />
         <Route path='/rolunk' element={<About />} />

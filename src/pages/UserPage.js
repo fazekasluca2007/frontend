@@ -4,47 +4,62 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const defaultAvatars = [
-  "/avatars/avatar1.png",
-  "/avatars/avatar2.png",
-  "/avatars/avatar3.png",
-  "/avatars/avatar4.png",
-  "/avatars/avatar5.png",
-  "/avatars/avatar6.png",
+  "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2876.jpg?t=st=1771404526~exp=1771408126~hmac=27629a3082f81d551eeb91de63a33eb72b01fb1bbb86f071f6fd681f4de5dfe6",
+  "https://img.freepik.com/free-vector/woman-with-long-brown-hair-pink-shirt_90220-2940.jpg?t=st=1771404569~exp=1771408169~hmac=3f0369daf42a984de481ec1ca27767c38ee620691ec95bc57baf4b44a56fa053",
+  "https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1771404587~exp=1771408187~hmac=b94f72a4a6733159b68d8980b0be305a42dcc054c6d8ccc07e811c7fc14035d0",
+  "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2944.jpg?t=st=1771404643~exp=1771408243~hmac=0e851c3eb16218153460e469268e52304b38fd7c0835b3f90ea8f0154e2a57cf",
+  "https://img.freepik.com/free-vector/man-red-shirt-with-white-collar_90220-2873.jpg?t=st=1771404726~exp=1771408326~hmac=56f8283ece2869604da0453921fdedf82faf6d0e4cdca938339b90dfc2030548",
+  "https://img.freepik.com/free-vector/isolated-young-handsome-man-set-different-poses-white-background-illustration_632498-657.jpg?t=st=1771404852~exp=1771408452~hmac=0552accd341c3c3622f0935a2aedae0247ed8138feb9adfc1e0338a93c8267a4",
 ];
 
-export default function UserPage() {
+export default function UserPage({ user, updateProfileImage }) {
   const [editMode, setEditMode] = useState(false);
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
+
+  const [selectedAvatar, setSelectedAvatar] = useState("");
   const [customAvatar, setCustomAvatar] = useState(null);
+
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-      if (!token) return;
+      if (!token) {
+        toast.error("Nincs bejelentkezett felhasználó!");
+        return;
+      }
 
       try {
-        const response = await fetch(
-          "https://localhost:7267/api/Profile/profile",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await fetch("https://localhost:7267/api/Profile/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        if (!response.ok) return;
+        if (!response.ok) {
+          toast.error("Hiba a profil lekérésekor!");
+          return;
+        }
 
         const data = await response.json();
         setFullName(data.fullName || "");
         setEmail(data.email || "");
         setSelectedAvatar(data.profileImage || defaultAvatars[0]);
-      } catch {}
+        updateProfileImage(data.profileImage || defaultAvatars[0]);
+      } catch (error) {
+        console.error("Fetch profile error:", error);
+        toast.error("Hiba a szerverrel való kapcsolatban!");
+      }
     };
 
     fetchProfile();
   }, []);
-
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -54,19 +69,69 @@ export default function UserPage() {
       try {
         const response = await fetch(
           "https://localhost:7267/api/Bookings/my",
-          { headers: { Authorization: `Bearer ${token}` } }
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
-        if (!response.ok) return;
+        if (!response.ok) {
+          console.error("Hiba a foglalások lekérésekor:", response.status);
+          return;
+        }
 
         const data = await response.json();
-        setBookings(Array.isArray(data) ? data : []);
-      } catch {}
+        if (Array.isArray(data)) {
+          setBookings(data);
+        } else {
+          setBookings([]);
+        }
+      } catch (error) {
+        console.error("Fetch bookings error:", error);
+      }
     };
 
     fetchBookings();
   }, []);
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const newAvatar = URL.createObjectURL(file);
+      setCustomAvatar(newAvatar);
+      updateProfileImage(newAvatar);
+    }
+  };
+
+  const uploadProfileImage = async () => {
+    if (!customAvatar) return;
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        "https://localhost:7267/api/Profile/image",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ imageUrl: customAvatar }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Hiba a kép feltöltésekor");
+
+      toast.success("Profilkép sikeresen frissítve!");
+      updateProfileImage(customAvatar);
+    } catch (error) {
+      console.error(error);
+      toast.error("Hiba történt a kép feltöltésekor!");
+    }
+  };
 
   const confirmDelete = (id) => {
     const toastId = toast.error(
@@ -78,7 +143,10 @@ export default function UserPage() {
           <button
             className="btn btn-light btn-sm px-3"
             style={{ fontSize: "12px", fontWeight: "bold" }}
-            onClick={() => { executeDelete(id); toast.dismiss(toastId); }}
+            onClick={() => {
+              executeDelete(id);
+              toast.dismiss(toastId);
+            }}
           >
             Igen
           </button>
@@ -132,7 +200,7 @@ export default function UserPage() {
     }
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
     if (password !== passwordAgain) {
@@ -140,7 +208,17 @@ export default function UserPage() {
       return;
     }
 
-    toast.success("Profil frissítve!", { theme: "colored" });
+    const updatedUser = {
+      fullName,
+      email,
+      password: password ? password : null,
+    };
+
+    console.log("Mentett adatok:", updatedUser);
+    toast.success("Profil sikeresen frissítve!");
+
+    await uploadProfileImage();
+
     setEditMode(false);
     setPassword("");
     setPasswordAgain("");
@@ -172,6 +250,33 @@ export default function UserPage() {
           />
         )}
 
+        {editMode && (
+          <>
+            <div className="avatar-grid">
+              {defaultAvatars.map((avatar, index) => (
+                <img
+                  key={index}
+                  src={avatar}
+                  alt={`avatar-${index}`}
+                  className={`avatar-option ${
+                    selectedAvatar === avatar ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedAvatar(avatar);
+                    setCustomAvatar(null);
+                    updateProfileImage(avatar);
+                  }}
+                />
+              ))}
+            </div>
+
+            <label className="upload-label">
+              Saját kép feltöltése
+              <input type="file" accept="image/*" onChange={handleImageUpload} />
+            </label>
+          </>
+        )}
+
         <form onSubmit={handleSave}>
           <div className="field">
             <label>Teljes név</label>
@@ -184,7 +289,7 @@ export default function UserPage() {
           </div>
 
           <div className="field">
-            <label>Email</label>
+            <label>Email / elérhetőség</label>
             <input
               type="email"
               value={email}
@@ -218,6 +323,7 @@ export default function UserPage() {
               </button>
             </>
           )}
+
         </form>
 
         <div className="bookings">
@@ -228,7 +334,7 @@ export default function UserPage() {
           ) : (
             <ul>
               {bookings.map((booking) => (
-                <li key={booking.id}>
+                <li key={booking.id} className="booking-item">
                   <div className="booking-content">
                     <div>
                       <strong>{booking.hotelName || booking.HotelName}</strong>
