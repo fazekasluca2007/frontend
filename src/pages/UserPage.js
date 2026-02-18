@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./UserPage.css";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,53 +14,37 @@ const defaultAvatars = [
 
 export default function UserPage() {
   const [editMode, setEditMode] = useState(false);
-
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
-
-  const [selectedAvatar, setSelectedAvatar] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [customAvatar, setCustomAvatar] = useState(null);
-
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-
-      if (!token) {
-        toast.error("Nincs bejelentkezett felhasználó!");
-        return;
-      }
+      if (!token) return;
 
       try {
-        const response = await fetch("https://localhost:7267/api/Profile/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://localhost:7267/api/Profile/profile",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-        if (!response.ok) {
-          toast.error("Hiba a profil lekérésekor!");
-          return;
-        }
+        if (!response.ok) return;
 
         const data = await response.json();
-
         setFullName(data.fullName || "");
         setEmail(data.email || "");
         setSelectedAvatar(data.profileImage || defaultAvatars[0]);
-      } catch (error) {
-        console.error("Fetch profile error:", error);
-        toast.error("Hiba a szerverrel való kapcsolatban!");
-      }
+      } catch {}
     };
 
     fetchProfile();
   }, []);
+
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -71,38 +54,82 @@ export default function UserPage() {
       try {
         const response = await fetch(
           "https://localhost:7267/api/Bookings/my",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        if (!response.ok) {
-          console.error("Hiba a foglalások lekérésekor:", response.status);
-          return;
-        }
+        if (!response.ok) return;
 
         const data = await response.json();
-
-        if (Array.isArray(data)) {
-          setBookings(data);
-        } else {
-          setBookings([]);
-        }
-      } catch (error) {
-        console.error("Fetch bookings error:", error);
-      }
+        setBookings(Array.isArray(data) ? data : []);
+      } catch {}
     };
 
     fetchBookings();
   }, []);
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) setCustomAvatar(URL.createObjectURL(file));
+
+  const confirmDelete = (id) => {
+    const toastId = toast.error(
+      <div>
+        <p className="mb-2" style={{ fontSize: "14px" }}>
+          Biztosan törölni szeretné a foglalását?
+        </p>
+        <div className="d-flex gap-2">
+          <button
+            className="btn btn-light btn-sm px-3"
+            style={{ fontSize: "12px", fontWeight: "bold" }}
+            onClick={() => { executeDelete(id); toast.dismiss(toastId); }}
+          >
+            Igen
+          </button>
+          <button
+            className="btn btn-outline-light btn-sm px-3"
+            style={{ fontSize: "12px" }}
+            onClick={() => toast.dismiss(toastId)}
+          >
+            Mégse
+          </button>
+        </div>
+      </div>,
+      {
+        position: "top-right",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        theme: "colored",
+      }
+    );
+  };
+
+  const executeDelete = async (id) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Nincs bejelentkezve!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://localhost:7267/api/Bookings/${id}`,
+        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status === 403) {
+        toast.error("Nincs jogosultságod!");
+        return;
+      }
+
+      if (!response.ok) {
+        toast.error("Hiba történt!");
+        return;
+      }
+
+      setBookings((prev) => prev.filter((b) => b.id !== id));
+      toast.success("Foglalás sikeresen törölve!", { theme: "colored" });
+    } catch {
+      toast.error("Szerver hiba történt!", { theme: "colored" });
+    }
   };
 
   const handleSave = (e) => {
@@ -113,15 +140,7 @@ export default function UserPage() {
       return;
     }
 
-    const updatedUser = {
-      fullName,
-      email,
-      avatar: customAvatar || selectedAvatar,
-      password: password ? password : null,
-    };
-
-    console.log("Mentett adatok:", updatedUser);
-    toast.success("Profil sikeresen frissítve!");
+    toast.success("Profil frissítve!", { theme: "colored" });
     setEditMode(false);
     setPassword("");
     setPasswordAgain("");
@@ -145,36 +164,12 @@ export default function UserPage() {
           )}
         </div>
 
-        <img
-          src={customAvatar || selectedAvatar}
-          alt="Profilkép"
-          className="profile-avatar"
-        />
-
-        {editMode && (
-          <>
-            <div className="avatar-grid">
-              {defaultAvatars.map((avatar, index) => (
-                <img
-                  key={index}
-                  src={avatar}
-                  alt={`avatar-${index}`}
-                  className={`avatar-option ${
-                    selectedAvatar === avatar ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedAvatar(avatar);
-                    setCustomAvatar(null);
-                  }}
-                />
-              ))}
-            </div>
-
-            <label className="upload-label">
-              Saját kép feltöltése
-              <input type="file" accept="image/*" onChange={handleImageUpload} />
-            </label>
-          </>
+        {(customAvatar || selectedAvatar) && (
+          <img
+            src={customAvatar || selectedAvatar}
+            alt="Profilkép"
+            className="profile-avatar"
+          />
         )}
 
         <form onSubmit={handleSave}>
@@ -189,7 +184,7 @@ export default function UserPage() {
           </div>
 
           <div className="field">
-            <label>Email / elérhetőség</label>
+            <label>Email</label>
             <input
               type="email"
               value={email}
@@ -233,19 +228,29 @@ export default function UserPage() {
           ) : (
             <ul>
               {bookings.map((booking) => (
-                <li key={booking.id} className="booking-item">
-                  <strong>
-                    {booking.hotelName || booking.HotelName}
-                  </strong>
-                  <br />
-                  {(booking.startDate || booking.StartDate) &&
-                  (booking.endDate || booking.EndDate)
-                    ? `${new Date(
-                        booking.startDate || booking.StartDate
-                      ).toLocaleDateString()} - ${new Date(
-                        booking.endDate || booking.EndDate
-                      ).toLocaleDateString()}`
-                    : ""}
+                <li key={booking.id}>
+                  <div className="booking-content">
+                    <div>
+                      <strong>{booking.hotelName || booking.HotelName}</strong>
+                      <br />
+                      {(booking.startDate || booking.StartDate) &&
+                      (booking.endDate || booking.EndDate)
+                        ? `${new Date(
+                            booking.startDate || booking.StartDate
+                          ).toLocaleDateString()} - ${new Date(
+                            booking.endDate || booking.EndDate
+                          ).toLocaleDateString()}`
+                        : ""}
+                    </div>
+
+                    <span
+                      className="delete-icon"
+                      onClick={() => confirmDelete(booking.id)}
+                      title="Foglalás törlése"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </span>
+                  </div>
                 </li>
               ))}
             </ul>
