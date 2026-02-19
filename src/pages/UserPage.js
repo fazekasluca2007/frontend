@@ -260,59 +260,64 @@ export default function UserPage({ user, updateProfileImage }) {
             <input type="email" value={email} disabled className="readonly-input" />
           </div>
 
-          {editMode && (
-            <>
-              <div className="field mb-3 position-relative">
-                <label>Régi jelszó</label>
-                <input
-                  type={showOldPassword ? "text" : "password"}
-                  className="form-control pe-5"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
-                <span
-                  className="password-eye"
-                  onClick={() => setShowOldPassword(!showOldPassword)}
-                >
-                  {showOldPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </div>
+  {editMode && (
+    <>
+          <div className="field mb-3">
+            <label>Régi jelszó</label>
 
-              <div className="field mb-3 position-relative">
-                <label>Új jelszó</label>
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  className="form-control pe-5"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <span
-                  className="password-eye"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                >
-                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </div>
-              
-              <div className="field mb-3 position-relative">
-                <label>Új jelszó újra</label>
-                <input
-                  type={showPasswordAgain ? "text" : "password"}
-                  className="form-control pe-5"
-                  value={passwordAgain}
-                  onChange={(e) => setPasswordAgain(e.target.value)}
-                />
-                <span
-                  className="password-eye"
-                  onClick={() => setShowPasswordAgain(!showPasswordAgain)}
-                >
-                  {showPasswordAgain ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </div>
+            <div className="password-wrapper">
+            <input
+              type={showOldPassword ? "text" : "password"}
+              className="form-control"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+             />
+            <span className="password-eye" onClick={() => setShowOldPassword(!showOldPassword)} >
+          {showOldPassword ? <FaEyeSlash /> : <FaEye />}
+        </span>
+      </div>
+    </div>
 
-              <button type="submit" className="btn btn-primary btn-lg">Mentés</button>
-            </>
-          )}
+    <div className="field mb-3">
+      <label>Új jelszó</label>
+
+      <div className="password-wrapper">
+        <input
+          type={showNewPassword ? "text" : "password"}
+          className="form-control"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <span className="password-eye" onClick={() => setShowNewPassword(!showNewPassword)}>
+        {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+        </span>
+      </div>
+    </div>
+
+    <div className="field mb-3">
+      <label>Új jelszó újra</label>
+
+      <div className="password-wrapper">
+        <input
+          type={showPasswordAgain ? "text" : "password"}
+          className="form-control"
+          value={passwordAgain}
+          onChange={(e) => setPasswordAgain(e.target.value)}
+        />
+
+        <span className="password-eye" onClick={() => setShowPasswordAgain(!showPasswordAgain)} >
+        {showPasswordAgain ? <FaEyeSlash /> : <FaEye />}
+        </span>
+      </div>
+    </div>
+
+        <button type="submit" className="btn btn-primary btn-lg w-100">
+        Mentés
+        </button>
+    </>
+  )}
+
 
         </form>
 
