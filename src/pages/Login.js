@@ -23,25 +23,6 @@ export default function Login({ onLogin }) {
 
   const navigate = useNavigate();
 
-
-  const sendWelcomeEmail = async (email, name) => {
-    try {
-      await fetch("https://localhost:7267/api/Mail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: email,
-          subject: "Sikeres regisztráció - EcoTrip 🌱",
-          body: `Köszönjük ${name}\n\n,hogy regisztrált az EcoTrip oldalunkra!🎉`,
-        }),
-      });
-    } catch (err) {
-      console.error("Email küldési hiba:", err);
-    }
-  };
-
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) navigate("/");
@@ -126,7 +107,6 @@ export default function Login({ onLogin }) {
       });
 
       if (response.ok) {
-       
         await sendWelcomeEmail(email, fullName);
         toast.success("Sikeres regisztráció!");
         setIsLogin(true);
@@ -153,6 +133,50 @@ export default function Login({ onLogin }) {
       setLoading(false);
     }
   };
+
+
+  const sendWelcomeEmail = async (email, name) => {
+    try {
+      await fetch("https://localhost:7267/api/Mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: email,
+          subject: "Sikeres regisztráció - EcoTrip",
+          body: `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2 style="color: #2e7d32;">Üdvözlünk az EcoTrip oldalán!🌿</h2>
+            
+            <p>Kedves <strong>${name}</strong>!</p>
+            
+            <p>
+              Köszönjük, hogy regisztráltál az <strong>EcoTrip</strong> oldalunkra!🎉
+            </p>
+            
+            <p>
+              Böngéssz az oldalunkon az alábbi linken:
+            </p>
+            
+            <a href="http://localhost:3000/">
+                http://localhost:3000/
+            </a>
+          
+          
+            <p style="font-size:14px; color:gray;">
+              Üdvözlettel,<br/>
+              Az EcoTrip csapata
+            </p>
+          </div>
+        `,
+        }),
+      });
+    } catch (err) {
+      console.error("Email küldési hiba:", err);
+    }
+  };
+
 
   useEffect(() => {
     document.title = isLogin
