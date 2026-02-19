@@ -154,10 +154,9 @@ export default function Home() {
           >
             Foglalj most
           </NavLink>
-
+            <br></br>
           <p>
             Foglalj most, pár kattintással!
-            Gyors, egyszerű, fenntartható utazások egy helyen.
             Kezdd el még ma, és indulhat a következő élményed!
           </p>
         </div>
