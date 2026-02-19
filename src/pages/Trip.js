@@ -4,7 +4,38 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Trip.css";
-import Trip_card from "./components/Trip_card";
+
+// Trip_card komponens a Bootstrap csillagokkal és foglalás gomb stílussal
+const Trip_card = ({ hotel, onClick }) => {
+  return (
+    <div className="hotel-card">
+      <img
+        src={`/${hotel.image_url}`}
+        alt={hotel.hotel_name}
+        className="szallaskepek"
+      />
+      <div className="hotel-card-body">
+        <h5>{hotel.hotel_name}</h5>
+
+        {/* Bootstrap csillagok */}
+        <div className="review-stars">
+          {Array.from({ length: hotel.stars }).map((i) => (
+            <i key={i} className="bi bi-star-fill review-star"></i>
+          ))}
+        </div>
+
+        <p>{hotel.city} {hotel.country}</p>
+
+        <button
+          className="btn btn-primary btn-lg mt-auto"
+          onClick={onClick}
+        >
+         Tovább a foglaláshoz
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Trip = () => {
   const URL = process.env.REACT_APP_BACKEND_URL;
@@ -19,7 +50,6 @@ const Trip = () => {
 
   useEffect(() => {
     setLoading(true);
-
     fetch(URL + "Trips/tripcards")
       .then((response) => response.json())
       .then((json) => {
@@ -57,12 +87,12 @@ const Trip = () => {
 
   const cities = selectedCountry
     ? [
-      ...new Set(
-        trips
-          .find((c) => c.country === selectedCountry)
-          ?.hotels.map((h) => h.city) || []
-      ),
-    ]
+        ...new Set(
+          trips
+            .find((c) => c.country === selectedCountry)
+            ?.hotels.map((h) => h.city) || []
+        ),
+      ]
     : [];
 
   const handleBooking = (hotel) => {
@@ -80,7 +110,6 @@ const Trip = () => {
 
   return (
     <>
-
       <ToastContainer theme="colored" />
 
       {(loading || error) && (
@@ -164,7 +193,7 @@ const Trip = () => {
                   <div key={country.country} className="my-5">
                     <div className="country-banner d-flex align-items-center mb-4">
                       <img
-                        src={country.flag}
+                        src={`/${country.flag}`}
                         alt={country.country}
                         className="zaszlokep me-3"
                       />

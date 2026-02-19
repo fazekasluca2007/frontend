@@ -4,7 +4,37 @@ import "./Ecotrips.css";
 import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Trip_card from "./components/Trip_card";
+
+const Trip_card = ({ hotel, onClick }) => {
+  return (
+    <div className="hotel-card">
+      <img
+        src={`/${hotel.image_url}`}
+        alt={hotel.hotel_name}
+        className="szallaskepek"
+      />
+      <div className="hotel-card-body">
+        <h5>{hotel.hotel_name}</h5>
+
+      
+        <div className="review-stars">
+          {Array.from({ length: hotel.stars }).map((i) => (
+            <i key={i} className="bi bi-star-fill review-star"></i>
+          ))}
+        </div>
+
+        <p>{hotel.city} {hotel.country}</p>
+
+        <button
+          className="btn btn-primary btn-lg mt-auto"
+          onClick={onClick}
+        >
+          Tovább a foglaláshoz
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const EcoTrip = () => {
   const URL = process.env.REACT_APP_BACKEND_URL;
@@ -57,12 +87,12 @@ const EcoTrip = () => {
 
   const cities = selectedCountry
     ? [
-      ...new Set(
-        ecotrips
-          .find((c) => c.country === selectedCountry)
-          ?.hotels.map((h) => h.city) || []
-      ),
-    ]
+        ...new Set(
+          ecotrips
+            .find((c) => c.country === selectedCountry)
+            ?.hotels.map((h) => h.city) || []
+        ),
+      ]
     : [];
 
   const handleBooking = (hotel) => {
@@ -80,7 +110,6 @@ const EcoTrip = () => {
 
   return (
     <>
-
       <ToastContainer theme="colored" />
 
       {(loading || error) && (
@@ -185,9 +214,7 @@ const EcoTrip = () => {
                       <div className="slider-container">
                         <div
                           className="slider-track"
-                          style={{
-                            transform: `translateX(${movePercent}%)`,
-                          }}
+                          style={{ transform: `translateX(${movePercent}%)` }}
                         >
                           {filteredHotels.map((hotel) => (
                             <Trip_card
