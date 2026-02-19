@@ -100,7 +100,11 @@ export default function Home() {
             .bindPopup(`
               <div style="min-width:220px">
                 <h6>${szallas.hotelName}</h6>
-                <strong>${szallas.stars} ★</strong><br/>
+
+                <div class="review-stars">
+                  ${'<i class="bi bi-star-fill review-star"></i>'.repeat(Number(szallas.stars))}
+                </div>
+
                 ${szallas.city}, ${szallas.country}
                 <hr/>
                 <p style="font-size:13px">${szallas.description}</p>
@@ -154,7 +158,9 @@ export default function Home() {
           >
             Foglalj most
           </NavLink>
-            <br></br>
+
+          <br />
+
           <p>
             Foglalj most, pár kattintással!
             Kezdd el még ma, és indulhat a következő élményed!

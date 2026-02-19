@@ -103,9 +103,12 @@ export default function Information() {
             {data.city} – {data.hotel_name}
           </h2>
 
-          <p className="stars">
-            {"★".repeat(data.stars)}
-          </p>
+          {/* Bootstrap csillagok */}
+          <div className="review-stars mb-3">
+            {Array.from({ length: data.stars }).map((_, i) => (
+              <i key={i} className="bi bi-star-fill review-star"></i>
+            ))}
+          </div>
 
           {data.long_description && <p>{data.long_description}</p>}
 
@@ -124,7 +127,7 @@ export default function Information() {
                         data-bs-toggle="collapse"
                         data-bs-target={`#route-${index}`}
                       >
-                        <i class="bi bi-geo-alt-fill text-danger"></i> {getDestinationFromRoute(route.trim())}
+                        <i className="bi bi-geo-alt-fill text-danger"></i> {getDestinationFromRoute(route.trim())}
                       </button>
                     </h2>
 
@@ -134,9 +137,9 @@ export default function Information() {
                       data-bs-parent="#routesAccordion"
                     >
                       <div className="accordion-body">
-                        <p><strong><i class="bi bi-buildings text-success"></i> Hotel:</strong> {data.hotel_name}</p>
-                        <p><strong><i class="bi bi-signpost-2 text-warning"></i> Útvonal:</strong> {getRouteInfoFromRoute(route.trim())}</p>
-                        <p><strong><i class="bi bi-geo-alt-fill text-danger"></i> Végállomás:</strong> {getDestinationFromRoute(route.trim())}</p>
+                        <p><strong><i className="bi bi-buildings text-success"></i> Hotel:</strong> {data.hotel_name}</p>
+                        <p><strong><i className="bi bi-signpost-2 text-warning"></i> Útvonal:</strong> {getRouteInfoFromRoute(route.trim())}</p>
+                        <p><strong><i className="bi bi-geo-alt-fill text-danger"></i> Végállomás:</strong> {getDestinationFromRoute(route.trim())}</p>
                       </div>
                     </div>
                   </div>
@@ -149,11 +152,10 @@ export default function Information() {
             className="btn btn-primary btn-lg"
             onClick={handleBooking}
           >
-            Foglalás
+            Kezdd el a foglalást
           </button>
         </div>
       </div>
     </div>
-
   );
 }
