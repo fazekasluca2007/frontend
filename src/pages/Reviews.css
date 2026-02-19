@@ -27,7 +27,6 @@
     text-decoration: none;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 .login-btn-circle:hover {
     transform: scale(1.1) translateX(2px);
     background-color: #007070 !important;

@@ -56,6 +56,7 @@ export default function Reviews() {
   const renderStars = (db) =>
     Array.from({ length: db }).map((_, i) => (
       <i key={i} className="bi bi-star-fill review-star"></i>
+      
     ));
 
   const handleEdit = (v) => {
