@@ -28,7 +28,7 @@ export default function Login({ onLogin }) {
     if (storedUser) navigate("/");
   }, [navigate]);
 
-  const handleLogin = async (e) => {
+    const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -45,11 +45,31 @@ export default function Login({ onLogin }) {
       });
 
       if (response.ok) {
-        const user = await response.json();
+        const user = await response.json(); 
 
         const token = user.token || (user.tokenDto && user.tokenDto.token);
         if (token) {
           localStorage.setItem("token", token);
+        }
+
+        try {
+          const profileRes = await fetch("https://localhost:7267/api/Profile/profile", {
+            method: "GET",
+            headers: { 
+              "Content-Type": "application/json", 
+              "Authorization": `Bearer ${token}` 
+            },
+          });
+
+          if (profileRes.ok) {
+            const profileData = await profileRes.json();
+            user.user = {
+              ...user.user,
+              profileImage: profileData.profileImage
+            };
+          }
+        } catch (profileError) {
+          console.error("Profilkép hiba:", profileError);
         }
 
         onLogin(user);

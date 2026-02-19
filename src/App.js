@@ -33,13 +33,23 @@ function App() {
   };
 
   const updateProfileImage = (newImage) => {
-    setUser((prev) => ({
-      ...prev,
-      user: {
-        ...prev.user,
-        profileImage: newImage,
-      },
-    }));
+    setUser((prev) => {
+      if (!prev) return prev;
+      const updatedUser = {
+        ...prev,
+        user: {
+          ...prev.user,
+          profileImage: newImage,
+        },
+      };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  };
+
+  const updateUser = (newUserData) => {
+    setUser(newUserData);
+    localStorage.setItem("user", JSON.stringify(newUserData));
   };
 
   return (
@@ -49,7 +59,13 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/bejelentkezes' element={<Login onLogin={login} />} />
-        <Route path="/profile"element={<UserPage user={user} updateProfileImage={updateProfileImage} />}/>
+        <Route path="/profile" element={
+          <UserPage 
+            user={user} 
+            updateProfileImage={updateProfileImage} 
+            updateUser={updateUser}
+          />
+        }/>
         <Route path='/utjaink' element={<Trip />} />
         <Route path='/okoutjaink' element={<Ecotrips />} />
         <Route path='/rolunk' element={<About />} />

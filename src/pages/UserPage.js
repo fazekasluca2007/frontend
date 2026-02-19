@@ -3,6 +3,7 @@ import "./UserPage.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useLocation } from 'react-router-dom';
 
 const defaultAvatars = [
   "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2876.jpg?t=st=1771404526~exp=1771408126~hmac=27629a3082f81d551eeb91de63a33eb72b01fb1bbb86f071f6fd681f4de5dfe6",
@@ -10,10 +11,11 @@ const defaultAvatars = [
   "https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1771404587~exp=1771408187~hmac=b94f72a4a6733159b68d8980b0be305a42dcc054c6d8ccc07e811c7fc14035d0",
   "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2944.jpg?t=st=1771404643~exp=1771408243~hmac=0e851c3eb16218153460e469268e52304b38fd7c0835b3f90ea8f0154e2a57cf",
   "https://img.freepik.com/free-vector/man-red-shirt-with-white-collar_90220-2873.jpg?t=st=1771404726~exp=1771408326~hmac=56f8283ece2869604da0453921fdedf82faf6d0e4cdca938339b90dfc2030548",
-  "https://img.freepik.com/free-vector/isolated-young-handsome-man-set-different-poses-white-background-illustration_632498-657.jpg?t=st=1771404852~exp=1771408452~hmac=0552accd341c3c3622f0935a2aedae0247ed8138feb9adfc1e0338a93c8267a4",
+  "https://img.freepik.com/free-vector/mans-flat-style-face_90220-2938.jpg?t=st=1771493824~exp=1771497424~hmac=19558146c8757b62cf28c6fd17aabc609fcd49424043ba8c47d182feb7af8e50",
 ];
 
-export default function UserPage({ user, updateProfileImage }) {
+export default function UserPage({ user, updateProfileImage, updateUser }) {
+  const location = useLocation();
   const [editMode, setEditMode] = useState(false);
   const [username, setUsername] = useState(() => user?.user?.username || "");
   const [password, setPassword] = useState("");
@@ -29,83 +31,64 @@ export default function UserPage({ user, updateProfileImage }) {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-      document.title = "EcoTrip – Profil";
-    }, []);
+    document.title = "EcoTrip – Profil";
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Nincs bejelentkezett felhasználó!");
-        return;
-      }
-
+      if (!token) return;
       try {
         const response = await fetch("https://localhost:7267/api/Profile/profile", {
           method: "GET",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          headers: { 
+            "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}`,
+            "Cache-Control": "no-cache"
+          },
         });
-
-        if (!response.ok) {
-          toast.error("Hiba a profil lekérésekor!");
-          return;
+        if (response.ok) {
+          const data = await response.json();
+          setFullName(data.fullName || "");
+          setEmail(data.email || "");
+          const currentImg = data.profileImage || defaultAvatars[0];
+          setSelectedAvatar(currentImg);
+          updateProfileImage(currentImg);
         }
-
-        const data = await response.json();
-        setFullName(data.fullName || "");
-        setEmail(data.email || "");
-        setSelectedAvatar(data.profileImage || defaultAvatars[0]);
-        updateProfileImage(data.profileImage || defaultAvatars[0]);
       } catch (error) {
         console.error(error);
-        toast.error("Hiba a szerverrel való kapcsolatban!");
       }
     };
-
     fetchProfile();
-  }, []);
+  }, [location.key]);
 
   useEffect(() => {
     const fetchBookings = async () => {
       const token = localStorage.getItem("token");
       if (!token) return;
-
       try {
         const response = await fetch("https://localhost:7267/api/Bookings/my", {
           method: "GET",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
-
-        if (!response.ok) return;
-
-        const data = await response.json();
-        setBookings(Array.isArray(data) ? data : []);
+        if (response.ok) {
+          const data = await response.json();
+          setBookings(Array.isArray(data) ? data : []);
+        }
       } catch (error) {
         console.error(error);
       }
     };
     fetchBookings();
-  }, []);
+  }, [location.key]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const newAvatar = URL.createObjectURL(file);
       setCustomAvatar(newAvatar);
-      updateProfileImage(newAvatar);
+      setSelectedAvatar(newAvatar);
     }
-  };
-
-  const uploadProfileImage = async () => {
-    if (!customAvatar) return;
-    const token = localStorage.getItem("token");
-    const response = await fetch("https://localhost:7267/api/Profile/image", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ imageUrl: customAvatar }),
-    });
-    if (!response.ok) throw new Error("Hiba a kép feltöltésekor");
-    updateProfileImage(customAvatar);
   };
 
   const updateUsername = async () => {
@@ -115,7 +98,7 @@ export default function UserPage({ user, updateProfileImage }) {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ username }),
     });
-    if (!response.ok) throw new Error("Hiba a felhasználónév frissítésekor");
+    if (!response.ok) throw new Error("Hiba");
   };
 
   const updatePassword = async () => {
@@ -126,89 +109,86 @@ export default function UserPage({ user, updateProfileImage }) {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ oldPassword, newPassword: password }),
     });
-    if (!response.ok) throw new Error("Hiba a jelszó frissítésekor");
+    if (!response.ok) throw new Error("Hiba");
   };
 
-  const confirmDelete = (id) => {
-    const toastId = toast.error(
-      <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>
-          Biztosan törölni szeretné a foglalását?
-        </p>
-        <div className="d-flex gap-2">
-          <button
-            className="btn btn-light btn-sm px-3"
-            style={{ fontSize: "12px", fontWeight: "bold" }}
-            onClick={() => {
-              executeDelete(id);
-              toast.dismiss(toastId);
-            }}
-          >
-            Igen
-          </button>
-          <button
-            className="btn btn-outline-light btn-sm px-3"
-            style={{ fontSize: "12px" }}
-            onClick={() => toast.dismiss(toastId)}
-          >
-            Mégse
-          </button>
-        </div>
-      </div>,
-      { position: "top-right", autoClose: false, closeOnClick: false, closeButton: false, draggable: false, theme: "colored" }
-    );
+  const saveImageToBackend = async (imageUrl) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://localhost:7267/api/Profile/image", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ imageUrl: imageUrl }),
+    });
+    if (!response.ok) throw new Error("Hiba");
   };
 
   const executeDelete = async (id) => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Nincs bejelentkezve!");
-      return;
-    }
-
+    if (!token) return;
     try {
       const response = await fetch(`https://localhost:7267/api/Bookings/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      if (response.status === 403) {
-        toast.error("Nincs jogosultságod!");
-        return;
+      if (response.ok) {
+        setBookings((prev) => prev.filter((b) => b.id !== id));
+        toast.success("Törölve");
       }
-
-      if (!response.ok) {
-        toast.error("Hiba történt!");
-        return;
-      }
-
-      setBookings((prev) => prev.filter((b) => b.id !== id));
-      toast.success("Foglalás sikeresen törölve!", { theme: "colored" });
-    } catch {
-      toast.error("Szerver hiba történt!", { theme: "colored" });
-    }
-  };
-
-  const handleSave = async (e) => {
-    e.preventDefault();
-    if (password !== passwordAgain) {
-      toast.error("A két jelszó nem egyezik!");
-      return;
-    }
-
-    try {
-      await updateUsername();
-      await updatePassword();
-      await uploadProfileImage();
-      toast.success("Profil sikeresen frissítve!");
-      setEditMode(false);
-      setPassword("");
-      setPasswordAgain("");
-      setOldPassword("");
     } catch (error) {
       console.error(error);
     }
   };
+
+  const confirmDelete = (id) => {
+    const toastId = toast.error(
+      <div>
+        <p>Biztosan törölni szeretné?</p>
+        <button onClick={() => { executeDelete(id); toast.dismiss(toastId); }}>Igen</button>
+        <button onClick={() => toast.dismiss(toastId)}>Mégse</button>
+      </div>,
+      { autoClose: false, closeOnClick: false }
+    );
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    if (password && password !== passwordAgain) {
+      toast.error("Hiba");
+      return;
+    }
+    try {
+      await updateUsername();
+      if (password) await updatePassword();
+      
+      const finalImage = customAvatar || selectedAvatar;
+      await saveImageToBackend(finalImage);
+
+      const updatedUserData = {
+        ...user,
+        user: {
+          ...user?.user,
+          username: username,
+          profileImage: finalImage
+        }
+      };
+
+      if (typeof updateUser === "function") {
+        updateUser(updatedUserData);
+      }
+      
+      updateProfileImage(finalImage);
+      setEditMode(false);
+      setPassword("");
+      setPasswordAgain("");
+      setOldPassword("");
+      setCustomAvatar(null);
+      toast.success("Sikeres mentés");
+    } catch (error) {
+      console.error(error);
+      toast.error("Hiba");
+    }
+  };
+
 
   return (
     <div className="profile-container">
