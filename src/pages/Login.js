@@ -56,8 +56,14 @@ export default function Login({ onLogin }) {
         toast.success("Sikeres bejelentkezés!");
         setTimeout(() => navigate("/"), 1500);
       } else {
-        const errorData = await response.json();
-        toast.error(errorData.message || "Sikertelen bejelentkezés!");
+        let errorMessage = "Hibás felhasználónév vagy jelszó!";
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch {}
+        toast.error(errorMessage);
         setLoading(false);
       }
     } catch (error) {
@@ -86,7 +92,7 @@ export default function Login({ onLogin }) {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error("Hibás e-mail formátum! (pl: valami@email.com)");
+      toast.error("Hibás e-mail formátum! (pl: ecotripmail@gmail.com)");
       return;
     }
 
@@ -116,16 +122,22 @@ export default function Login({ onLogin }) {
         setPassword2("");
         setNotRobot(false);
       } else {
-        const errorData = await response.json();
+        let errorMessage = "A regisztráció sikertelen!";
+        try {
+          const errorData = await response.json();
+          const message = errorData.message?.toLowerCase() || "";
 
-        if (
-          errorData.message &&
-          errorData.message.toLowerCase().includes("username")
-        ) {
-          toast.error("Ez a felhasználónév már foglalt!");
-        } else {
-          toast.error(errorData.message || "A regisztráció sikertelen!");
-        }
+          if (message.includes("username") && message.includes("email")) {
+            errorMessage = "A felhasználónév és az e-mail cím már foglalt!";
+          } else if (message.includes("username")) {
+            errorMessage = "Ez a felhasználónév már foglalt!";
+          } else if (message.includes("email")) {
+            errorMessage = "Ez az e-mail cím már regisztrálva van!";
+          } else {
+            errorMessage = errorData.message || errorMessage;
+          }
+        } catch {}
+        toast.error(errorMessage);
       }
     } catch (error) {
       toast.error("Hiba a szerverrel való kapcsolatban!");
@@ -133,7 +145,6 @@ export default function Login({ onLogin }) {
       setLoading(false);
     }
   };
-
 
   const sendWelcomeEmail = async (email, name) => {
     try {
@@ -144,7 +155,7 @@ export default function Login({ onLogin }) {
         },
         body: JSON.stringify({
           to: email,
-          subject: "Sikeres regisztráció - EcoTrip",
+          subject: "Sikeres regisztráció - EcoTrip 🌱",
           body: `
           <div style="font-family: Arial, sans-serif; line-height: 1.6;">
             <h2 style="color: #2e7d32;">Üdvözlünk az EcoTrip oldalán!🌿</h2>
@@ -163,7 +174,6 @@ export default function Login({ onLogin }) {
                 http://localhost:3000/
             </a>
           
-          
             <p style="font-size:14px; color:gray;">
               Üdvözlettel,<br/>
               Az EcoTrip csapata
@@ -177,11 +187,9 @@ export default function Login({ onLogin }) {
     }
   };
 
-
   useEffect(() => {
-    document.title = isLogin
-      ? "EcoTrip – Bejelentkezés"
-      : "EcoTrip – Regisztráció";
+    document.title =
+      isLogin ? "EcoTrip – Bejelentkezés" : "EcoTrip – Regisztráció";
   }, [isLogin]);
 
   return (
@@ -218,7 +226,6 @@ export default function Login({ onLogin }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-
                   <span
                     className="password-eye"
                     onClick={() => setShowPassword(!showPassword)}
