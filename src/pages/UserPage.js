@@ -29,6 +29,10 @@ export default function UserPage({ user, updateProfileImage }) {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
+      document.title = "EcoTrip – Profil";
+    }, []);
+
+  useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
