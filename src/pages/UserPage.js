@@ -177,7 +177,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const confirmProfileDelete = () => {
     const toastId = toast.error(
       <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretnéd a profilodat? Ez nem visszavonható!</p>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné végleg a profilját? </p>
         <div className="d-flex gap-2">
           <button 
             className="btn btn-light btn-sm px-3" 
