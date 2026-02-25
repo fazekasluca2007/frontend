@@ -21,17 +21,20 @@ function App() {
     return stored ? JSON.parse(stored) : null;
   });
 
+  // Bejelentkezés
   const login = (userData) => {
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
+  // Kijelentkezés
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token"); 
     setUser(null);
   };
 
+  // Profilkép frissítése
   const updateProfileImage = (newImage) => {
     setUser((prev) => {
       if (!prev) return prev;
@@ -47,9 +50,15 @@ function App() {
     });
   };
 
+  // User adatok frissítése
   const updateUser = (newUserData) => {
     setUser(newUserData);
-    localStorage.setItem("user", JSON.stringify(newUserData));
+    if (newUserData) {
+      localStorage.setItem("user", JSON.stringify(newUserData));
+    } else {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
   };
 
   return (
@@ -64,6 +73,7 @@ function App() {
             user={user} 
             updateProfileImage={updateProfileImage} 
             updateUser={updateUser}
+            onLogout={logout} // 🔹 hozzáadva, hogy profil törlés után az App state is null legyen
           />
         }/>
         <Route path='/utjaink' element={<Trip />} />

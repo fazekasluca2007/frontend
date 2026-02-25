@@ -7,22 +7,26 @@ export default function Nav({ user, onLogout }) {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
+
   const getName = () => {
     if (user?.user?.username) return user.user.username;
     if (user?.user?.fullName) return user.user.fullName;
     if (user?.user?.email) return user.user.email;
-
     return "Felhasználó";
   };
 
   const displayName = getName();
   const displayInitial = displayName.charAt(0).toUpperCase();
 
+  // Kijelentkezés
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user"); 
     onLogout();
   };
+
+ 
+  const isLoggedIn = !!user && !!localStorage.getItem("token");
 
   return (
     <nav className="navbar navbar-expand-lg position-relative">
@@ -43,6 +47,7 @@ export default function Nav({ user, onLogout }) {
           <span className="navbar-toggler-icon"></span>
         </button>
 
+       
         <div className="d-none d-lg-flex position-absolute start-50 translate-middle-x">
           <ul className="navbar-nav d-flex flex-row">
             <li className="nav-item"><NavLink className="nav-link" to="/utjaink">Útjaink</NavLink></li>
@@ -54,7 +59,7 @@ export default function Nav({ user, onLogout }) {
         </div>
 
         <ul className="navbar-nav d-none d-lg-flex align-items-center">
-          {!user ? (
+          {!isLoggedIn ? (
             <li className="nav-item">
               <NavLink className="nav-link login-btn ms-2" to="/bejelentkezes">
                 Bejelentkezés
@@ -71,11 +76,7 @@ export default function Nav({ user, onLogout }) {
                   )}
                 </div>
               </NavLink>
-
-              <span className="username ms-2">
-                {displayName}
-              </span>
-
+              <span className="username ms-2">{displayName}</span>
               <button
                 onClick={handleLogout}
                 className="btn btn-sm ms-2 logoutbtn"
@@ -87,6 +88,7 @@ export default function Nav({ user, onLogout }) {
         </ul>
       </div>
 
+      {/* Mobile menü */}
       {menuOpen && (
         <div className="mobile-menu d-lg-none text-center">
           <ul className="navbar-nav">
@@ -96,7 +98,7 @@ export default function Nav({ user, onLogout }) {
             <li className="nav-item"><NavLink className="nav-link" to="/gyik" onClick={toggleMenu}>GYIK</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/velemenyek" onClick={toggleMenu}>Vélemények</NavLink></li>
 
-            {!user ? (
+            {!isLoggedIn ? (
               <li className="nav-item">
                 <NavLink className="nav-link" to="/bejelentkezes" onClick={toggleMenu}>
                   Bejelentkezés
