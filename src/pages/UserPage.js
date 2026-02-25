@@ -127,6 +127,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     if (!response.ok) throw new Error("Hiba");
   };
 
+  // ✅ Foglalás törlés
   const executeDelete = async (id) => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -137,18 +138,40 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       });
       if (response.ok) {
         setBookings(prev => prev.filter(b => b.id !== id));
-        toast.success("Törölve");
+        toast.success("Foglalás törölve");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+  // ✅ Foglalás törlésének megerősítése – piros toast
   const confirmDelete = (id) => {
-    if (window.confirm("Biztosan törölni szeretnéd?")) executeDelete(id);
+    const toastId = toast.error(
+      <div>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretnéd a foglalást?</p>
+        <div className="d-flex gap-2">
+          <button
+            className="btn btn-light btn-sm px-3"
+            style={{ fontSize: "12px", fontWeight: "bold" }}
+            onClick={() => { executeDelete(id); toast.dismiss(toastId); }}
+          >
+            Igen
+          </button>
+          <button
+            className="btn btn-outline-light btn-sm px-3"
+            style={{ fontSize: "12px" }}
+            onClick={() => toast.dismiss(toastId)}
+          >
+            Mégse
+          </button>
+        </div>
+      </div>,
+      { autoClose: false, closeOnClick: false }
+    );
   };
 
- 
+  // ✅ Profil törlés + kijelentkeztetés
   const executeProfileDelete = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -173,11 +196,10 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     }
   };
 
-
   const confirmProfileDelete = () => {
     const toastId = toast.error(
       <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné végleg a profilját? </p>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretnéd a profilodat? Ez nem visszavonható!</p>
         <div className="d-flex gap-2">
           <button 
             className="btn btn-light btn-sm px-3" 
