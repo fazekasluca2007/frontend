@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { differenceInCalendarDays } from "date-fns";
-import { hu } from "date-fns/locale"; // magyar nyelv
+import { hu } from "date-fns/locale";
 import "./Booking.css";
 
 export default function Booking() {
@@ -20,19 +20,16 @@ export default function Booking() {
   const [error, setError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Foglalási adatok
   const [fo, setFo] = useState(location.state?.fo ?? 1);
   const [napok, setNapok] = useState(location.state?.napok ?? 1);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  // Személyes adatok
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+36 ");
 
-  // Fizetés
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
@@ -40,23 +37,47 @@ export default function Booking() {
 
   const [errors, setErrors] = useState({});
 
-  const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 15) value = value.slice(0, 15);
-    setPhone(value);
+  const formatDateLocal = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
-  const handleCardChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 16) value = value.slice(0, 16);
-    setCardNumber(value);
+  const formatHungarianPhone = (value) => {
+    let digits = value.replace(/\D/g, "");
+    if (digits.startsWith("36")) digits = digits.slice(2);
+    digits = digits.slice(0, 9);
+    const part1 = digits.slice(0, 2);
+    const part2 = digits.slice(2, 5);
+    const part3 = digits.slice(5, 9);
+    let formatted = "+36";
+    if (part1) formatted += " " + part1;
+    if (part2) formatted += " " + part2;
+    if (part3) formatted += " " + part3;
+    return formatted;
   };
+
+  const handlePhoneChange = (e) => {
+    const raw = formatHungarianPhone(e.target.value);
+    setPhone(raw);
+  };
+
+  const getRawPhone = () =>
+    phone.replace(/\D/g, "").startsWith("36")
+      ? "+" + phone.replace(/\D/g, "")
+      : "+36" + phone.replace(/\D/g, "");
+
+  const formatCardNumber = (value) => {
+    let digits = value.replace(/\D/g, "").slice(0, 16);
+    return digits.replace(/(.{4})/g, "$1 ").trim();
+  };
+
+  const handleCardChange = (e) => setCardNumber(formatCardNumber(e.target.value));
 
   const handleExpiryChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 2) {
-      value = value.slice(0, 2) + "/" + value.slice(2, 4);
-    }
+    if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2, 4);
     setExpiry(value);
   };
 
@@ -66,24 +87,19 @@ export default function Booking() {
     setCvc(value);
   };
 
-  const handlePaymentChange = (e) => {
-    setPaymentMethod(e.target.value);
-  };
+  const handlePaymentChange = (e) => setPaymentMethod(e.target.value);
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-
     if (start && end) {
       let diff = differenceInCalendarDays(end, start);
       if (diff > 20) {
         toast.error("Maximum 20 napot választhatsz!");
         setEndDate(null);
         setNapok(1);
-      } else {
-        setNapok(diff);
-      }
+      } else setNapok(diff);
     }
   };
 
@@ -94,13 +110,13 @@ export default function Booking() {
   useEffect(() => {
     if (trip_id) {
       fetch(`https://localhost:7267/api/Trips/detailed/${trip_id}`)
-        .then(res => res.json())
-        .then(data => setHotel(Array.isArray(data) ? data[0] : data))
+        .then((res) => res.json())
+        .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));
     } else if (ecotrip_id) {
       fetch(`https://localhost:7267/api/EcoTrip/detailed/${ecotrip_id}`)
-        .then(res => res.json())
-        .then(data => setHotel(Array.isArray(data) ? data[0] : data))
+        .then((res) => res.json())
+        .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));
     }
   }, [trip_id, ecotrip_id]);
@@ -112,17 +128,17 @@ export default function Booking() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newErrors = {};
 
     if (!firstName.trim()) newErrors.firstName = "Kérlek add meg a keresztneved!";
     if (!lastName.trim()) newErrors.lastName = "Kérlek add meg a vezetékneved!";
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adj meg!";
-    if (!phone.match(/^\d{7,15}$/)) newErrors.phone = "Érvényes telefonszámot adj meg!";
+    if (!getRawPhone().match(/^\+36(20|30|31|50|70)\d{7}$/))
+      newErrors.phone = "Érvényes magyar mobil szám szükséges! (+36 70 123 4567)";
     if (!startDate || !endDate) newErrors.date = "Válaszd ki a dátumtartományt!";
 
     if (paymentMethod === "card" || paymentMethod === "szep") {
-      if (!cardNumber.match(/^\d{16}$/)) newErrors.cardNumber = "16 számjegyű kártyaszám szükséges!";
+      if (!cardNumber.replace(/\s/g, "").match(/^\d{16}$/)) newErrors.cardNumber = "16 számjegyű kártyaszám szükséges!";
       if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) newErrors.expiry = "Érvényes formátum: MM/ÉÉ";
       if (!cvc.match(/^\d{3}$/)) newErrors.cvc = "3 számjegyű CVC szükséges!";
     }
@@ -133,36 +149,44 @@ export default function Booking() {
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
-
       const response = await fetch("https://localhost:7267/api/Bookings", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           tripId: trip_id ?? ecotrip_id,
           seats: fo,
           days: napok,
-          startDate,
-          endDate,
+          startDate: formatDateLocal(startDate),
+          endDate: formatDateLocal(endDate),
           paymentType: paymentMethod,
           firstName,
           lastName,
           email,
-          phone
-        })
+          phone: getRawPhone(),
+          cardNumber: paymentMethod !== "cash" ? cardNumber.replace(/\s/g, "") : null,
+          expiry,
+          cvc,
+        }),
       });
 
       if (!response.ok) throw new Error();
 
-      toast.success("Sikeres foglalás!", { position: "top-right", autoClose: 3000, theme: "colored" });
-      setTimeout(() => navigate("/"), 1500);
-
+      toast.success("Sikeres foglalás!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+        onClose: () => {
+          setIsSubmitting(false);
+          navigate("/");
+        },
+      });
     } catch {
-      toast.error("Hiba történt a foglalás során!");
-    } finally {
-      setIsSubmitting(false);
+      toast.error("Hiba történt a foglalás során!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+        onClose: () => setIsSubmitting(false),
+      });
     }
   };
 
@@ -172,22 +196,16 @@ export default function Booking() {
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-lg-8 p-4 rounded shadow booking-card">
-
             <h2 className="mb-4 text-center border-bottom pb-3">Foglalási adatok</h2>
             <h3 className="text-center mb-4">{hotel.city} – {hotel.hotel_name}</h3>
 
             <p><strong>Fő / Éj:</strong> {fo} / {napok}</p>
             <p><strong>Fő / éj ár:</strong> {hotel.price} Ft</p>
             <p className="fs-5"><strong>Teljes összeg:</strong> {totalPrice} Ft</p>
-            <p className="text-muted fst-italic mt-2">
-              A feltüntetett árak már tartalmazzák az oldalunk szolgáltatási díjait.
-            </p>
+            <p className="text-muted fst-italic mt-2">A feltüntetett árak már tartalmazzák az oldalunk szolgáltatási díjait.</p>
 
             <hr className="my-4" />
-
             <form onSubmit={handleSubmit}>
-
-        
               <label className="form-label">Dátum kiválasztása:</label>
               <div className="mb-4">
                 <DatePicker
@@ -198,14 +216,12 @@ export default function Booking() {
                   selectsRange
                   inline
                   minDate={new Date()}
-                  locale={hu}  
+                  locale={hu}
                 />
                 <p className="mt-2">{napok} éjszaka</p>
                 <div className="text-danger">{errors.date}</div>
               </div>
 
-
-            
               <div className="mb-4">
                 <label className="form-label">Fő:</label>
                 <div className="fo-spinner">
@@ -214,51 +230,49 @@ export default function Booking() {
                   <button type="button" className="btn-plus" onClick={() => setFo(prev => (prev < 10 ? prev + 1 : 10))}>+</button>
                 </div>
               </div>
+
               <hr className="my-4" />
-              {/* Személyes adatok */}
               <h4 className="mb-3">Személyes adatok</h4>
+
               <div className="mb-3">
                 <label className="form-label">Vezetéknév</label>
-                <input type="text" className={`form-control ${errors.lastName ? "is-invalid" : ""}`} placeholder="Vezetéknév"
-                  value={lastName} onChange={e => setLastName(e.target.value)} />
+                <input type="text" className={`form-control ${errors.lastName ? "is-invalid" : ""}`} placeholder="Vezetéknév" value={lastName} onChange={e => setLastName(e.target.value)} />
                 <div className="invalid-feedback">{errors.lastName}</div>
               </div>
+
               <div className="mb-3">
                 <label className="form-label">Keresztnév</label>
-                <input type="text" className={`form-control ${errors.firstName ? "is-invalid" : ""}`} placeholder="Keresztnév"
-                  value={firstName} onChange={e => setFirstName(e.target.value)} />
+                <input type="text" className={`form-control ${errors.firstName ? "is-invalid" : ""}`} placeholder="Keresztnév" value={firstName} onChange={e => setFirstName(e.target.value)} />
                 <div className="invalid-feedback">{errors.firstName}</div>
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Email</label>
-                <input type="email" className={`form-control ${errors.email ? "is-invalid" : ""}`} placeholder="Email"
-                  value={email} onChange={e => setEmail(e.target.value)} />
+                <input type="email" className={`form-control ${errors.email ? "is-invalid" : ""}`} placeholder="ecotripmail@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
                 <div className="invalid-feedback">{errors.email}</div>
               </div>
+
               <div className="mb-3">
                 <label className="form-label">Telefon</label>
-                <input type="tel" className={`form-control ${errors.phone ? "is-invalid" : ""}`} placeholder="Telefon"
-                  value={phone} onChange={handlePhoneChange} />
+                <input type="tel" className={`form-control ${errors.phone ? "is-invalid" : ""}`} placeholder="+36 70 123 4567" value={phone} onChange={handlePhoneChange} maxLength={15} />
                 <div className="invalid-feedback">{errors.phone}</div>
               </div>
 
-              {/* Fizetési mód */}
               <h4 className="mt-4 mb-3">Fizetési mód</h4>
+
               <div className="mb-3">
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="card"
-                    checked={paymentMethod === "card"} onChange={handlePaymentChange} />
+                  <input className="form-check-input" type="radio" name="paymentMethod" value="card" checked={paymentMethod === "card"} onChange={handlePaymentChange} />
                   <label className="form-check-label">Bankkártya</label>
                 </div>
+
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="szep"
-                    checked={paymentMethod === "szep"} onChange={handlePaymentChange} />
+                  <input className="form-check-input" type="radio" name="paymentMethod" value="szep" checked={paymentMethod === "szep"} onChange={handlePaymentChange} />
                   <label className="form-check-label">SZÉP kártya</label>
                 </div>
+
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="cash"
-                    checked={paymentMethod === "cash"} onChange={handlePaymentChange} />
+                  <input className="form-check-input" type="radio" name="paymentMethod" value="cash" checked={paymentMethod === "cash"} onChange={handlePaymentChange} />
                   <label className="form-check-label">Készpénz</label>
                 </div>
               </div>
@@ -267,29 +281,26 @@ export default function Booking() {
                 <div className="row g-3">
                   <div className="col-md-8">
                     <label className="form-label">Kártyaszám</label>
-                    <input type="text" className={`form-control ${errors.cardNumber ? "is-invalid" : ""}`}
-                      value={cardNumber} onChange={handleCardChange} maxLength={16} />
+                    <input type="text" className={`form-control ${errors.cardNumber ? "is-invalid" : ""}`} value={cardNumber} onChange={handleCardChange} maxLength={19} />
                     <div className="invalid-feedback">{errors.cardNumber}</div>
                   </div>
+
                   <div className="col-md-2">
                     <label className="form-label">MM/ÉÉ</label>
-                    <input type="text" className={`form-control ${errors.expiry ? "is-invalid" : ""}`}
-                      value={expiry} onChange={handleExpiryChange} maxLength={5} />
+                    <input type="text" className={`form-control ${errors.expiry ? "is-invalid" : ""}`} value={expiry} onChange={handleExpiryChange} maxLength={5} />
                     <div className="invalid-feedback">{errors.expiry}</div>
                   </div>
+
                   <div className="col-md-2">
                     <label className="form-label">CVC</label>
-                    <input type="text" className={`form-control ${errors.cvc ? "is-invalid" : ""}`}
-                      value={cvc} onChange={handleCvcChange} maxLength={3} />
+                    <input type="text" className={`form-control ${errors.cvc ? "is-invalid" : ""}`} value={cvc} onChange={handleCvcChange} maxLength={3} />
                     <div className="invalid-feedback">{errors.cvc}</div>
                   </div>
                 </div>
               )}
 
               {paymentMethod === "cash" && (
-                <div className="alert alert-info mt-3">
-                  A foglalás véglegesítése a helyszíni fizetéskor történik.
-                </div>
+                <div className="alert alert-info mt-3">A foglalás véglegesítése a helyszíni fizetéskor történik.</div>
               )}
 
               {isSubmitting ? (
@@ -297,13 +308,8 @@ export default function Booking() {
                   <DotLoader color="#7dbf7d" size={50} />
                 </div>
               ) : (
-                
                 <button className="btn btn-success btn-lg w-100 mt-4">Foglalás megerősítése</button>
-               
-
               )}
-              
-
             </form>
           </div>
         </div>
