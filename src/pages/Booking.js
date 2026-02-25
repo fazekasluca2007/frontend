@@ -43,6 +43,50 @@ export default function Booking() {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
+ 
+  const sendBookingEmail = async () => {
+    try {
+
+      const paymentLabels = {
+        "bankkártya": "Bankkártya",
+        "szép kártya": "SZÉP kártya",
+        "készpénz": "Készpénz"
+      };
+
+      await fetch("https://localhost:7267/api/Mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
+        body: JSON.stringify({
+          to: email,
+          subject: "Foglalás visszaigazolás - EcoTrip 🌱",
+          body: `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2 style="color: #2e7d32;">Sikeres foglalás! 🌿</h2>
+
+            <p>Kedves <strong>${lastName} ${firstName}</strong>!</p>
+
+            <p>A foglalásod sikeresen rögzítésre került.</p>
+
+            <ul>
+              <li><strong>Szállás:</strong> ${hotel.hotel_name}</li>
+              <li><strong>Város:</strong> ${hotel.city}</li>
+              <li><strong>Érkezés:</strong> ${formatDateLocal(startDate)}</li>
+              <li><strong>Távozás:</strong> ${formatDateLocal(endDate)}</li>
+              <li><strong>Fő:</strong> ${fo}</li>
+              <li><strong>Éjszakák:</strong> ${napok}</li>
+              <li><strong>Fizetési mód:</strong> ${paymentLabels[paymentMethod]}</li>
+              <li><strong>Teljes összeg:</strong> ${totalPrice} Ft</li>
+            </ul>
+
+            <p>Üdvözlettel,<br/>EcoTrip</p>
+          </div>
+        `,
+        }),
+      });
+    } catch (err) {
+      console.error("Email küldési hiba:", err);
+    }
+  };
 
   const formatHungarianPhone = (value) => {
     let digits = value.replace(/\D/g, "");
@@ -163,15 +207,17 @@ export default function Booking() {
           lastName,
           email,
           phone: getRawPhone(),
-          cardNumber: paymentMethod !== "cash" ? cardNumber.replace(/\s/g, "") : null,
+          cardNumber: paymentMethod !== "készpénz"
+            ? cardNumber.replace(/\s/g, "")
+            : null,
           expiry,
           cvc,
         }),
       });
 
       if (!response.ok) throw new Error();
-
-      toast.success("Sikeres foglalás!", {
+      await sendBookingEmail();
+      toast.success("Sikeres foglalás! Visszaigazoló email elküldve.", {
         position: "top-right",
         autoClose: 3000,
         theme: "colored",
@@ -262,22 +308,22 @@ export default function Booking() {
 
               <div className="mb-3">
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="card" checked={paymentMethod === "card"} onChange={handlePaymentChange} />
+                  <input className="form-check-input" type="radio" name="paymentMethod" value="bankkártya" checked={paymentMethod === "bankkártya"} onChange={handlePaymentChange} />
                   <label className="form-check-label">Bankkártya</label>
                 </div>
 
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="szep" checked={paymentMethod === "szep"} onChange={handlePaymentChange} />
+                  <input className="form-check-input" type="radio" name="paymentMethod" value="szép kártya" checked={paymentMethod === "szép kártya"} onChange={handlePaymentChange} />
                   <label className="form-check-label">SZÉP kártya</label>
                 </div>
 
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="cash" checked={paymentMethod === "cash"} onChange={handlePaymentChange} />
+                  <input className="form-check-input" type="radio" name="paymentMethod" value="készpénz" checked={paymentMethod === "készpénz"} onChange={handlePaymentChange} />
                   <label className="form-check-label">Készpénz</label>
                 </div>
               </div>
 
-              {(paymentMethod === "card" || paymentMethod === "szep") && (
+              {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
                 <div className="row g-3">
                   <div className="col-md-8">
                     <label className="form-label">Kártyaszám</label>
