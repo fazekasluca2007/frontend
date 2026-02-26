@@ -8,7 +8,6 @@ const About = () => {
     window.scrollTo(0, 0);
   }, []);
 
-
   useEffect(() => {
     const elements = document.querySelectorAll(".animate-on-scroll");
 
@@ -32,7 +31,7 @@ const About = () => {
   return (
     <div>
 
-
+      {/* HERO SECTION */}
       <section
         className="rolunk-hero text-center"
         style={{
@@ -45,36 +44,42 @@ const About = () => {
         </div>
       </section>
 
-
+      {/* ABOUT INFO – VALUES STYLE CARDS */}
       <section className="container my-5">
-        <div className="row align-items-center gy-4 animate-on-scroll">
-          <div className="col-md-6">
-            <img
-              src="img/rolunk kepek/adventure.jpg"
-              alt="kaland"
-              className="img-fluid rounded shadow-lg adventure-img-hover"
-            />
-          </div>
-          <div className="col-md-6">
-            <h2 className="text-gradient mb-3">Kik vagyunk?</h2>
-            <p className="lead">
-            Az <strong>EcoTrip</strong> egy magyar utazási iroda, amelynek
-              szenvedélye a fenntartható turizmus. Küldetésünk, hogy
-              megmutassuk: utazni lehet tudatosan is.
-              szenvedélye a fenntartható turizmus.
-            </p>
-            <p>
-            Célunk, hogy minden utazás élmény legyen – nemcsak a résztvevők,
-              hanem a bolygó számára is. Törekszünk arra, hogy programjaink
-              során minél kevesebb környezeti terhelést okozzunk. Az EcoTripnél
-              minden út arról szól, hogy jól érezzük magunkat, miközben
-              vigyázunk arra a világra, amit felfedezünk.
-              hanem a bolygó számára is.
-            </p>
-          </div>
+        <h2 className="text-center mb-5 text-gradient animate-on-scroll">
+          Kik vagyunk?
+        </h2>
+        <div className="row gy-4 justify-content-center animate-on-scroll">
+          {[
+            {
+              title: "Fenntartható utazás",
+              text: "Az EcoTrip küldetése, hogy megmutassa: utazni lehet tudatosan és környezettudatosan.",
+              color: "blue"
+            },
+            {
+              title: "Élmények mindenki számára",
+              text: "Minden utazás élmény legyen – a résztvevőknek és a bolygónak egyaránt.",
+              color: "green"
+            },
+            {
+              title: "Természetközeli programok",
+              text: "Programjaink során törekszünk minél kisebb környezeti terhelésre, miközben csodás élményeket biztosítunk.",
+              color: "brown"
+            },
+          ].map((card, index) => (
+            <div
+              key={index}
+              className="col-md-4 animate-on-scroll"
+              style={{ transitionDelay: `${index * 0.15}s` }}
+            >
+              <div className={`info-card ${card.color}`}>
+                <h5>{card.title}</h5>
+                <p>{card.text}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
-
       <section className="values-section py-5">
         <div className="container">
           <div className="row align-items-center gy-4">
@@ -101,12 +106,11 @@ const About = () => {
         </div>
       </section>
 
-
+     
       <section className="container py-5">
         <h2 className="text-center mb-5 text-gradient animate-on-scroll">
           Ismerd meg a csapatunkat
         </h2>
-
         <div className="row gy-4 justify-content-center">
           {[
             {
