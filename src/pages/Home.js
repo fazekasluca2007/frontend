@@ -249,8 +249,8 @@ const setCookie = (value) => {
       <div className="cookie-left">
         <span className="cookie-emoji">🍪</span>
         <span className="cookie-text">
-          Az oldal sütiket használ a biztonságos működés és a jobb
-          felhasználói élmény érdekében.{' '}
+          Az oldal sütiket használ a biztonságos működés és a jobb felhasználói élmény érdekében.
+          <br></br>
           <Link to="/sutik" style={{ color: '#00b3b3', textDecoration: 'underline' }}>
             Tudj meg többet
           </Link>

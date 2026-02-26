@@ -29,6 +29,26 @@
 .aszf-section ul {
   padding-left: 20px;
 }
+.aszf-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: darkcyan;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.aszf-back-link i {
+  font-size: 1rem;
+}
+
+.aszf-back-link:hover {
+  color: #00b3b3;
+}
 
 @media (max-width: 768px) {
   .aszf-page {
