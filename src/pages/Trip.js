@@ -67,13 +67,12 @@ const Trip = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const moveSlide = (country, step) => {
-    const countryData = trips.find((c) => c.country === country);
-    if (!countryData) return;
+  const moveSlide = (country, step, hotelsLength) => {
+    let cardsPerView = 4;
+    if (window.innerWidth <= 992 && window.innerWidth > 576) cardsPerView = 2;
+    if (window.innerWidth <= 576) cardsPerView = 1;
 
-    const cards = countryData.hotels.length;
-    const visible = 4;
-    const maxPos = Math.max(0, cards - visible);
+    const maxPos = Math.max(0, hotelsLength - cardsPerView);
 
     setPositions((prev) => {
       const current = prev[country] || 0;
@@ -82,6 +81,7 @@ const Trip = () => {
       return { ...prev, [country]: newPos };
     });
   };
+  // -------------------------
 
   const cities = selectedCountry
     ? [
@@ -93,7 +93,6 @@ const Trip = () => {
       ]
     : [];
 
- 
   const handleBooking = (hotel) => {
     navigate("/informaciok", {
       state: { trip_id: hotel.id },
@@ -179,7 +178,15 @@ const Trip = () => {
                   : country.hotels;
 
                 const pos = positions[country.country] || 0;
-                const movePercent = -(pos * 100);
+
+                let cardsPerView = 4;
+                if (window.innerWidth <= 992 && window.innerWidth > 576)
+                  cardsPerView = 2;
+                if (window.innerWidth <= 576) cardsPerView = 1;
+
+                const cardWidthPercent = 100 / cardsPerView;
+                const maxPos = Math.max(0, filteredHotels.length - cardsPerView);
+                const movePercent = -(pos * cardWidthPercent);
 
                 return (
                   <div key={country.country} className="my-5">
@@ -198,7 +205,10 @@ const Trip = () => {
                     <div className="slider-wrapper">
                       <button
                         className="slider-btn left"
-                        onClick={() => moveSlide(country.country, -1)}
+                        onClick={() =>
+                          moveSlide(country.country, -1, filteredHotels.length)
+                        }
+                        disabled={pos === 0}
                       >
                         ❮
                       </button>
@@ -222,7 +232,10 @@ const Trip = () => {
 
                       <button
                         className="slider-btn right"
-                        onClick={() => moveSlide(country.country, 1)}
+                        onClick={() =>
+                          moveSlide(country.country, 1, filteredHotels.length)
+                        }
+                        disabled={pos >= maxPos}
                       >
                         ❯
                       </button>

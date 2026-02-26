@@ -26,10 +26,7 @@ const Trip_card = ({ hotel, onClick }) => {
           {hotel.city} {hotel.country}
         </p>
 
-        <button
-          className="btn btn-primary btn-lg mt-auto"
-          onClick={onClick}
-        >
+        <button className="btn btn-primary btn-lg mt-auto" onClick={onClick}>
           További részletek
         </button>
       </div>
@@ -50,7 +47,6 @@ const EcoTrip = () => {
 
   useEffect(() => {
     setLoading(true);
-
     fetch(URL + "EcoTrip/ecotripcards")
       .then((response) => response.json())
       .then((json) => {
@@ -70,13 +66,12 @@ const EcoTrip = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const moveSlide = (country, step) => {
-    const countryData = ecotrips.find((c) => c.country === country);
-    if (!countryData) return;
+  const moveSlide = (country, step, hotelsLength) => {
+    let cardsPerView = 4;
+    if (window.innerWidth <= 992 && window.innerWidth > 576) cardsPerView = 2;
+    if (window.innerWidth <= 576) cardsPerView = 1;
 
-    const cards = countryData.hotels.length;
-    const visible = 4;
-    const maxPos = Math.max(0, cards - visible);
+    const maxPos = Math.max(0, hotelsLength - cardsPerView);
 
     setPositions((prev) => {
       const current = prev[country] || 0;
@@ -96,7 +91,6 @@ const EcoTrip = () => {
       ]
     : [];
 
-  // ✅ JAVÍTOTT: Részletek login nélkül is elérhető
   const handleBooking = (hotel) => {
     const loggedIn = localStorage.getItem("user") !== null;
 
@@ -191,7 +185,15 @@ const EcoTrip = () => {
                   : country.hotels;
 
                 const pos = positions[country.country] || 0;
-                const movePercent = -(pos * 100);
+
+                let cardsPerView = 4;
+                if (window.innerWidth <= 992 && window.innerWidth > 576)
+                  cardsPerView = 2;
+                if (window.innerWidth <= 576) cardsPerView = 1;
+
+                const cardWidthPercent = 100 / cardsPerView;
+                const maxPos = Math.max(0, filteredHotels.length - cardsPerView);
+                const movePercent = -(pos * cardWidthPercent);
 
                 return (
                   <div key={country.country} className="my-5">
@@ -210,7 +212,10 @@ const EcoTrip = () => {
                     <div className="slider-wrapper">
                       <button
                         className="slider-btn left"
-                        onClick={() => moveSlide(country.country, -1)}
+                        onClick={() =>
+                          moveSlide(country.country, -1, filteredHotels.length)
+                        }
+                        disabled={pos === 0}
                       >
                         ❮
                       </button>
@@ -232,7 +237,10 @@ const EcoTrip = () => {
 
                       <button
                         className="slider-btn right"
-                        onClick={() => moveSlide(country.country, 1)}
+                        onClick={() =>
+                          moveSlide(country.country, 1, filteredHotels.length)
+                        }
+                        disabled={pos >= maxPos}
                       >
                         ❯
                       </button>
