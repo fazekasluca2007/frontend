@@ -92,79 +92,93 @@ export default function Login({ onLogin }) {
     }
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+const handleRegister = async (e) => {
+  e.preventDefault();
 
-    if (!fullName || !username || !email || !password || !password2) {
-      toast.error("Kérlek, tölts ki minden mezőt!");
-      return;
-    }
+  if (!fullName || !username || !email || !password || !password2) {
+    toast.error("Kérlek, tölts ki minden mezőt!");
+    return;
+  }
 
-    if (!notRobot) {
-      toast.error("Kérlek, jelöld be, hogy nem vagy robot!");
-      return;
-    }
+  if (!notRobot) {
+    toast.error("Kérlek, jelöld be, hogy nem vagy robot!");
+    return;
+  }
 
-    if (password !== password2) {
-      toast.error("A két jelszó nem egyezik!");
-      return;
-    }
+  if (password !== password2) {
+    toast.error("A két jelszó nem egyezik!");
+    return;
+  }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast.error("Hibás e-mail formátum! (pl: ecotripmail@gmail.com)");
-      return;
-    }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    toast.error("Hibás e-mail formátum! (pl: ecotripmail@gmail.com)");
+    return;
+  }
 
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-    if (!passwordRegex.test(password)) {
-      toast.error(
-        "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
-      );
-      return;
-    }
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    toast.error(
+      "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
+    );
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const response = await fetch("https://localhost:7267/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, username, email, password }),
-      });
+  setLoading(true);
 
-      if (response.ok) {
-        await sendWelcomeEmail(email, fullName);
-        toast.success("Sikeres regisztráció!");
-        setIsLogin(true);
-        setFullName("");
-        setEmail("");
-        setPassword("");
-        setPassword2("");
-        setNotRobot(false);
-      } else {
-        let errorMessage = "A regisztráció sikertelen!";
-        try {
-          const errorData = await response.json();
-          const message = errorData.message?.toLowerCase() || "";
+  try {
+    const response = await fetch("https://localhost:7267/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fullName, username, email, password }),
+    });
 
-          if (message.includes("username") && message.includes("email")) {
-            errorMessage = "A felhasználónév és az e-mail cím már foglalt!";
-          } else if (message.includes("username")) {
-            errorMessage = "Ez a felhasználónév már foglalt!";
-          } else if (message.includes("email")) {
-            errorMessage = "Ez az e-mail cím már regisztrálva van!";
-          } else {
-            errorMessage = errorData.message || errorMessage;
-          }
-        } catch {}
-        toast.error(errorMessage);
+    if (response.ok) {
+      await sendWelcomeEmail(email, fullName);
+
+      toast.success("Sikeres regisztráció!");
+
+      setIsLogin(true);
+      setFullName("");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setPassword2("");
+      setNotRobot(false);
+    } else {
+      let errorMessage = "A regisztráció sikertelen!";
+
+      try {
+        const text = await response.text();
+        const lower = text.toLowerCase();
+
+        if (lower.includes("email")) {
+          errorMessage = "Ez az e-mail cím már regisztrálva van!";
+        }
+        else if (lower.includes("felhasználónév") || lower.includes("username")) {
+          errorMessage = "Ez a felhasználónév már foglalt!";
+        }
+        else {
+          errorMessage = text;
+        }
+      } catch {
+        errorMessage = "Szerver hiba történt!";
       }
-    } catch (error) {
-      toast.error("Hiba a szerverrel való kapcsolatban!");
-    } finally {
-      setLoading(false);
+      toast.error(errorMessage);
     }
-  };
+
+  } catch (error) {
+
+    toast.error("Hiba a szerverrel való kapcsolatban!");
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   const sendWelcomeEmail = async (email, name) => {
     try {
