@@ -257,21 +257,28 @@ const setCookie = (value) => {
         </span>
       </div>
 
-      <div className="cookie-buttons">
-        <button
-          onClick={() => setCookie("necessary")}
-          className="cookie-btn secondary"
-        >
-          Csak a szükséges
-        </button>
+    <div className="cookie-buttons">
+  <button
+    onClick={() => setCookie("all")}
+    className="cookie-btn primary"
+  >
+    Összes elfogadása
+  </button>
 
-        <button
-          onClick={() => setCookie("all")}
-          className="cookie-btn primary"
-        >
-          Összes elfogadása
-        </button>
-      </div>
+  <button
+    onClick={() => setCookie("necessary")}
+    className="cookie-btn secondary"
+  >
+    Csak a szükséges
+  </button>
+
+  <button
+    onClick={() => setCookie("reject")}
+    className="cookie-btn secondary"
+  >
+    Összes elutasítása
+  </button>
+</div>
 
     </div>
   </div>
