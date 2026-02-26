@@ -1,32 +1,85 @@
 .footer-custom {
   background: linear-gradient(
     135deg,
-    #1a3c57 0%,
-    #244e6b 50%,
-    #7bc96f 100%
+    #0f2f44 0%,
+    #1a3c57 50%,
+    #2f6d5f 100%
   );
-
-  color: rgba(255, 255, 255, 0.9);
-  position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-.footer-custom h5,
-.footer-custom h6 {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-
-.footer-custom a {
   color: rgba(255, 255, 255, 0.85);
-  transition: color 0.3s ease;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.footer-custom a:hover {
+.footer-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
   color: #ffffff;
 }
-.sites li:hover{
-  transform: scale(1.1);
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.footer-list a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.footer-list a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 1.5px;
+  left: 0;
+  bottom: -3px;
+  background-color: #7bc96f;
+  transition: width 0.3s ease;
+}
+
+.footer-list a:hover::after {
+  width: 100%;
+}
+
+.footer-list a:hover {
+  color: #ffffff;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .social-icons {
+    justify-content: flex-end;
+  }
+}
+
+.social-icons a {
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #7bc96f;
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  opacity: 0.7;
+  font-size: 0.85rem;
 }

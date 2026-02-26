@@ -19,62 +19,15 @@ export default function Footer() {
           </div>
 
           {/* Linkek */}
-          <div className="col-md-4 mb-3 text-center hover-szin">
-            <ul className="list-unstyled sites">
-              <li>
-                <NavLink
-                  to="/utjaink"
-                  className="text-white text-decoration-none"
-                  activeclassname="active"
-                >
-                  Útjaink
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/okoutjaink"
-                  className="text-white text-decoration-none"
-                  activeclassname="active"
-                >
-                  ÖkoÚtjaink
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/rolunk"
-                  className="text-white text-decoration-none"
-                  activeclassname="active"
-                >
-                  Rólunk
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/gyik"
-                  className="text-white text-decoration-none"
-                  activeclassname="active"
-                >
-                  GYIK
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/velemenyek"
-                  className="text-white text-decoration-none"
-                  activeclassname="active"
-                >
-                  Vélemények
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/aszf"
-                  className="text-white text-decoration-none"
-                  activeclassname="active"
-                >
-                  ÁSZF
-                </NavLink>
-              </li>
+          <div className="col-md-4 text-md-center">
+            <h5 className="footer-title">Oldalak</h5>
+            <ul className="footer-list">
+              <li><NavLink to="/utjaink">Útjaink</NavLink></li>
+              <li><NavLink to="/okoutjaink">ÖkoÚtjaink</NavLink></li>
+              <li><NavLink to="/rolunk">Rólunk</NavLink></li>
+              <li><NavLink to="/gyik">GYIK</NavLink></li>
+              <li><NavLink to="/velemenyek">Vélemények</NavLink></li>
+              <li><NavLink to="/aszf">ÁSZF</NavLink></li>
             </ul>
           </div>
 
