@@ -16,20 +16,21 @@ const Trip_card = ({ hotel, onClick }) => {
       <div className="hotel-card-body">
         <h5>{hotel.hotel_name}</h5>
 
-      
         <div className="review-stars">
-          {Array.from({ length: hotel.stars }).map((i) => (
+          {Array.from({ length: hotel.stars }).map((_, i) => (
             <i key={i} className="bi bi-star-fill review-star"></i>
           ))}
         </div>
 
-        <p>{hotel.city} {hotel.country}</p>
+        <p>
+          {hotel.city} {hotel.country}
+        </p>
 
         <button
           className="btn btn-primary btn-lg mt-auto"
           onClick={onClick}
         >
-          Tovább a foglaláshoz
+          További részletek
         </button>
       </div>
     </div>
@@ -95,12 +96,15 @@ const EcoTrip = () => {
       ]
     : [];
 
+  // ✅ JAVÍTOTT: Részletek login nélkül is elérhető
   const handleBooking = (hotel) => {
     const loggedIn = localStorage.getItem("user") !== null;
 
     if (!loggedIn) {
-      toast.error("A foglaláshoz kérlek jelentkezz be!");
-      return;
+      toast.info("A foglaláshoz kérlek jelentkezz be!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
 
     navigate("/informaciok", {
@@ -110,7 +114,7 @@ const EcoTrip = () => {
 
   return (
     <>
-      <ToastContainer theme="colored" />
+      <ToastContainer theme="colored" position="top-right" />
 
       {(loading || error) && (
         <div className="d-flex justify-content-center my-5">
@@ -193,7 +197,7 @@ const EcoTrip = () => {
                   <div key={country.country} className="my-5">
                     <div className="country-banner d-flex align-items-center mb-4">
                       <img
-                        src={country.flag}
+                        src={`/${country.flag}`}
                         alt={country.country}
                         className="zaszlokep me-3"
                       />
