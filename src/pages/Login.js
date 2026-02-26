@@ -136,18 +136,69 @@ const handleRegister = async (e) => {
     });
 
     if (response.ok) {
+
       await sendWelcomeEmail(email, fullName);
+      
+      try {
 
-      toast.success("Sikeres regisztráció!");
+        const loginResponse = await fetch("https://localhost:7267/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
 
-      setIsLogin(true);
-      setFullName("");
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setPassword2("");
-      setNotRobot(false);
+        if (loginResponse.ok) {
+
+          const user = await loginResponse.json();
+
+          const token = user.token || (user.tokenDto && user.tokenDto.token);
+
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+
+          try {
+            const profileRes = await fetch("https://localhost:7267/api/Profile/profile", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+            });
+
+            if (profileRes.ok) {
+              const profileData = await profileRes.json();
+              user.user = {
+                ...user.user,
+                profileImage: profileData.profileImage
+              };
+            }
+
+          } catch (profileError) {
+            console.error("Profilkép hiba:", profileError);
+          }
+
+          onLogin(user);
+
+          navigate("/"); 
+          toast.success("Sikeres regisztráció!"); 
+
+          setIsLogin(true);
+          setFullName("");
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setPassword2("");
+          setNotRobot(false);
+
+        }
+
+      } catch (loginError) {
+        console.error("Auto login hiba:", loginError);
+      }
+
     } else {
+
       let errorMessage = "A regisztráció sikertelen!";
 
       try {
@@ -156,27 +207,23 @@ const handleRegister = async (e) => {
 
         if (lower.includes("email")) {
           errorMessage = "Ez az e-mail cím már regisztrálva van!";
-        }
-        else if (lower.includes("felhasználónév") || lower.includes("username")) {
+        } else if (lower.includes("felhasználónév") || lower.includes("username")) {
           errorMessage = "Ez a felhasználónév már foglalt!";
-        }
-        else {
+        } else {
           errorMessage = text;
         }
       } catch {
         errorMessage = "Szerver hiba történt!";
       }
+
       toast.error(errorMessage);
+
     }
 
   } catch (error) {
-
     toast.error("Hiba a szerverrel való kapcsolatban!");
-
   } finally {
-
     setLoading(false);
-
   }
 };
 

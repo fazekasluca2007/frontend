@@ -1,5 +1,5 @@
 .auth-background {
-  min-height: 100vh;
+  min-height: 90vh;
   height: auto;
   background-image: url("/public/img/login.jpg");
   background-size: cover;
