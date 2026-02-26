@@ -64,6 +64,59 @@
 
 .review-stars i { font-size: 1.2rem; }
 
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-display {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  position: relative;
+}
+
+.custom-select-display .arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.custom-select-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  background: #fff;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.custom-select-option {
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.custom-select-option:hover {
+  background-color: darkcyan;
+  color: #fff;
+}
+
+.custom-select-display .arrow i {
+  font-size: 1.2rem;
+}
+
 @media (max-width: 992px) {
   .hotel-card { flex: 0 0 calc(50% - 1rem); max-width: calc(50% - 1rem); }
 }

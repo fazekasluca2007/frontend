@@ -34,6 +34,48 @@ const Trip_card = ({ hotel, onClick }) => {
   );
 };
 
+const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
+  const [open, setOpen] = useState(false);
+
+  const getPlaceholderIcon = () => {
+    if (type === "country") return <i className="bi bi-globe-americas text-dark me-2"></i>;
+    if (type === "city") return <i className="bi bi-buildings text-dark me-2"></i>;
+    return null;
+  };
+
+  return (
+    <div className="custom-select-wrapper">
+      <div
+        className="custom-select-display"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        {!value && getPlaceholderIcon()} 
+        {value || placeholder}
+        <span className="arrow">
+          {open ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
+        </span>
+      </div>
+
+      {open && (
+        <ul className="custom-select-options">
+          {options.map((opt) => (
+            <li
+              key={opt}
+              className="custom-select-option"
+              onClick={() => {
+                onChange(opt);
+                setOpen(false);
+              }}
+            >
+              {opt} 
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
 const EcoTrip = () => {
   const URL = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
@@ -131,44 +173,29 @@ const EcoTrip = () => {
               <div className="filter-field">
                 <label>Ország</label>
                 <div className="filter-input-wrapper">
-                  <span className="filter-icon">
-                    <i className="bi bi-globe-americas text-dark"></i>
-                  </span>
-                  <select
+                  <CustomSelect
                     value={selectedCountry}
-                    onChange={(e) => {
-                      setSelectedCountry(e.target.value);
+                    onChange={(val) => {
+                      setSelectedCountry(val);
                       setSelectedCity("");
                     }}
-                  >
-                    <option value="">Válassz országot…</option>
-                    {ecotrips.map((country) => (
-                      <option key={country.country} value={country.country}>
-                        {country.country}
-                      </option>
-                    ))}
-                  </select>
+                    placeholder="Válassz országot…"
+                    options={ecotrips.map((c) => c.country)}
+                    type="country"
+                  />
                 </div>
               </div>
 
               <div className="filter-field">
                 <label>Város</label>
                 <div className="filter-input-wrapper">
-                  <span className="filter-icon">
-                    <i className="bi bi-buildings text-dark"></i>
-                  </span>
-                  <select
+                  <CustomSelect
                     value={selectedCity}
-                    onChange={(e) => setSelectedCity(e.target.value)}
-                    disabled={!selectedCountry}
-                  >
-                    <option value="">Válassz várost…</option>
-                    {cities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={setSelectedCity}
+                    placeholder="Válassz várost…"
+                    options={cities}
+                    type="city"
+                  />
                 </div>
               </div>
             </div>
