@@ -1,0 +1,92 @@
+.cookiek-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f6fb;
+    padding: 20px;
+}
+
+.cookiek-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: darkcyan;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.cookiek-back-link:hover {
+    color: #00b3b3;
+}
+
+.cookiek-container {
+    max-width: 700px;
+    background: #ffffff;
+    color: #2c3e50;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.cookiek-container h1 {
+    color: #1a3c57;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.cookiek-section {
+    margin-bottom: 30px;
+}
+
+.cookiek-section h3 {
+    color: darkcyan;
+    margin-bottom: 15px;
+}
+
+.cookiek-section p,
+.cookiek-section li {
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.cookiek-section ul {
+    padding-left: 20px;
+}
+
+.cookiek-back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: darkcyan;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.cookiek-back-btn:hover {
+    background-color: #00b3b3;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .cookiek-container {
+        padding: 25px;
+    }
+
+    .cookiek-container h1 {
+        font-size: 1.4rem;
+    }
+
+    .cookiek-section h3 {
+        font-size: 1.1rem;
+    }
+}

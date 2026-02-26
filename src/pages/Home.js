@@ -191,7 +191,40 @@ const setCookie = (value) => {
       <section className="values-section py-5 text-center animate-on-scroll">
         <div className="container">
           <h2 className="mb-5">Értékeink</h2>
-          {/* tartalom változatlan */}
+         <div className="row gy-4 justify-content-center">
+            <div className="col-12 col-md-4 d-flex">
+              <div className="value-card w-100 animate-on-scroll">
+                <i className="fa-solid fa-leaf fa-2x mb-3"></i>
+                <h5>Fenntarthatóság</h5>
+                <p>
+                  Környezettudatos döntéseket hozunk minden utazás
+                  tervezésekor – a közlekedéstől a szállásig.
+                </p>
+              </div>
+            </div>
+
+            <div className="col-12 col-md-4 d-flex">
+              <div className="value-card w-100 animate-on-scroll">
+                <i className="fa-solid fa-globe fa-2x mb-3"></i>
+                <h5>Felfedezés</h5>
+                <p>
+                  Utazásaink új kultúrákat, rejtett helyeket és valódi
+                  élményeket kínálnak a világ minden tájáról.
+                </p>
+              </div>
+            </div>
+
+            <div className="col-12 col-md-4 d-flex">
+              <div className="value-card w-100 animate-on-scroll">
+                <i className="fa-solid fa-heart fa-2x mb-3"></i>
+                <h5>Közösség</h5>
+                <p>
+                  Hisszük, hogy az utazás összeköt – embereket, kultúrákat,
+                  és természetet egyaránt.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -209,19 +242,27 @@ const setCookie = (value) => {
         <div id="map"></div>
       </section>
 
-      {!cookieChoice && (
+    {!cookieChoice && (
   <div className="cookie-banner">
     <div className="cookie-content">
-      <span className="cookie-text">
-       Az oldal sütiket használ a biztonságos működés és a jobb felhasználói élmény érdekében.
-      </span>
+
+      <div className="cookie-left">
+        <span className="cookie-emoji">🍪</span>
+        <span className="cookie-text">
+          Az oldal sütiket használ a biztonságos működés és a jobb
+          felhasználói élmény érdekében.{' '}
+          <Link to="/sutik" style={{ color: '#00b3b3', textDecoration: 'underline' }}>
+            Tudj meg többet
+          </Link>
+        </span>
+      </div>
 
       <div className="cookie-buttons">
         <button
           onClick={() => setCookie("necessary")}
           className="cookie-btn secondary"
         >
-          Csak a szükséges cookie-k
+          Csak a szükséges
         </button>
 
         <button
@@ -231,6 +272,7 @@ const setCookie = (value) => {
           Összes elfogadása
         </button>
       </div>
+
     </div>
   </div>
 )}

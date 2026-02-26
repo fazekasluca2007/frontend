@@ -3,17 +3,17 @@ body {
   color: #2c3e50;
 }
 
-/* LOGIN PROMPT */
+
 .login-prompt {
   display: flex;
-  align-items: center;       /* szöveg és nyíl középre */
-  justify-content: center;   /* teljes sorban középre */
-  gap: 10px;                 /* távolság a szöveg és nyíl között */
+  align-items: center;      
+  justify-content: center;  
+  gap: 10px;                 
   font-family: inherit;
   color: #1a3c57 !important;
   font-size: 0.9rem;
   font-weight: 700;
-  margin: 0 auto 1rem;       /* középre és alsó margó */
+  margin: 0 auto 1rem;      
 }
 
 .login-prompt span {
@@ -41,7 +41,7 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* BUTTONS */
+
 .btn-primary,
 .btn.btn-primary.btn-lg {
   background-color: darkcyan;
@@ -54,7 +54,7 @@ body {
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* CAROUSEL */
+
 #heroCarousel {
   height: 100vh;
   height: 100dvh;
@@ -86,7 +86,6 @@ body {
   text-align: center;
 }
 
-/* MAP */
 #map {
   width: 80%;
   height: 350px;
@@ -95,7 +94,7 @@ body {
   border-radius: 10px;
 }
 
-/* VALUES */
+
 .values-section {
   display: flex;
   justify-content: center;
@@ -120,7 +119,7 @@ body {
   color: darkcyan;
 }
 
-/* ANIMATION */
+
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(40px);
@@ -132,81 +131,133 @@ body {
   transform: translateY(0);
 }
 
-/* COOKIE BANNER */
-
-/* COOKIE BANNER */
-
-
-  /* COOKIE BANNER */
 
 .cookie-banner {
   position: fixed;
-  bottom: -120px;
-  left: 0;
-  width: 100%;
-  background: #1a3c57;
-  color: white;
-  padding: 18px 24px;
-  z-index: 99999;
-  box-shadow: 0 -6px 25px rgba(0,0,0,0.3);
-  animation: slideUp 0.6s ease forwards;
+  bottom: 2px; 
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  width: 90%;
+  max-width: 900px;
+  z-index: 9999;
+  opacity: 0;
+  animation: cookieFadeInUp 0.8s cubic-bezier(.21,1.02,.73,1) forwards;
 }
 
-@keyframes slideUp {
+@keyframes cookieFadeInUp {
   to {
-    bottom: 0;
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
   }
 }
 
 .cookie-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  background: rgba(26, 60, 87, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 20px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   flex-wrap: wrap;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.cookie-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.cookie-emoji {
+  font-size: 1.8rem;
+  animation: cookieBounce 2s infinite ease-in-out;
+}
+
+@keyframes cookieBounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 .cookie-text {
   font-size: 0.95rem;
   font-weight: 500;
+  color: #ffffff;
 }
 
 .cookie-buttons {
   display: flex;
-  gap: 12px;
+  gap: 14px;
+  flex-wrap: wrap;
 }
+
 
 .cookie-btn {
   border: none;
-  padding: 9px 18px;
-  border-radius: 8px;
+  padding: 10px 22px;
+  border-radius: 40px;
   cursor: pointer;
   font-weight: 600;
-  transition: 0.3s ease;
+  transition: background-color 0.3s ease; 
+  font-size: 0.9rem;
+  box-shadow: none; 
+  transform: none;  
 }
 
+
 .cookie-btn.primary {
-  background: darkcyan;
+  background-color: darkcyan; 
   color: white;
 }
 
+
 .cookie-btn.primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  background-color: #00b3b3; 
 }
 
 .cookie-btn.secondary {
   background: transparent;
-  border: 1px solid #ccc;
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
+
 
 .cookie-btn.secondary:hover {
-  background: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1); 
 }
 
+
+@media (max-width: 768px) {
+  .cookie-content {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .cookie-left {
+    justify-content: center;
+  }
+
+  .cookie-buttons {
+    justify-content: center;
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .cookie-content {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .cookie-buttons {
+    justify-content: center;
+    width: 100%;
+  }
+}
 @media (max-width: 768px) {
   .hero-overlay {
     width: 300px;

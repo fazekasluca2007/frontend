@@ -14,6 +14,7 @@ import Booking from './pages/Booking';
 import UserPage from './pages/UserPage';
 import Aszf from './pages/Aszf';
 import Ecoinfo from './pages/Ecoinfo';
+import Cookiek from './pages/Cookiek';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -30,7 +31,7 @@ function App() {
   // Kijelentkezés
   const logout = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("token"); 
+    localStorage.removeItem("token");
     setUser(null);
   };
 
@@ -69,13 +70,13 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/bejelentkezes' element={<Login onLogin={login} />} />
         <Route path="/profile" element={
-          <UserPage 
-            user={user} 
-            updateProfileImage={updateProfileImage} 
+          <UserPage
+            user={user}
+            updateProfileImage={updateProfileImage}
             updateUser={updateUser}
             onLogout={logout} // 🔹 hozzáadva, hogy profil törlés után az App state is null legyen
           />
-        }/>
+        } />
         <Route path='/utjaink' element={<Trip />} />
         <Route path='/okoutjaink' element={<Ecotrips />} />
         <Route path='/rolunk' element={<About />} />
@@ -85,6 +86,8 @@ function App() {
         <Route path='/foglalas' element={<Booking />} />
         <Route path='/okoleiras' element={<Ecoinfo />} />
         <Route path='/aszf' element={<Aszf />} />
+        <Route path='/sutik' element={<Cookiek />} />
+
       </Routes>
 
       <Footer />
