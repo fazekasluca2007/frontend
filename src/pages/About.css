@@ -78,7 +78,7 @@ body {
 }
 
 .info-card {
-  background: #ffffff;
+  background: #f0f6fb;
   color: #1a3c57;
   padding: 25px 20px;
   border-radius: 20px;
@@ -109,7 +109,7 @@ body {
 }
 
 .team-card {
-  background: #fff;
+  background: #f0f6fb;
   border-radius: 30px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

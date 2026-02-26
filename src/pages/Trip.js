@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BeatLoader from "react-spinners/BeatLoader";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Trip.css";
 
-// Trip_card komponens a Bootstrap csillagokkal és foglalás gomb stílussal
 const Trip_card = ({ hotel, onClick }) => {
   return (
     <div className="hotel-card">
@@ -17,9 +16,8 @@ const Trip_card = ({ hotel, onClick }) => {
       <div className="hotel-card-body">
         <h5>{hotel.hotel_name}</h5>
 
-        {/* Bootstrap csillagok */}
         <div className="review-stars">
-          {Array.from({ length: hotel.stars }).map((i) => (
+          {Array.from({ length: hotel.stars }).map((_, i) => (
             <i key={i} className="bi bi-star-fill review-star"></i>
           ))}
         </div>
@@ -30,7 +28,7 @@ const Trip_card = ({ hotel, onClick }) => {
           className="btn btn-primary btn-lg mt-auto"
           onClick={onClick}
         >
-         Tovább a foglaláshoz
+         További részletek
         </button>
       </div>
     </div>
@@ -95,14 +93,8 @@ const Trip = () => {
       ]
     : [];
 
+ 
   const handleBooking = (hotel) => {
-    const loggedIn = localStorage.getItem("user") !== null;
-
-    if (!loggedIn) {
-      toast.error("A foglaláshoz kérlek jelentkezz be!");
-      return;
-    }
-
     navigate("/informaciok", {
       state: { trip_id: hotel.id },
     });
@@ -128,7 +120,7 @@ const Trip = () => {
         <>
           <div className="trip-filter container my-4">
             <div className="trip-filter-inner">
-              <h2 className="filter-title">Hová utazna?</h2>
+              <h2 className="filter-title">Válassza ki az úticélját!</h2>
 
               <div className="filter-field">
                 <label>Ország</label>

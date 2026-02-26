@@ -31,16 +31,13 @@
   overflow: hidden;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: 0.3s all;
   display: flex;
   flex-direction: column;
   flex: 0 0 calc(25% - 1rem);
   max-width: calc(25% - 1rem);
 }
 
-.hotel-card:hover {
-  transform: scale(1.02);
-}
+
 
 .szallaskepek {
   width: 100%;
@@ -57,7 +54,6 @@
   flex-direction: column;
 }
 
-/* Foglalás gomb */
 .hotel-card-body button {
   margin-top: auto;
   background-color: darkcyan !important;
@@ -66,20 +62,9 @@
   font-size: 1rem;
   padding: 10px 0;
   border-radius: 12px;
-  transition: transform 0.4s ease, background-color 0.3s ease, box-shadow 0.4s ease;
 }
 
-.hotel-card-body button:hover {
-  transform: scale(1.12);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
 
-.hotel-card-body button:active {
-  transform: scale(0.95);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Szállodák értékelés csillagai */
 .review-stars {
   margin-bottom: 10px;
   display: flex;
@@ -133,13 +118,7 @@
   max-width: 900px;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
   border: 1px solid #e5e7eb;
-  transition: 0.3s;
   flex-wrap: wrap;
-}
-
-.trip-filter-inner:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .filter-title {
@@ -149,7 +128,6 @@
   font-weight: 700;
   color: #374151;
   margin-bottom: 10px;
-  letter-spacing: 0.5px;
 }
 
 .filter-field {
@@ -196,19 +174,10 @@
   opacity: 0.8;
 }
 
-/* Mobil */
 @media (max-width: 992px) {
   .hotel-card {
     flex: 0 0 calc(50% - 1rem);
     max-width: calc(50% - 1rem);
-  }
-}
-
-@media (max-width: 768px) {
-  .trip-filter-inner {
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
   }
 }
 
