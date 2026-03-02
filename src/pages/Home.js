@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
 export default function Home() {
+  const navigate = useNavigate();
+
   const URL = process.env.REACT_APP_BACKEND_URL;
 
   const carouselRef = useRef(null);
@@ -14,26 +17,30 @@ export default function Home() {
   const isUserLoggedIn = () => localStorage.getItem('user') !== null;
   const loggedIn = isUserLoggedIn();
 
- 
-const [cookieChoice, setCookieChoice] = useState(null);
 
-useEffect(() => {
-  const saved = document.cookie
-    .split("; ")
-    .find(row => row.startsWith("cookieChoice="));
+  const [cookieChoice, setCookieChoice] = useState(null);
 
-  if (saved) {
-    setCookieChoice(saved.split("=")[1]);
-  }
-}, []);
 
-const setCookie = (value) => {
-  const expires = new Date();
-  expires.setFullYear(expires.getFullYear() + 1);
 
-  document.cookie = `cookieChoice=${value}; expires=${expires.toUTCString()}; path=/`;
-  setCookieChoice(value);
-};
+
+
+  useEffect(() => {
+    const saved = document.cookie
+      .split("; ")
+      .find(row => row.startsWith("cookieChoice="));
+
+    if (saved) {
+      setCookieChoice(saved.split("=")[1]);
+    }
+  }, []);
+
+  const setCookie = (value) => {
+    const expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1);
+
+    document.cookie = `cookieChoice=${value}; expires=${expires.toUTCString()}; path=/`;
+    setCookieChoice(value);
+  };
   useEffect(() => {
     document.title = 'EcoTrip';
   }, []);
@@ -78,8 +85,33 @@ const setCookie = (value) => {
     return () => observer.disconnect();
   }, []);
 
+  const handleHotelNavigation = (id, type) => {
+    if (type === "eco") {
+      navigate("/informaciok", {
+        state: { ecotrip_id: id }
+      });
+    } else {
+      navigate("/informaciok", {
+        state: { trip_id: id }
+      });
+    }
+  };
+
   useEffect(() => {
     const map = L.map('map').setView([47.5, 19.04], 5);
+
+    map.on("popupopen", (e) => {
+      const button = e.popup._contentNode.querySelector(".eco-popup-btn");
+
+      if (button) {
+        button.addEventListener("click", () => {
+          const id = button.getAttribute("data-id");
+          const type = button.getAttribute("data-type");
+
+          handleHotelNavigation(id, type);
+        });
+      }
+    });
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -100,7 +132,7 @@ const setCookie = (value) => {
       iconAnchor: [12, 41]
     });
 
-    const addMarkersFromApi = async (url, icon) => {
+    const addMarkersFromApi = async (url, icon, type) => {
       try {
         const response = await fetch(url);
         if (!response.ok) return;
@@ -128,6 +160,13 @@ const setCookie = (value) => {
                 ${szallas.city}, ${szallas.country}
                 <hr/>
                 <p style="font-size:13px">${szallas.description}</p>
+                <button 
+                  class="eco-popup-btn"
+                  data-id="${szallas.tripId}"
+                  data-type="${type}"
+                >
+                  Tovább a szállásra
+                </button>
               </div>
             `);
         });
@@ -136,8 +175,8 @@ const setCookie = (value) => {
       }
     };
 
-    addMarkersFromApi(URL + 'TripsMap/Sima', defaultIcon);
-    addMarkersFromApi(URL + 'TripsMap/Eco', greenIcon);
+    addMarkersFromApi(URL + 'TripsMap/Sima', defaultIcon, "sima");
+    addMarkersFromApi(URL + 'TripsMap/Eco', greenIcon, "eco");
 
     setTimeout(() => map.invalidateSize(), 200);
 
@@ -149,7 +188,7 @@ const setCookie = (value) => {
 
       <div id="heroCarousel" className="carousel slide" ref={carouselRef}>
         <div className="carousel-inner">
-          {['gorog','spanyol','ausztria','magyar','dubai','egyipt','olasz','francia']
+          {['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia']
             .map((img, i) => (
               <div key={img} className={`carousel-item ${i === 0 ? 'active' : ''}`}>
                 <img
@@ -191,7 +230,7 @@ const setCookie = (value) => {
       <section className="values-section py-5 text-center animate-on-scroll">
         <div className="container">
           <h2 className="mb-5">Értékeink</h2>
-         <div className="row gy-4 justify-content-center">
+          <div className="row gy-4 justify-content-center">
             <div className="col-12 col-md-4 d-flex">
               <div className="value-card w-100 animate-on-scroll">
                 <i className="fa-solid fa-leaf fa-2x mb-3"></i>
@@ -242,47 +281,47 @@ const setCookie = (value) => {
         <div id="map"></div>
       </section>
 
-    {!cookieChoice && (
-  <div className="cookie-banner">
-    <div className="cookie-content">
+      {!cookieChoice && (
+        <div className="cookie-banner">
+          <div className="cookie-content">
 
-      <div className="cookie-left">
-        <span className="cookie-emoji">🍪</span>
-        <span className="cookie-text">
-          Az oldal sütiket használ a biztonságos működés és a jobb felhasználói élmény érdekében.
-          <br></br>
-          <Link to="/sutik" style={{ color: '#00b3b3', textDecoration: 'underline' }}>
-            Tudj meg többet
-          </Link>
-        </span>
-      </div>
+            <div className="cookie-left">
+              <span className="cookie-emoji">🍪</span>
+              <span className="cookie-text">
+                Az oldal sütiket használ a biztonságos működés és a jobb felhasználói élmény érdekében.
+                <br></br>
+                <Link to="/sutik" style={{ color: '#00b3b3', textDecoration: 'underline' }}>
+                  Tudj meg többet
+                </Link>
+              </span>
+            </div>
 
-    <div className="cookie-buttons">
-  <button
-    onClick={() => setCookie("all")}
-    className="cookie-btn primary"
-  >
-    Összes elfogadása
-  </button>
+            <div className="cookie-buttons">
+              <button
+                onClick={() => setCookie("all")}
+                className="cookie-btn primary"
+              >
+                Összes elfogadása
+              </button>
 
-  <button
-    onClick={() => setCookie("necessary")}
-    className="cookie-btn secondary"
-  >
-    Csak a szükséges
-  </button>
+              <button
+                onClick={() => setCookie("necessary")}
+                className="cookie-btn secondary"
+              >
+                Csak a szükséges
+              </button>
 
-  <button
-    onClick={() => setCookie("reject")}
-    className="cookie-btn secondary"
-  >
-    Összes elutasítása
-  </button>
-</div>
+              <button
+                onClick={() => setCookie("reject")}
+                className="cookie-btn secondary"
+              >
+                Összes elutasítása
+              </button>
+            </div>
 
-    </div>
-  </div>
-)}
+          </div>
+        </div>
+      )}
 
     </div>
   );
