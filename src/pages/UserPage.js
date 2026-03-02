@@ -31,6 +31,9 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const [bookings, setBookings] = useState([]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [deletePassword, setDeletePassword] = useState("");
+  const [confirmChecked, setConfirmChecked] = useState(false);
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
 
   useEffect(() => {
     document.title = "EcoTrip – Profil";
@@ -126,8 +129,6 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     });
     if (!response.ok) throw new Error("Hiba");
   };
-
-  // ✅ Foglalás törlés
   const executeDelete = async (id) => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -145,7 +146,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     }
   };
 
-  // ✅ Foglalás törlésének megerősítése – piros toast
+
   const confirmDelete = (id) => {
     const toastId = toast.error(
       <div>
@@ -171,54 +172,51 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     );
   };
 
-  // ✅ Profil törlés + kijelentkeztetés
+
   const executeProfileDelete = async () => {
+    if (!confirmChecked) {
+      toast.error("Kérlek jelöld be, hogy biztos vagy benne!");
+      return;
+    }
+
+    if (!deletePassword) {
+      toast.error("Add meg a jelenlegi jelszavad!");
+      return;
+    }
+
     const token = localStorage.getItem("token");
     if (!token) return;
+
     try {
       const response = await fetch("https://localhost:7267/api/Profile/delete", {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ password: deletePassword })
       });
+
       if (response.ok) {
-        toast.success("Profil sikeresen törölve, jelentkezz be újra");
-        if (typeof updateUser === "function") updateUser(null);
-        if (typeof onLogout === "function") onLogout(); 
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/"); 
+
+        toast.success("Profilja sikeresen törölve");
+
+        setTimeout(() => {
+          if (typeof updateUser === "function") updateUser(null);
+          if (typeof onLogout === "function") onLogout();
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/");
+        }, 1500);
+
       } else {
-        toast.error("Hiba történt a törlés során");
+        toast.error("Hibás jelszó!");
       }
+
     } catch (error) {
       console.error(error);
       toast.error("Szerver hiba");
     }
-  };
-
-  const confirmProfileDelete = () => {
-    const toastId = toast.error(
-      <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretnéd a profilodat? Ez nem visszavonható!</p>
-        <div className="d-flex gap-2">
-          <button 
-            className="btn btn-light btn-sm px-3" 
-            style={{ fontSize: "12px", fontWeight: "bold" }}
-            onClick={() => { executeProfileDelete(); toast.dismiss(toastId); }}
-          >
-            Igen
-          </button>
-          <button 
-            className="btn btn-outline-light btn-sm px-3" 
-            style={{ fontSize: "12px" }}
-            onClick={() => toast.dismiss(toastId)}
-          >
-            Mégse
-          </button>
-        </div>
-      </div>,
-      { autoClose: false, closeOnClick: false }
-    );
   };
 
   const handleSave = async (e) => {
@@ -248,6 +246,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   };
 
   return (
+
     <div className="profile-container">
       <div className="profile-card">
         <ToastContainer theme="colored" position="top-right" autoClose={3000} />
@@ -272,24 +271,72 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
             {editMode && (
               <div className="left-column">
                 <h3 className="edit-left-title">Profil adatok módosítása</h3>
-                <img src={customAvatar || selectedAvatar} alt="Profilkép" className="profile-avatar"/>
+                <img src={customAvatar || selectedAvatar} alt="Profilkép" className="profile-avatar" />
                 <div className="avatar-grid">
                   {defaultAvatars.map((avatar, index) => (
-                    <img key={index} src={avatar} alt={`avatar-${index}`} className={`avatar-option ${selectedAvatar === avatar ? "active" : ""}`} 
-                      onClick={() => { setSelectedAvatar(avatar); setCustomAvatar(null); updateProfileImage(avatar); }}/>
+                    <img key={index} src={avatar} alt={`avatar-${index}`} className={`avatar-option ${selectedAvatar === avatar ? "active" : ""}`}
+                      onClick={() => { setSelectedAvatar(avatar); setCustomAvatar(null); updateProfileImage(avatar); }} />
                   ))}
                 </div>
                 <label className="upload-label">
                   Saját kép feltöltése
                   <input type="file" accept="image/*" onChange={handleImageUpload} />
                 </label>
+
+
+                <div className="delete-profile-box">
+
+                  <h5 className="delete-title mt-3">Profil törlése</h5>
+                  <p>
+                    Ez a művelet nem vonható vissza, biztosan törölni akarja profilját?
+                  </p>
+
+                  <div className="form-check delete-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="confirmDelete"
+                      checked={confirmChecked}
+                      onChange={(e) => setConfirmChecked(e.target.checked)}
+                    />
+                    <label className="form-check-label" htmlFor="confirmDelete">
+                      Igen, biztos.
+                    </label>
+                  </div>
+
+                  <div className="field mt-3">
+                    <label>Jelenlegi jelszó</label>
+                    <div className="password-wrapper">
+                      <input
+                        type={showDeletePassword ? "text" : "password"}
+                        value={deletePassword}
+                        onChange={(e) => setDeletePassword(e.target.value)}
+                      />
+                      <span
+                        className="password-eye"
+                        onClick={() => setShowDeletePassword(!showDeletePassword)}
+                      >
+                        {showDeletePassword ? <FaEyeSlash /> : <FaEye />}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-lg w-100"
+                    onClick={executeProfileDelete}
+                  >
+                    Profil végleges törlése
+                  </button>
+
+                </div>
               </div>
             )}
 
             <div className="right-column">
               <div className="field">
                 <label>Teljes név</label>
-                <input type="text" value={fullName} disabled className="readonly-input"/>
+                <input type="text" value={fullName} disabled className="readonly-input" />
               </div>
               <div className="field">
                 <label>Felhasználónév</label>
@@ -297,16 +344,16 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
               </div>
               <div className="field">
                 <label>Email</label>
-                <input type="email" value={email} disabled className="readonly-input"/>
+                <input type="email" value={email} disabled className="readonly-input" />
               </div>
 
               {editMode && <>
                 <div className="field">
                   <label>Régi jelszó</label>
                   <div className="password-wrapper">
-                    <input type={showOldPassword ? "text" : "password"} value={oldPassword} onChange={(e) => setOldPassword(e.target.value)}/>
+                    <input type={showOldPassword ? "text" : "password"} value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
                     <span className="password-eye" onClick={() => setShowOldPassword(!showOldPassword)}>
-                      {showOldPassword ? <FaEyeSlash/> : <FaEye/>}
+                      {showOldPassword ? <FaEyeSlash /> : <FaEye />}
                     </span>
                   </div>
                 </div>
@@ -315,7 +362,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                   <div className="password-wrapper">
                     <input type={showNewPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} />
                     <span className="password-eye" onClick={() => setShowNewPassword(!showNewPassword)}>
-                      {showNewPassword ? <FaEyeSlash/> : <FaEye/>}
+                      {showNewPassword ? <FaEyeSlash /> : <FaEye />}
                     </span>
                   </div>
                 </div>
@@ -324,47 +371,15 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                   <div className="password-wrapper">
                     <input type={showPasswordAgain ? "text" : "password"} value={passwordAgain} onChange={(e) => setPasswordAgain(e.target.value)} />
                     <span className="password-eye" onClick={() => setShowPasswordAgain(!showPasswordAgain)}>
-                      {showPasswordAgain ? <FaEyeSlash/> : <FaEye/>}
+                      {showPasswordAgain ? <FaEyeSlash /> : <FaEye />}
                     </span>
                   </div>
                 </div>
                 <button type="submit" className="btn btn-primary btn-lg w-100">Mentés</button>
               </>}
-
             </div>
           </div>
         </form>
-
-        {!editMode && (
-          <div className="bookings">
-            <h3>Foglalásaim</h3>
-            {bookings.length === 0 ? <p>Nincs még foglalása.</p> :
-              <ul>
-                {bookings.map((booking) => (
-                  <li key={booking.id} className="booking-item">
-                    <div className="booking-content">
-                      <div>
-                        <strong>{booking.hotelName || booking.HotelName}</strong>
-                        <br/>
-                        {(booking.startDate || booking.StartDate) && (booking.endDate || booking.EndDate) ?
-                          `${new Date(booking.startDate || booking.StartDate).toLocaleDateString()} - ${new Date(booking.endDate || booking.EndDate).toLocaleDateString()}` : ""}
-                      </div>
-                      <span className="delete-icon" onClick={() => confirmDelete(booking.id)} title="Foglalás törlése">
-                        <i className="bi bi-trash"></i>
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            }
-
-            <div className="profile-delete-section">
-              <button className="btn btn-danger w-100 mt-4" onClick={confirmProfileDelete}>Profil törlése</button>
-            </div>
-
-          </div>
-        )}
-
       </div>
     </div>
   );

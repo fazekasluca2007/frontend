@@ -14,7 +14,7 @@ export default function Footer() {
             <ul className="list-unstyled">
               <li>Miskolc</li>
               <li>+36 70 285 4560</li>
-              <li>info@ecotrip.hu</li>
+              <li>ecotripmail@gmail.com</li>
             </ul>
           </div>
 
