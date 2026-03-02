@@ -61,6 +61,18 @@
   padding: 10px 0;
   border-radius: 12px;
 }
+.hotel-card-body button.btn.btn-primary:hover,
+.hotel-card-body button.btn-primary:hover {
+  background-color: darkcyan !important;
+  border-color: darkcyan !important;
+  color: #fff !important;
+  transform: none !important;
+}
+
+.hotel-card-body button.btn,
+.hotel-card-body button.btn-primary {
+  transition: none !important;
+}
 
 .review-stars {
   margin-bottom: 10px;

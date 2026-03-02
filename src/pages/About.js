@@ -31,7 +31,7 @@ const About = () => {
   return (
     <div>
 
-      {/* HERO SECTION */}
+      
       <section
         className="rolunk-hero text-center"
         style={{
@@ -44,7 +44,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ABOUT INFO – VALUES STYLE CARDS */}
+  
       <section className="container my-5">
         <h2 className="text-center mb-5 text-gradient animate-on-scroll">
           Kik vagyunk?
@@ -82,8 +82,8 @@ const About = () => {
       </section>
       <section className="values-section py-5">
         <div className="container">
-          <div className="row align-items-center gy-4">
-            <div className="col-md-6">
+          <div className="row align-items-center gy-4 justify-content-center">
+            <div className="col-md-6 text-center">
               <div className="text-block blue animate-on-scroll">
                 🌊 A kék a víz színe, amely az élet forrását és a tisztaság érzetét hordozza.
               </div>

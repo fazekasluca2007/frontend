@@ -6,6 +6,74 @@ import "react-toastify/dist/ReactToastify.css";
 import BeatLoader from "react-spinners/BeatLoader";
 import { Link } from "react-router-dom";
 
+const RatingSelect = ({ value, onChange }) => {
+  const [open, setOpen] = useState(false);
+  
+  const ratings = [
+    { val: "1", stars: 1, text: "Csalódás" },
+    { val: "2", stars: 2, text: "Lehetne jobb" },
+    { val: "3", stars: 3, text: "Rendben volt" },
+    { val: "4", stars: 4, text: "Nagyon tetszett" },
+    { val: "5", stars: 5, text: "Fantasztikus élmény" },
+  ];
+  
+  const StarIcon = () => (
+    <i 
+      className="bi bi-star-fill" 
+      style={{ color: "#FFD700" }}
+    ></i>
+  );
+
+  return (
+    <div className="rating-select-wrapper">
+      <div
+        className="rating-select-display"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        {value ? (
+          <>
+            <div style={{ display: "flex", gap: "2px" }}>
+              {Array.from({ length: Number(value) }).map((_, i) => (
+                <StarIcon key={i} />
+              ))}
+            </div>
+            <span>
+              {ratings.find((r) => r.val === value)?.text}
+            </span>
+          </>
+        ) : (
+          "Válassz értékelést..."
+        )}
+        <span style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
+          <i className={`bi ${open ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
+        </span>
+      </div>
+
+      {open && (
+        <div className="rating-select-options">
+          {ratings.map((r) => (
+            <div
+              key={r.val}
+              className="rating-select-option"
+              onClick={() => {
+                onChange(r.val);
+                setOpen(false);
+              }}
+            >
+              <div style={{ display: "flex", gap: "2px" }}>
+                {Array.from({ length: r.stars }).map((_, i) => (
+                  <StarIcon key={i} />
+                ))}
+              </div>
+              <span>{r.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function Reviews() {
   const URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -258,19 +326,7 @@ export default function Reviews() {
                     className="form-control mb-3"
                     placeholder="Írd le a tapasztalataidat..."
                   />
-                  <select
-                    required
-                    value={rating}
-                    onChange={(e) => setRating(e.target.value)}
-                    className="form-control mb-3"
-                  >
-                    <option value="">Válassz értékelést...</option>
-                    <option value="1">★ – Csalódás</option>
-                    <option value="2">★★ – Lehetne jobb</option>
-                    <option value="3">★★★ – Rendben volt</option>
-                    <option value="4">★★★★ – Nagyon tetszett</option>
-                    <option value="5">★★★★★ – Fantasztikus élmény</option>
-                  </select>
+                  <RatingSelect value={rating} onChange={setRating} />
                   
                   <div className="d-flex flex-column align-items-center gap-2">
                     <button className="btn btn-success w-100">
