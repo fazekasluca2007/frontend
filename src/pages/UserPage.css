@@ -3,6 +3,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  padding-top: 20px;   
+  padding-bottom: 20px; 
+
   background-image: url("/public/img/profilebg.jpg");
   background-size: cover;
   background-position: center;
@@ -94,8 +98,39 @@
 
 .profile-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between; 
+  padding: 0 1rem;
+}
+
+.profile-header.edit-mode-header {
+  justify-content: center;
+}
+
+.edit-layout {
+  display: flex;
+  gap: 2rem; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  align-items: flex-start; 
+}
+
+.left-column, .right-column {
+  flex: 1 1 300px;
+  max-width: 400px; 
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+.edit-right-title {
+  text-align: left; 
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
 }
 
 .edit-icon {
@@ -118,20 +153,20 @@
   height: 130px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   border: 4px solid darkcyan;
 }
 
 .avatar-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 6px;
   margin-bottom: 1rem;
 }
 
 .avatar-option {
-  width: 70px;
-  height: 70px;
+  width: 60px; 
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
@@ -157,12 +192,11 @@
 
 .field {
   text-align: left;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.4rem; 
 }
 
 .field label {
-  font-size: 0.85rem;
-  color: #1a3c57;
+  font-size: 0.8rem;
 }
 
 .profile-card form input {
@@ -241,10 +275,35 @@
 .profile-card:has(.edit-layout) .left-column {
   display: flex;
   flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start; 
+  padding-right: 50px;
+  border-right: 2px solid #ccc;
+  position: relative;
+}
+
+.edit-back-top-left {
+  position: absolute;   
+  top: 8px;
+  left: 8px;
+  background: transparent;
+  border: none;
+  color: darkcyan;
+  font-size: 1rem;      
+  cursor: pointer;
+  padding: 4px 6px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;             
+}
+
+.edit-back-top-left:hover {
+  color: teal;
+}
 
 .delete-profile-box p {
   font-style: italic;
-}
 }
 
 .delete-profile-box .form-check-input {
@@ -255,7 +314,6 @@
   display: block;
   
 }
-
 
 .delete-check {
   display: flex;
