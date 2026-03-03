@@ -22,20 +22,17 @@ function App() {
     return stored ? JSON.parse(stored) : null;
   });
 
-  // Bejelentkezés
   const login = (userData) => {
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
-  // Kijelentkezés
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setUser(null);
   };
 
-  // Profilkép frissítése
   const updateProfileImage = (newImage) => {
     setUser((prev) => {
       if (!prev) return prev;
@@ -51,7 +48,6 @@ function App() {
     });
   };
 
-  // User adatok frissítése
   const updateUser = (newUserData) => {
     setUser(newUserData);
     if (newUserData) {
@@ -74,7 +70,7 @@ function App() {
             user={user}
             updateProfileImage={updateProfileImage}
             updateUser={updateUser}
-            onLogout={logout} // 🔹 hozzáadva, hogy profil törlés után az App state is null legyen
+            onLogout={logout} 
           />
         } />
         <Route path='/utjaink' element={<Trip />} />
@@ -83,7 +79,7 @@ function App() {
         <Route path='/gyik' element={<FAQ />} />
         <Route path='/velemenyek' element={<Reviews />} />
         <Route path='/informaciok' element={<Information />} />
-        <Route path='/foglalas' element={<Booking />} />
+        <Route path='/foglalas' element={<Booking user={user}/>} />
         <Route path='/okoleiras' element={<Ecoinfo />} />
         <Route path='/aszf' element={<Aszf />} />
         <Route path='/sutik' element={<Cookiek />} />

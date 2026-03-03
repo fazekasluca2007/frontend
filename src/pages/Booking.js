@@ -6,10 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { differenceInCalendarDays } from "date-fns";
-import { hu } from "date-fns/locale";
+import { ca, hu } from "date-fns/locale";
 import "./Booking.css";
 
-export default function Booking() {
+export default function Booking({user}) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -25,8 +25,7 @@ export default function Booking() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("+36 ");
 
@@ -43,7 +42,7 @@ export default function Booking() {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
- 
+
   const sendBookingEmail = async () => {
     try {
 
@@ -63,9 +62,9 @@ export default function Booking() {
           <div style="font-family: Arial, sans-serif; line-height: 1.6;">
             <h2 style="color: #2e7d32;">Sikeres foglalás! 🌿</h2>
 
-            <p>Kedves <strong>${lastName} ${firstName}</strong>!</p>
+            <p>Kedves <strong>${fullName}</strong>!</p>
 
-            <p>A foglalásod sikeresen rögzítésre került.</p>
+            <p>A foglalása sikeresen rögzítésre került.</p>
 
             <ul>
               <li><strong>Szállás:</strong> ${hotel.hotel_name}</li>
@@ -75,7 +74,7 @@ export default function Booking() {
               <li><strong>Fő:</strong> ${fo}</li>
               <li><strong>Éjszakák:</strong> ${napok}</li>
               <li><strong>Fizetési mód:</strong> ${paymentLabels[paymentMethod]}</li>
-              <li><strong>Teljes összeg:</strong> ${totalPrice} Ft</li>
+              <li><strong>Teljes összeg:</strong> ${paymentMethod == "készpénz" ? totalWithCashFee : totalPrice} Ft</li>
             </ul>
 
             <p>Üdvözlettel,<br/>EcoTrip</p>
@@ -112,12 +111,21 @@ export default function Booking() {
       ? "+" + phone.replace(/\D/g, "")
       : "+36" + phone.replace(/\D/g, "");
 
+  const isPhoneValid = () => {
+    const raw = getRawPhone().replace("+36", "");
+    return raw.length === 9;
+  }
+
   const formatCardNumber = (value) => {
     let digits = value.replace(/\D/g, "").slice(0, 16);
     return digits.replace(/(.{4})/g, "$1 ").trim();
   };
 
   const handleCardChange = (e) => setCardNumber(formatCardNumber(e.target.value));
+
+  const isCardValid = () => {
+    return cardNumber.replace(/\s/g,"").length === 16;
+  }
 
   const handleExpiryChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
@@ -140,7 +148,7 @@ export default function Booking() {
     if (start && end) {
       let diff = differenceInCalendarDays(end, start);
       if (diff > 20) {
-        toast.error("Maximum 20 napot választhatsz!");
+        toast.error("Maximum 20 napot választhat!");
         setEndDate(null);
         setNapok(1);
       } else setNapok(diff);
@@ -165,30 +173,43 @@ export default function Booking() {
     }
   }, [trip_id, ecotrip_id]);
 
+  useEffect(() => {
+    if (user && user.user) {
+      setFullName(user.user.fullName || "");
+      setEmail(user.user.email || "");
+    }
+  }, [user])
+
   if (error) return <p>Hiba történt az adatok betöltésekor.</p>;
   if (!hotel) return <p>Adatok betöltése...</p>;
 
   const totalPrice = hotel.price * napok * fo;
 
+  const depositAmount = Math.round(totalPrice * 0.5)
+  const cashFeePercent = 0.88;
+  const cashFee = Math.round(totalPrice * cashFeePercent);
+  const totalWithCashFee = totalPrice + cashFee;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    if (!firstName.trim()) newErrors.firstName = "Kérlek add meg a keresztneved!";
-    if (!lastName.trim()) newErrors.lastName = "Kérlek add meg a vezetékneved!";
-    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adj meg!";
+    if (!fullName.trim()) newErrors.fullName = "Kérjük a teljes nevét adja meg!";
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adjon meg!";
     if (!getRawPhone().match(/^\+36(20|30|31|50|70)\d{7}$/))
       newErrors.phone = "Érvényes magyar mobil szám szükséges! (+36 70 123 4567)";
-    if (!startDate || !endDate) newErrors.date = "Válaszd ki a dátumtartományt!";
+    if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
 
-    if (paymentMethod === "card" || paymentMethod === "szep") {
-      if (!cardNumber.replace(/\s/g, "").match(/^\d{16}$/)) newErrors.cardNumber = "16 számjegyű kártyaszám szükséges!";
+    if (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") {
+      if (!isCardValid()) newErrors.cardNumber = "16 számjegyű kártyaszám szükséges!";
       if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) newErrors.expiry = "Érvényes formátum: MM/ÉÉ";
       if (!cvc.match(/^\d{3}$/)) newErrors.cvc = "3 számjegyű CVC szükséges!";
     }
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length !== 0) return;
+
+    const finalAmount = paymentMethod === "készpénz" ? totalWithCashFee : depositAmount
 
     try {
       setIsSubmitting(true);
@@ -203,8 +224,7 @@ export default function Booking() {
           startDate: formatDateLocal(startDate),
           endDate: formatDateLocal(endDate),
           paymentType: paymentMethod,
-          firstName,
-          lastName,
+          fullName,
           email,
           phone: getRawPhone(),
           cardNumber: paymentMethod !== "készpénz"
@@ -247,7 +267,7 @@ export default function Booking() {
 
             <p><strong>Fő / Éj:</strong> {fo} / {napok}</p>
             <p><strong>Fő / éj ár:</strong> {hotel.price} Ft</p>
-            <p className="fs-5"><strong>Teljes összeg:</strong> {totalPrice} Ft</p>
+            <p className="fs-5"><strong>Teljes összeg:</strong> {" "}{paymentMethod == "készpénz" ? totalWithCashFee : totalPrice} Ft</p>
             <p className="text-muted fst-italic mt-2">A feltüntetett árak már tartalmazzák az oldalunk szolgáltatási díjait.</p>
 
             <hr className="my-4" />
@@ -281,15 +301,9 @@ export default function Booking() {
               <h4 className="mb-3">Személyes adatok</h4>
 
               <div className="mb-3">
-                <label className="form-label">Vezetéknév</label>
-                <input type="text" className={`form-control ${errors.lastName ? "is-invalid" : ""}`} placeholder="Vezetéknév" value={lastName} onChange={e => setLastName(e.target.value)} />
-                <div className="invalid-feedback">{errors.lastName}</div>
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Keresztnév</label>
-                <input type="text" className={`form-control ${errors.firstName ? "is-invalid" : ""}`} placeholder="Keresztnév" value={firstName} onChange={e => setFirstName(e.target.value)} />
-                <div className="invalid-feedback">{errors.firstName}</div>
+                <label className="form-label">Teljes név</label>
+                <input type="text" className={`form-control ${errors.fullName ? "is-invalid" : ""}`} placeholder="Teljes név" value={fullName} onChange={e => setFullName(e.target.value)} />
+                <div className="invalid-feedback">{errors.fullName}</div>
               </div>
 
               <div className="mb-3">
@@ -345,8 +359,22 @@ export default function Booking() {
                 </div>
               )}
 
-              {paymentMethod === "cash" && (
-                <div className="alert alert-info mt-3">A foglalás véglegesítése a helyszíni fizetéskor történik.</div>
+              {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
+                <div className="alert alert-info mt-3">
+                  A foglalás véglegesítéséhez <strong>50% előleg</strong> fizetése szükséges.
+                  <br />
+                  Fizetendő előleg összege: <strong>{depositAmount} Ft</strong>
+                </div>
+              )}
+
+              {paymentMethod === "készpénz" && (
+                <div className="alert alert-info mt-3">
+                  Készpénzes fizetés esetén <strong>8% kezelési díjat</strong> számítunk fel, ami a helyszínen kerül kifizetésre.
+                  <br />
+                  Kezelési díj: <strong>{cashFee} Ft</strong>
+                  <br />
+                  Fizetendő végösszeg: <strong>{totalWithCashFee} Ft</strong>
+                </div>
               )}
 
               {isSubmitting ? (
