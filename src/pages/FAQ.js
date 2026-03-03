@@ -10,7 +10,8 @@ export default function FAQ() {
     {
       question: "Milyen környezetbarát lehetőségeket kínál az EcoTrip az utazások során?",
       answer:
-        "Az EcoTrip az utazások során számos környezetbarát lehetőséget kínál: elektromos vagy hibrid járművek használata, helyi és fenntartható szálláshelyek, hulladékminimalizálás és szelektív gyűjtés, valamint helyi öko-programok és túrák."
+        "Az EcoTrip számos olyan környezetbarát szállást és egyedi, fenntartható utazástervezési tippet kínál, amelyeket más weboldalakon nem talál meg az utazó."
+
     },
     {
       question: "Hogyan lehet jelentkezni egy EcoTrip utazásra?",
@@ -25,7 +26,8 @@ export default function FAQ() {
     {
       question: "Mit tartalmaz az utazás ára?",
       answer:
-        "Az ár tartalmazza a szállást, programokat, egyes étkezéseket és a fenntartható közlekedést."
+        "Az utazás ára kizárólag a szállást és az esetleges tranzakciós díjakat tartalmazza."
+
     },
     {
       question: "Milyen szálláslehetőségek vannak?",
@@ -69,7 +71,7 @@ export default function FAQ() {
       </div>
       <div className="container eco-tips-unique mb-5">
         <h3 className="eco-unique-title">
-          <i class="bi bi-globe-americas text-success"></i> Utazz környezettudatosan – tippek, amikkel tehetsz a bolygóért
+          <i class="bi bi-globe-americas text-success"></i> Utazzon környezettudatosan – tippek, amikkel tehet a bolygóért
 
         </h3>
 
@@ -83,7 +85,7 @@ export default function FAQ() {
           <div className="eco-unique-item">
             <span><i class="bi bi-droplet-half text-primary"></i></span>
             <p>
-              <strong>Újratölthető kulacs</strong> – Mindig vigyél magaddal egy kulacsot, így elkerülheted az egyszer használatos műanyag palackokat. Útközben a csapvíz vagy a vízszűrő alkalmazása segít, hogy mindig legyen friss ivóvízed, miközben kevesebb hulladékot termelsz.
+              <strong>Újratölthető kulacs</strong> – Mindig vigyen magával egy kulacsot, így elkerülheti az egyszer használatos műanyag palackokat. Útközben a csapvíz vagy a vízszűrő alkalmazása segít, hogy mindig legyen friss ivóvize, miközben kevesebb hulladékot termel.
 
             </p>
           </div>
@@ -106,7 +108,7 @@ export default function FAQ() {
           <div className="eco-unique-item">
             <span><i class="bi bi-buildings text-success"></i></span>
             <p>
-              <strong>Környezettudatos szálláshelyek választása</strong> – Keresd a zöld tanúsítvánnyal rendelkező szállodákat vagy öko-lodge-okat. Ezeknél gyakran helyi, organikus ételeket szolgálnak fel, energiatakarékos megoldásokat alkalmaznak, és aktívan törekednek a hulladékcsökkentésre.
+              <strong>Környezettudatos szálláshelyek választása</strong> – Keresse a zöld tanúsítvánnyal rendelkező szállodákat vagy öko-lodge-okat. Ezeknél gyakran helyi, organikus ételeket szolgálnak fel, energiatakarékos megoldásokat alkalmaznak, és aktívan törekednek a hulladékcsökkentésre.
 
             </p>
           </div>
@@ -114,7 +116,7 @@ export default function FAQ() {
           <div className="eco-unique-item">
             <span><i class="bi bi-fork-knife"></i></span>
             <p>
-              <strong>Helyi termékek vásárlása</strong> – Válassz kézműves ajándékokat és helyi termékeket a turistacikkek helyett. Így támogathatod a helyi gazdaságot, csökkentheted a szállításból származó környezeti terhelést, és autentikus élményeket is hazavihetsz.
+              <strong>Helyi termékek vásárlása</strong> – Válasszon kézműves ajándékokat és helyi termékeket a turistacikkek helyett. Így támogathatja a helyi gazdaságot, csökkentheti a szállításból származó környezeti terhelést, és autentikus élményeket is hazavihet.
             </p>
           </div>
 
