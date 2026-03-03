@@ -57,7 +57,7 @@ export default function Information() {
     if (!data) return;
 
     if (!loggedIn) {
-      toast.error("A foglaláshoz jelentkezz be!");
+      toast.error("A foglaláshoz jelentkezzen be!");
       return;
     }
 
@@ -189,7 +189,7 @@ export default function Information() {
               className="btn btn-primary btn-lg"
               onClick={handleBooking}
             >
-              Kezdd el a foglalást
+              Kezdje el a foglalást
             </button>
           </div>
         </div>

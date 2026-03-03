@@ -16,13 +16,7 @@ export default function Home() {
 
   const isUserLoggedIn = () => localStorage.getItem('user') !== null;
   const loggedIn = isUserLoggedIn();
-
-
   const [cookieChoice, setCookieChoice] = useState(null);
-
-
-
-
 
   useEffect(() => {
     const saved = document.cookie
@@ -221,8 +215,8 @@ export default function Home() {
           <br />
 
           <p>
-            Foglalj most, pár kattintással!
-            Kezdd el még ma, és indulhat a következő élményed!
+            Foglaljon most, pár kattintással!
+            Kezdje el még ma, és indulhat a következő élménye!
           </p>
         </div>
       </div>
@@ -269,7 +263,7 @@ export default function Home() {
 
       <div className="login-prompt">
         <span>
-          Szeretnél többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogass el erre az oldalra, hogy mindent megtudhass!
+          Szeretne többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogasson el erre az oldalra, hogy mindent megtudhasson!
         </span>
         <Link to="/okoleiras" className="login-btn-circle">
           <FaArrowRight size={12} />
@@ -277,7 +271,7 @@ export default function Home() {
       </div>
 
       <section className="container my-5 text-center animate-on-scroll">
-        <h3 className="mb-3">Hol járhatsz velünk?</h3>
+        <h3 className="mb-3">Hol járhat velünk?</h3>
         <div id="map"></div>
       </section>
 

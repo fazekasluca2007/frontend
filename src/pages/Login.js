@@ -32,7 +32,7 @@ export default function Login({ onLogin }) {
     e.preventDefault();
 
     if (!username || !password) {
-      toast.error("Kérlek, tölts ki minden mezőt!");
+      toast.error("Kérem, töltsön ki minden mezőt!");
       return;
     }
 
@@ -96,12 +96,12 @@ const handleRegister = async (e) => {
   e.preventDefault();
 
   if (!fullName || !username || !email || !password || !password2) {
-    toast.error("Kérlek, tölts ki minden mezőt!");
+    toast.error("Kérem, töltsön ki minden mezőt!");
     return;
   }
 
   if (!notRobot) {
-    toast.error("Kérlek, jelöld be, hogy nem vagy robot!");
+    toast.error("Kérem, jelölje be, hogy nem robot!");
     return;
   }
 
@@ -244,11 +244,11 @@ const handleRegister = async (e) => {
             <p>Kedves <strong>${name}</strong>!</p>
             
             <p>
-              Köszönjük, hogy regisztráltál az <strong>EcoTrip</strong> oldalunkra!🎉
+              Köszönjük, hogy regisztrált az <strong>EcoTrip</strong> oldalunkra!🎉
             </p>
             
             <p>
-              Böngéssz az oldalunkon az alábbi linken:
+              Böngésszen az oldalunkon az alábbi linken:
             </p>
             
             <a href="http://localhost:3000/">
@@ -397,18 +397,18 @@ const handleRegister = async (e) => {
             <p className="text-center mt-3 small">
               {isLogin ? (
                 <>
-                  Nincs fiókod?{" "}
+                  Nincs fiókja?{" "}
                   <button
                     type="button"
                     className="btn btn-link"
                     onClick={() => setIsLogin(false)}
                   >
-                    Regisztrálj!
+                    Regisztráljon!
                   </button>
                 </>
               ) : (
                 <>
-                  Van már fiókod?{" "}
+                  Van már fiókja?{" "}
                   <button
                     type="button"
                     className="btn btn-link"

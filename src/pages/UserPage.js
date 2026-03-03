@@ -154,7 +154,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const confirmDelete = (id) => {
     const toastId = toast.error(
       <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretnéd a foglalást?</p>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné a foglalását?</p>
         <div className="d-flex gap-2">
           <button
             className="btn btn-light btn-sm px-3"
@@ -179,12 +179,12 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const executeProfileDelete = async () => {
     if (!confirmChecked) {
-      toast.error("Kérlek jelöld be, hogy biztos vagy benne!");
+      toast.error("Kérem, jelölje be, hogy biztosan törölni szeretné fiókját!");
       return;
     }
 
     if (!deletePassword) {
-      toast.error("Add meg a jelenlegi jelszavad!");
+      toast.error("Kérem, adja meg a jelenlegi jelszavát!");
       return;
     }
 
@@ -328,6 +328,9 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                   </p>
 
                   <div className="form-check delete-check">
+                    <label className="form-check-label" htmlFor="confirmDelete">
+                      Igen, biztos.
+                    </label>
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -335,9 +338,6 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                       checked={confirmChecked}
                       onChange={(e) => setConfirmChecked(e.target.checked)}
                     />
-                    <label className="form-check-label" htmlFor="confirmDelete">
-                      Igen, biztos.
-                    </label>
                   </div>
 
                   <div className="field mt-3">

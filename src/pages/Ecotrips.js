@@ -137,7 +137,7 @@ const EcoTrip = () => {
     const loggedIn = localStorage.getItem("user") !== null;
 
     if (!loggedIn) {
-      toast.info("A foglaláshoz kérlek jelentkezz be!", {
+      toast.info("A foglaláshoz kérlem jelentkezzen be!", {
         position: "top-right",
         autoClose: 3000,
       });

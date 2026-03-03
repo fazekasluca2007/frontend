@@ -13,12 +13,12 @@ const Ecoinfo = () => {
     return (
         <div className="eco-container">
             <div className="eco-hero">
-                <h1>Miért válassz ökoszállást?</h1>
+                <h1>Miért Válasszon ökoszállást?</h1>
                 <p>
                     Az ökoszállások olyan szálláshelyek, amelyek a fenntarthatóság és a
                     természetközeli élmény jegyében működnek. Nem csupán pihenésre
                     alkalmasak, hanem lehetőséget nyújtanak a környezettudatos életmód
-                    megismerésére. Ha fontos számodra a környezet védelme és a nyugodt,
+                    megismerésére. Ha fontos számára a környezet védelme és a nyugodt,
                     természetközeli kikapcsolódás, az ököszállás a tökéletes választás.
                 </p>
             </div>
@@ -29,7 +29,7 @@ const Ecoinfo = () => {
                     Az ökoszállások fenntartható forrásokból működnek, csökkentve az
                     energia- és vízfogyasztást. Napkollektorok, újrahasznosított anyagok
                     és energiatakarékos megoldások biztosítják a környezet védelmét. Így
-                    nemcsak a pihenésed lesz felejthetetlen, hanem a bolygónak is segítesz.
+                    nemcsak a pihenése lesz felejthetetlen, hanem a bolygónak is segít.
                 </p>
 
                 <h2>Természetközeli élmény</h2>
@@ -44,7 +44,7 @@ const Ecoinfo = () => {
                 <p>
                     Sok ökoszállás együttműködik helyi termelőkkel és kézművesekkel, biztosítva,
                     hogy a turizmus közvetlenül a közösségeket támogassa. Az autentikus élmények
-                    és a helyi kultúra megismerése mellett így közvetlenül támogathatod a
+                    és a helyi kultúra megismerése mellett így közvetlenül támogathatja a
                     helyi gazdaságot.
                 </p>
 
@@ -58,25 +58,25 @@ const Ecoinfo = () => {
                 <h2>Egészséges környezet</h2>
                 <p>
                     Az ökoszállásokban természetes anyagokkal, tiszta levegővel és csendes
-                    környezettel találkozhatsz. Ez segít a stressz csökkentésében, és
+                    környezettel találkozhat. Ez segít a stressz csökkentésében, és
                     biztosítja a testi-lelki regenerálódást. A pihenés így teljes és
                     valóban feltöltő lesz.
                 </p>
 
-                <h2>Mire figyelj a választásnál?</h2>
+                <h2>Mire figyeljen a választásnál?</h2>
                 <p>
-                    Válassz olyan szállást, amely hivatalos ökocímkével rendelkezik,
-                    ellenőrizd, hogy valóban fenntartható forrásokból működik-e, és nézd
-                    meg, milyen természetközeli programokat kínál. Nézd meg a vendégértékeléseket,
-                    és válassz olyan helyet, ahol a környezet és a helyi közösség egyaránt fontos szempont.
+                    Válasszon olyan szállást, amely hivatalos ökocímkével rendelkezik,
+                    ellenőrizze, hogy valóban fenntartható forrásokból működik-e, és nézze
+                    meg, milyen természetközeli programokat kínál. Nézze meg a vendégértékeléseket,
+                    és válasszon olyan helyet, ahol a környezet és a helyi közösség egyaránt fontos szempont.
                 </p>
             </div>
 
             <div className="eco-footer">
                 <p>
                     Az ökoszállások nemcsak pihenést nyújtanak, hanem lehetőséget az élmények,
-                    a természet és a fenntarthatóság összehangolására. Válassz tudatosan, és
-                    tapasztald meg a különbséget!
+                    a természet és a fenntarthatóság összehangolására. Válasszon tudatosan, és
+                    tapasztalja meg a különbséget!
                 </p>
             </div>
         </div>

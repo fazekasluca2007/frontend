@@ -42,7 +42,7 @@ const RatingSelect = ({ value, onChange }) => {
             </span>
           </>
         ) : (
-          "Válassz értékelést..."
+          "Válasszon értékelést..."
         )}
         <span style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
           <i className={`bi ${open ? "bi-chevron-up" : "bi-chevron-down"}`}></i>
@@ -138,7 +138,7 @@ export default function Reviews() {
   const confirmDelete = (id) => {
     const toastId = toast.error(
       <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretnéd?</p>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné v?</p>
         <div className="d-flex gap-2">
           <button 
             className="btn btn-light btn-sm px-3" 
@@ -182,7 +182,7 @@ export default function Reviews() {
     e.preventDefault();
 
     if (!loggedUserName) {
-      toast.error("Nem sikerült azonosítani a felhasználót. Jelentkezz be újra!");
+      toast.error("Nem sikerült azonosítani a felhasználót. Jelentkezzen be újra!");
       return;
     }
 
@@ -257,7 +257,7 @@ export default function Reviews() {
                 
                 {!loggedIn && (
                   <div className="login-prompt position-absolute start-0 d-none d-lg-flex align-items-center gap-2">
-                    <span>Szeretnél véleményt írni? Jelentkezz be!</span>
+                    <span>Szeretne véleményt írni? Jelentkezzen be!</span>
                     <Link to="/bejelentkezes" className="login-btn-circle">
                       <FaArrowRight size={12} />
                     </Link>
@@ -269,8 +269,8 @@ export default function Reviews() {
 
               {!loggedIn && (
                 <div className="d-lg-none text-center mb-4 login-prompt">
-                   <span>Szeretnél véleményt írni? </span>
-                   <Link to="/bejelentkezes" className="text-dark fw-bold">Jelentkezz be!</Link>
+                   <span>Szeretne véleményt írni? </span>
+                   <Link to="/bejelentkezes" className="text-dark fw-bold">Jelentkezzen be!</Link>
                 </div>
               )}
 
@@ -324,7 +324,7 @@ export default function Reviews() {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     className="form-control mb-3"
-                    placeholder="Írd le a tapasztalataidat..."
+                    placeholder="Írja le a tapasztalatait..."
                   />
                   <RatingSelect value={rating} onChange={setRating} />
                   

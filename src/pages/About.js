@@ -39,7 +39,7 @@ const About = () => {
         }}
       >
         <div className="hero-content">
-          <h1>Ismerj meg minket közelebbről</h1>
+          <h1>Ismerjen meg minket közelebbről</h1>
           <p>„A legjobb emlékek gyakran ott kezdődnek, ahol a térkép véget ér.”</p>
         </div>
       </section>
@@ -109,7 +109,7 @@ const About = () => {
      
       <section className="container py-5">
         <h2 className="text-center mb-5 text-gradient animate-on-scroll">
-          Ismerd meg a csapatunkat
+          Ismerje meg a csapatunkat
         </h2>
         <div className="row gy-4 justify-content-center">
           {[
