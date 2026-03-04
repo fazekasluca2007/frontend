@@ -30,6 +30,7 @@ export default function Booking({user}) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("+36 ");
+  const [birthDate, setBirthDate] = useState("");
 
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -118,6 +119,20 @@ export default function Booking({user}) {
     return raw.length === 9;
   }
 
+ 
+  const validateAge = (dateString) => {
+    if (!dateString) return false;
+    const today = new Date();
+    const birth = new Date(dateString);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    
+    return age >= 16;
+  };
   const formatCardNumber = (value) => {
     let digits = value.replace(/\D/g, "").slice(0, 16);
     return digits.replace(/(.{4})/g, "$1 ").trim();
@@ -200,6 +215,8 @@ export default function Booking({user}) {
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adjon meg!";
     if (!getRawPhone().match(/^\+36(20|30|31|50|70)\d{7}$/))
       newErrors.phone = "Érvényes magyar mobil szám szükséges! (+36 70 123 4567)";
+     if (!birthDate) newErrors.birthDate = "Kérjük, adja meg születési dátumát!";
+    else if (!validateAge(birthDate)) newErrors.birthDate = "Legalább 16 évesnek kell lennie a foglaláshoz!";
     if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
 
     if (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") {
@@ -318,6 +335,12 @@ export default function Booking({user}) {
                 <label className="form-label">Telefon</label>
                 <input type="tel" className={`form-control ${errors.phone ? "is-invalid" : ""}`} placeholder="+36 70 123 4567" value={phone} onChange={handlePhoneChange} maxLength={15} />
                 <div className="invalid-feedback">{errors.phone}</div>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Születési dátum</label>
+                <input type="date" className={`form-control ${errors.birthDate ? "is-invalid" : ""}`} value={birthDate} onChange={e => setBirthDate(e.target.value)} />
+                <div className="invalid-feedback">{errors.birthDate}</div>
               </div>
 
               <h4 className="mt-4 mb-3">Fizetési mód</h4>
