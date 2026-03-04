@@ -35,6 +35,28 @@ const EcoTrip = () => {
   }, [URL]);
 
   useEffect(() => {
+    if (selectedCity) {
+      const countryForCity = ecotrips.find((c) =>
+        c.hotels.some((h) => h.city === selectedCity)
+      )?.country;
+  
+      if (countryForCity && countryForCity !== selectedCountry) {
+        setSelectedCountry(countryForCity);
+      }
+    }
+  }, [selectedCity, ecotrips]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      setPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
+    } else {
+      const resetPositions = {};
+      ecotrips.forEach((c) => (resetPositions[c.country] = 0));
+      setPositions(resetPositions);
+    }
+  }, [selectedCountry, selectedCity, ecotrips]);
+
+  useEffect(() => {
     document.title = "EcoTrip – Ökoútjaink";
     window.scrollTo(0, 0);
   }, []);
@@ -62,7 +84,11 @@ const EcoTrip = () => {
             ?.hotels.map((h) => h.city) || []
         ),
       ]
-    : [];
+      : [
+        ...new Set(
+          ecotrips.flatMap((c) => c.hotels.map((h) => h.city))
+        ),
+      ];
 
   const handleBooking = (hotel) => {
     const loggedIn = localStorage.getItem("user") !== null;

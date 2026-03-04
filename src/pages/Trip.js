@@ -33,6 +33,28 @@ const Trip = () => {
         setLoading(false);
       });
   }, [URL]);
+ 
+  useEffect(() => {
+    if (selectedCity) {
+      const countryForCity = trips.find((c) =>
+        c.hotels.some((h) => h.city === selectedCity)
+      )?.country;
+  
+      if (countryForCity && countryForCity !== selectedCountry) {
+        setSelectedCountry(countryForCity);
+      }
+    }
+  }, [selectedCity, trips]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      setPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
+    } else {
+      const resetPositions = {};
+      trips.forEach((c) => (resetPositions[c.country] = 0));
+      setPositions(resetPositions);
+    }
+  }, [selectedCountry, selectedCity, trips]);
 
   useEffect(() => {
     document.title = "EcoTrip – Útjaink";
@@ -62,7 +84,11 @@ const Trip = () => {
           ?.hotels.map((h) => h.city) || []
       ),
     ]
-    : [];
+    : [
+      ...new Set(
+        trips.flatMap((c) => c.hotels.map((h) => h.city))
+      ),
+    ];
 
   const handleBooking = (hotel) => {
     navigate("/informaciok", {
