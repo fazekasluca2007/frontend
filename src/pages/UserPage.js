@@ -15,6 +15,8 @@ const defaultAvatars = [
 ];
 
 export default function UserPage({ user, updateProfileImage, updateUser, onLogout }) {
+  const URL = process.env.REACT_APP_BACKEND_URL;
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -110,7 +112,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const response = await fetch("https://localhost:7267/api/Profile/profile", {
+        const response = await fetch(URL + "Profile/profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -138,7 +140,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const response = await fetch("https://localhost:7267/api/Bookings/my", {
+        const response = await fetch(URL + "Bookings/my", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -167,7 +169,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const updateUsername = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("https://localhost:7267/api/Profile/username", {
+    const response = await fetch(URL + "Profile/username", {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ username }),
@@ -178,7 +180,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const updatePassword = async () => {
     if (!password || !oldPassword) return;
     const token = localStorage.getItem("token");
-    const response = await fetch("https://localhost:7267/api/Profile/password", {
+    const response = await fetch(URL + "Profile/password", {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ oldPassword, newPassword: password }),
@@ -188,7 +190,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const saveImageToBackend = async (imageUrl) => {
     const token = localStorage.getItem("token");
-    const response = await fetch("https://localhost:7267/api/Profile/image", {
+    const response = await fetch(URL + "Profile/image", {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ imageUrl }),
@@ -199,7 +201,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch(`https://localhost:7267/api/Bookings/${id}`, {
+      const response = await fetch(URL + `Bookings/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -254,7 +256,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     if (!token) return;
 
     try {
-      const response = await fetch("https://localhost:7267/api/Profile/delete", {
+      const response = await fetch(URL + "Profile/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -369,7 +371,6 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                       onClick={() => {
                         setSelectedAvatar(avatar);
                         setCustomAvatar(null);
-                        updateProfileImage(avatar);
                       }}
                     />
                   ))}

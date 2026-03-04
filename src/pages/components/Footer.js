@@ -8,7 +8,6 @@ export default function Footer() {
       <div className="container py-4">
         <div className="row">
 
-          {/* Kapcsolat */}
           <div className="col-md-4 mb-3">
             <h5>Kapcsolat</h5>
             <ul className="list-unstyled">
@@ -18,7 +17,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Linkek */}
           <div className="col-md-4 text-md-center">
             <h5 className="footer-title">Oldalak</h5>
             <ul className="footer-list">
@@ -31,7 +29,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Social media */}
           <div className="col-md-4 mb-3 hover-szin text-center">
             <h5>Kövess minket!</h5>
             <ul className="list-unstyled d-flex flex-column align-items-center gap-2 mt-2 sites">

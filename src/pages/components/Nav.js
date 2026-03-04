@@ -18,7 +18,6 @@ export default function Nav({ user, onLogout }) {
   const displayName = getName();
   const displayInitial = displayName.charAt(0).toUpperCase();
 
-  // Kijelentkezés
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user"); 
@@ -88,7 +87,6 @@ export default function Nav({ user, onLogout }) {
         </ul>
       </div>
 
-      {/* Mobile menü */}
       {menuOpen && (
         <div className="mobile-menu d-lg-none text-center">
           <ul className="navbar-nav">

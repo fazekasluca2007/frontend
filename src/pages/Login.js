@@ -40,7 +40,7 @@ export default function Login({ onLogin }) {
 
     setLoading(true);
     try {
-      const response = await fetch(URL+"auth/login", {
+      const response = await fetch(URL + "auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -55,7 +55,7 @@ export default function Login({ onLogin }) {
         }
 
         try {
-          const profileRes = await fetch(URL+"Profile/profile", {
+          const profileRes = await fetch(URL + "Profile/profile", {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export default function Login({ onLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch(URL+"auth/register", {
+      const response = await fetch(URL + "auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ export default function Login({ onLogin }) {
 
         try {
 
-          const loginResponse = await fetch(URL+"auth/login", {
+          const loginResponse = await fetch(URL + "auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
@@ -160,7 +160,7 @@ export default function Login({ onLogin }) {
             }
 
             try {
-              const profileRes = await fetch(URL+"Profile/profile", {
+              const profileRes = await fetch(URL + "Profile/profile", {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
@@ -231,7 +231,7 @@ export default function Login({ onLogin }) {
 
   const sendWelcomeEmail = async (email, name) => {
     try {
-      await fetch(URL+"Mail", {
+      await fetch(URL + "Mail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

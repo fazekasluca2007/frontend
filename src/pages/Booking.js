@@ -10,6 +10,8 @@ import { ca, hu } from "date-fns/locale";
 import "./Booking.css";
 
 export default function Booking({user}) {
+  const URL = process.env.REACT_APP_BACKEND_URL;
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -52,7 +54,7 @@ export default function Booking({user}) {
         "készpénz": "Készpénz"
       };
 
-      await fetch("https://localhost:7267/api/Mail", {
+      await fetch(URL + "Mail", {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({
@@ -161,12 +163,12 @@ export default function Booking({user}) {
 
   useEffect(() => {
     if (trip_id) {
-      fetch(`https://localhost:7267/api/Trips/detailed/${trip_id}`)
+      fetch(URL + `Trips/detailed/${trip_id}`)
         .then((res) => res.json())
         .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));
     } else if (ecotrip_id) {
-      fetch(`https://localhost:7267/api/EcoTrip/detailed/${ecotrip_id}`)
+      fetch(URL + `EcoTrip/detailed/${ecotrip_id}`)
         .then((res) => res.json())
         .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
         .catch(() => setError(true));
@@ -214,7 +216,7 @@ export default function Booking({user}) {
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("https://localhost:7267/api/Bookings", {
+      const response = await fetch(URL + "Bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
