@@ -35,13 +35,75 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const [confirmChecked, setConfirmChecked] = useState(false);
   const [showDeletePassword, setShowDeletePassword] = useState(false);
 
+  const [originalData, setOriginalData] = useState({
+    username: "",
+    password: "",
+    oldPassword: "",
+    passwordAgain: "",
+    selectedAvatar: ""
+  });
+
   useEffect(() => {
     document.title = "EcoTrip – Profil";
   }, []);
 
-  const handleBackFromEdit = () => {
-    setEditMode(false);
-  };
+  function startEditMode() {
+    setOriginalData({
+      username,
+      password: "",
+      oldPassword: "",
+      passwordAgain: "",
+      selectedAvatar: customAvatar || selectedAvatar
+    });
+    setEditMode(true);
+  }
+
+  function handleBackFromEdit() {
+    const hasChanges =
+      username !== originalData.username ||
+      password !== "" ||
+      oldPassword !== "" ||
+      passwordAgain !== "" ||
+      (customAvatar || selectedAvatar) !== originalData.selectedAvatar;
+
+    if (!hasChanges) {
+      setEditMode(false);
+      return;
+    }
+
+    const toastId = toast.error(
+      <div>
+        <p style={{ fontSize: "12px" }}>Biztosan el akarja vetni a változtatásokat?</p>
+        <div className="d-flex gap-2">
+          <button
+            className="btn btn-light btn-sm px-3"
+            style={{ fontSize: "12px", fontWeight: "bold" }}
+            onClick={() => {
+              setUsername(originalData.username);
+              setPassword("");
+              setOldPassword("");
+              setPasswordAgain("");
+              setCustomAvatar(null);
+              setSelectedAvatar(originalData.selectedAvatar);
+              setEditMode(false);
+              toast.dismiss(toastId);
+            }}
+          >
+            Igen
+          </button>
+          <button
+            className="btn btn-outline-light btn-sm px-3"
+            style={{ fontSize: "12px" }}
+            onClick={() => toast.dismiss(toastId)}
+          >
+            Mégse
+          </button>
+        </div>
+      </div>,
+      { autoClose: false, closeOnClick: false }
+    );
+  }
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -255,7 +317,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         {editMode && (
           <button
             className="edit-back-top-left"
-            onClick={() => setEditMode(false)}
+            onClick={handleBackFromEdit} 
             title="Vissza a profilhoz"
           >
             <i className="bi bi-arrow-left"></i> Vissza
@@ -269,7 +331,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
             <h2>Profil adatok</h2>
             <span
               className="edit-icon"
-              onClick={() => setEditMode(true)}
+              onClick={startEditMode} 
               title="Profil módosítása"
             >
               <i className="bi bi-pencil"></i>

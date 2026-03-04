@@ -4,77 +4,8 @@ import "./Ecotrips.css";
 import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const Trip_card = ({ hotel, onClick }) => {
-  return (
-    <div className="hotel-card">
-      <img
-        src={`/${hotel.image_url}`}
-        alt={hotel.hotel_name}
-        className="szallaskepek"
-      />
-      <div className="hotel-card-body">
-        <h5>{hotel.hotel_name}</h5>
-
-        <div className="review-stars">
-          {Array.from({ length: hotel.stars }).map((_, i) => (
-            <i key={i} className="bi bi-star-fill review-star"></i>
-          ))}
-        </div>
-
-        <p>
-          {hotel.city} {hotel.country}
-        </p>
-
-        <button className="btn btn-primary btn-lg mt-auto" onClick={onClick}>
-          További részletek
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
-  const [open, setOpen] = useState(false);
-
-  const getPlaceholderIcon = () => {
-    if (type === "country") return <i className="bi bi-globe-americas text-dark me-2"></i>;
-    if (type === "city") return <i className="bi bi-buildings text-dark me-2"></i>;
-    return null;
-  };
-
-  return (
-    <div className="custom-select-wrapper">
-      <div
-        className="custom-select-display"
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        {!value && getPlaceholderIcon()} 
-        {value || placeholder}
-        <span className="arrow">
-          {open ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
-        </span>
-      </div>
-
-      {open && (
-        <ul className="custom-select-options">
-          {options.map((opt) => (
-            <li
-              key={opt}
-              className="custom-select-option"
-              onClick={() => {
-                onChange(opt);
-                setOpen(false);
-              }}
-            >
-              {opt} 
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
+import Trip_card from "./components/Trip_card";
+import CustomSelect from "./components/CustomSelect";
 
 const EcoTrip = () => {
   const URL = process.env.REACT_APP_BACKEND_URL;
@@ -137,7 +68,7 @@ const EcoTrip = () => {
     const loggedIn = localStorage.getItem("user") !== null;
 
     if (!loggedIn) {
-      toast.info("A foglaláshoz kérlem jelentkezzen be!", {
+      toast.info("A foglaláshoz kérem jelentkezzen be!", {
         position: "top-right",
         autoClose: 3000,
       });

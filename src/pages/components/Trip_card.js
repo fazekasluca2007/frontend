@@ -2,24 +2,32 @@ import React from 'react';
 
 const Trip_card = ({ hotel, onClick }) => {
     return (
-        <div
-            className="hotel-card border-custom"
-            style={{ cursor: 'pointer' }}
+      <div className="hotel-card">
+        <img
+          src={`/${hotel.image_url}`}
+          alt={hotel.hotel_name}
+          className="szallaskepek"
+        />
+        <div className="hotel-card-body">
+          <h5>{hotel.hotel_name}</h5>
+  
+          <div className="review-stars">
+            {Array.from({ length: hotel.stars }).map((_, i) => (
+              <i key={i} className="bi bi-star-fill review-star"></i>
+            ))}
+          </div>
+  
+          <p>{hotel.city} {hotel.country}</p>
+  
+          <button
+            className="btn btn-primary btn-lg mt-auto"
             onClick={onClick}
-        >
-            <img
-                src={hotel.image_url}
-                alt={hotel.name}
-                className="szallaskepek"
-            />
-            <div className="text-center p-3 bg-white">
-                <h6 className="mb-1 text-muted">{hotel.city}</h6>
-                <p className="mb-0 fw-bold">
-                    {hotel.hotel_name}<br></br> <span style={{ color: '#f8b400' }}>{'★'.repeat(hotel.stars)}</span>
-                </p>
-            </div>
+          >
+            További részletek
+          </button>
         </div>
+      </div>
     );
-};
+  };
 
 export default Trip_card;

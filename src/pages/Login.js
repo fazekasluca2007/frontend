@@ -7,6 +7,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
 export default function Login({ onLogin }) {
+  const URL = process.env.REACT_APP_BACKEND_URL;
+
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +30,7 @@ export default function Login({ onLogin }) {
     if (storedUser) navigate("/");
   }, [navigate]);
 
-    const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -38,14 +40,14 @@ export default function Login({ onLogin }) {
 
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:7267/api/auth/login", {
+      const response = await fetch(URL+"auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
       if (response.ok) {
-        const user = await response.json(); 
+        const user = await response.json();
 
         const token = user.token || (user.tokenDto && user.tokenDto.token);
         if (token) {
@@ -53,11 +55,11 @@ export default function Login({ onLogin }) {
         }
 
         try {
-          const profileRes = await fetch("https://localhost:7267/api/Profile/profile", {
+          const profileRes = await fetch(URL+"Profile/profile", {
             method: "GET",
-            headers: { 
-              "Content-Type": "application/json", 
-              "Authorization": `Bearer ${token}` 
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
             },
           });
 
@@ -82,7 +84,7 @@ export default function Login({ onLogin }) {
           if (errorData.message) {
             errorMessage = errorData.message;
           }
-        } catch {}
+        } catch { }
         toast.error(errorMessage);
         setLoading(false);
       }
@@ -92,144 +94,144 @@ export default function Login({ onLogin }) {
     }
   };
 
-const handleRegister = async (e) => {
-  e.preventDefault();
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-  if (!fullName || !username || !email || !password || !password2) {
-    toast.error("Kérem, töltsön ki minden mezőt!");
-    return;
-  }
-
-  if (!notRobot) {
-    toast.error("Kérem, jelölje be, hogy nem robot!");
-    return;
-  }
-
-  if (password !== password2) {
-    toast.error("A két jelszó nem egyezik!");
-    return;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    toast.error("Hibás e-mail formátum! (pl: ecotripmail@gmail.com)");
-    return;
-  }
-
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-  if (!passwordRegex.test(password)) {
-    toast.error(
-      "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
-    );
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const response = await fetch("https://localhost:7267/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ fullName, username, email, password }),
-    });
-
-    if (response.ok) {
-
-      await sendWelcomeEmail(email, fullName);
-      
-      try {
-
-        const loginResponse = await fetch("https://localhost:7267/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
-
-        if (loginResponse.ok) {
-
-          const user = await loginResponse.json();
-
-          const token = user.token || (user.tokenDto && user.tokenDto.token);
-
-          if (token) {
-            localStorage.setItem("token", token);
-          }
-
-          try {
-            const profileRes = await fetch("https://localhost:7267/api/Profile/profile", {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-              },
-            });
-
-            if (profileRes.ok) {
-              const profileData = await profileRes.json();
-              user.user = {
-                ...user.user,
-                profileImage: profileData.profileImage
-              };
-            }
-
-          } catch (profileError) {
-            console.error("Profilkép hiba:", profileError);
-          }
-
-          onLogin(user);
-
-          navigate("/"); 
-          toast.success("Sikeres regisztráció!"); 
-
-          setIsLogin(true);
-          setFullName("");
-          setUsername("");
-          setEmail("");
-          setPassword("");
-          setPassword2("");
-          setNotRobot(false);
-
-        }
-
-      } catch (loginError) {
-        console.error("Auto login hiba:", loginError);
-      }
-
-    } else {
-
-      let errorMessage = "A regisztráció sikertelen!";
-
-      try {
-        const text = await response.text();
-        const lower = text.toLowerCase();
-
-        if (lower.includes("email")) {
-          errorMessage = "Ez az e-mail cím már regisztrálva van!";
-        } else if (lower.includes("felhasználónév") || lower.includes("username")) {
-          errorMessage = "Ez a felhasználónév már foglalt!";
-        } else {
-          errorMessage = text;
-        }
-      } catch {
-        errorMessage = "Szerver hiba történt!";
-      }
-
-      toast.error(errorMessage);
-
+    if (!fullName || !username || !email || !password || !password2) {
+      toast.error("Kérem, töltsön ki minden mezőt!");
+      return;
     }
 
-  } catch (error) {
-    toast.error("Hiba a szerverrel való kapcsolatban!");
-  } finally {
-    setLoading(false);
-  }
-};
+    if (!notRobot) {
+      toast.error("Kérem, jelölje be, hogy nem robot!");
+      return;
+    }
+
+    if (password !== password2) {
+      toast.error("A két jelszó nem egyezik!");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Hibás e-mail formátum! (pl: ecotripmail@gmail.com)");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      toast.error(
+        "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(URL+"auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fullName, username, email, password }),
+      });
+
+      if (response.ok) {
+
+        await sendWelcomeEmail(email, fullName);
+
+        try {
+
+          const loginResponse = await fetch(URL+"auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
+
+          if (loginResponse.ok) {
+
+            const user = await loginResponse.json();
+
+            const token = user.token || (user.tokenDto && user.tokenDto.token);
+
+            if (token) {
+              localStorage.setItem("token", token);
+            }
+
+            try {
+              const profileRes = await fetch(URL+"Profile/profile", {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+              });
+
+              if (profileRes.ok) {
+                const profileData = await profileRes.json();
+                user.user = {
+                  ...user.user,
+                  profileImage: profileData.profileImage
+                };
+              }
+
+            } catch (profileError) {
+              console.error("Profilkép hiba:", profileError);
+            }
+
+            onLogin(user);
+            toast.success("Sikeres regisztráció!");
+            setTimeout(() => {
+              navigate("/");
+            }, 1500);
+
+            setFullName("");
+            setUsername("");
+            setEmail("");
+            setPassword("");
+            setPassword2("");
+            setNotRobot(false);
+
+          }
+
+        } catch (loginError) {
+          console.error("Auto login hiba:", loginError);
+        }
+
+      } else {
+
+        let errorMessage = "A regisztráció sikertelen!";
+
+        try {
+          const text = await response.text();
+          const lower = text.toLowerCase();
+
+          if (lower.includes("email")) {
+            errorMessage = "Ez az e-mail cím már regisztrálva van!";
+          } else if (lower.includes("felhasználónév") || lower.includes("username")) {
+            errorMessage = "Ez a felhasználónév már foglalt!";
+          } else {
+            errorMessage = text;
+          }
+        } catch {
+          errorMessage = "Szerver hiba történt!";
+        }
+
+        toast.error(errorMessage);
+
+      }
+
+    } catch (error) {
+      toast.error("Hiba a szerverrel való kapcsolatban!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const sendWelcomeEmail = async (email, name) => {
     try {
-      await fetch("https://localhost:7267/api/Mail", {
+      await fetch(URL+"Mail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -279,7 +281,7 @@ const handleRegister = async (e) => {
 
       {loading && (
         <div className="auth-background d-flex justify-content-center align-items-center">
-          <DotLoader color="white" size={70} />
+          <DotLoader color="#7dbf7d" size={70} />
         </div>
       )}
 
