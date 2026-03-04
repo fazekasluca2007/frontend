@@ -203,7 +203,7 @@ export default function Booking({user}) {
   const totalPrice = hotel.price * napok * fo;
 
   const depositAmount = Math.round(totalPrice * 0.5)
-  const cashFeePercent = 0.88;
+  const cashFeePercent = 0.08;
   const cashFee = Math.round(totalPrice * cashFeePercent);
   const totalWithCashFee = totalPrice + cashFee;
 
