@@ -97,3 +97,183 @@ body {
   0% { opacity: 0; transform: translateY(-10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+
+
+@media (max-width: 992px) {
+  .gyik-question {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+
+  .gyik-answer {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+
+  .eco-tips-unique {
+    padding: 25px 30px;
+  }
+
+  .eco-unique-title {
+    font-size: 1.5rem;
+  }
+
+  .eco-unique-intro {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .gyik-question {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .gyik-question:hover {
+    transform: translateX(5px);
+  }
+
+  .gyik-answer {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .eco-tips-unique {
+    padding: 20px 25px;
+  }
+
+  .eco-unique-title {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .eco-unique-intro {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+
+  .eco-unique-list {
+    gap: 12px;
+  }
+
+  .eco-unique-item {
+    font-size: 0.9rem;
+    gap: 10px;
+  }
+
+  .eco-unique-item span {
+    font-size: 1.3rem;
+  }
+
+  .eco-unique-item.emphasis {
+    padding: 8px 10px;
+  }
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .gyik-question {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .gyik-question:hover {
+    transform: translateX(3px);
+  }
+
+  .gyik-answer {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .eco-tips-unique {
+    padding: 18px 20px;
+    border-left-width: 4px;
+  }
+
+  .eco-unique-title {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+
+  .eco-unique-intro {
+    font-size: 0.8rem;
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+
+  .eco-unique-list {
+    gap: 10px;
+  }
+
+  .eco-unique-item {
+    font-size: 0.85rem;
+    gap: 8px;
+  }
+
+  .eco-unique-item span {
+    font-size: 1.2rem;
+  }
+
+  .eco-unique-item.emphasis {
+    padding: 7px 9px;
+  }
+
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .arrow {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .gyik-question {
+    padding: 9px 10px;
+    font-size: 0.8rem;
+  }
+
+  .gyik-answer {
+    padding: 9px 10px;
+    font-size: 0.8rem;
+  }
+
+  .eco-tips-unique {
+    padding: 15px 18px;
+  }
+
+  .eco-unique-title {
+    font-size: 1.1rem;
+  }
+
+  .eco-unique-intro {
+    font-size: 0.75rem;
+  }
+
+  .eco-unique-item {
+    font-size: 0.8rem;
+  }
+
+  .eco-unique-item span {
+    font-size: 1.1rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+}

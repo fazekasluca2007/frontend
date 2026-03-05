@@ -8,7 +8,21 @@ import { Link } from "react-router-dom";
 
 const RatingSelect = ({ value, onChange }) => {
   const [open, setOpen] = useState(false);
-  
+  const wrapperRef = React.useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const ratings = [
     { val: "1", stars: 1, text: "Csalódás" },
     { val: "2", stars: 2, text: "Lehetne jobb" },
@@ -25,7 +39,7 @@ const RatingSelect = ({ value, onChange }) => {
   );
 
   return (
-    <div className="rating-select-wrapper">
+    <div className="rating-select-wrapper" ref={wrapperRef}>
       <div
         className="rating-select-display"
         onClick={() => setOpen((prev) => !prev)}

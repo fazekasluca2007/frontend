@@ -200,6 +200,51 @@
 }
 
 
+.profile-pic-mobile {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #7bc96f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profile-pic-mobile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-pic-mobile span {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.mobile-menu .nav-link .d-flex {
+  text-decoration: none;
+}
+
+.mobile-menu .nav-item .btn.nav-link {
+  background-color: transparent;
+  color: #dc3545;
+  font-weight: 600;
+  border: 1px solid #dc3545;
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu .nav-item .btn.nav-link:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+
 
 
 

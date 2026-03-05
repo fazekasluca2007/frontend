@@ -94,23 +94,37 @@ export default function Nav({ user, onLogout }) {
             <li className="nav-item"><NavLink className="nav-link" to="/okoutjaink" onClick={toggleMenu}>ÖkoÚtjaink</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/rolunk" onClick={toggleMenu}>Rólunk</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/gyik" onClick={toggleMenu}>GYIK</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/velemenyek" onClick={toggleMenu}>Vélemények</NavLink></li>
-
-            {!isLoggedIn ? (
+            <li className="nav-item"><NavLink className="nav-link" to="/velemenyek" onClick={toggleMenu}>Vélemények</NavLink></li>            {!isLoggedIn ? (
               <li className="nav-item">
                 <NavLink className="nav-link" to="/bejelentkezes" onClick={toggleMenu}>
                   Bejelentkezés
                 </NavLink>
               </li>
             ) : (
-              <li className="nav-item">
-                <button
-                  onClick={() => { handleLogout(); toggleMenu(); }}
-                  className="btn nav-link w-100"
-                >
-                  Kijelentkezés
-                </button>
-              </li>
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/profile" onClick={toggleMenu}>
+                    <div className="d-flex align-items-center justify-content-center gap-2">
+                      <div className="profile-pic-mobile">
+                        {user?.user?.profileImage ? (
+                          <img src={user.user.profileImage} alt="Profilkép" />
+                        ) : (
+                          <span>{displayInitial}</span>
+                        )}
+                      </div>
+                      <span>{displayName}</span>
+                    </div>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <button
+                    onClick={() => { handleLogout(); toggleMenu(); }}
+                    className="btn nav-link w-100"
+                  >
+                    Kijelentkezés
+                  </button>
+                </li>
+              </>
             )}
           </ul>
         </div>

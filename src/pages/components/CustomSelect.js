@@ -1,8 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
     const [open, setOpen] = useState(false);
-  
+    const wrapperRef = useRef(null);
+ 
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+          setOpen(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
     const getPlaceholderIcon = () => {
       if (type === "country") return <i className="bi bi-globe-americas text-dark me-2"></i>;
       if (type === "city") return <i className="bi bi-buildings text-dark me-2"></i>;
@@ -10,7 +24,7 @@ const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
     };
   
     return (
-      <div className="custom-select-wrapper">
+      <div className="custom-select-wrapper" ref={wrapperRef}>
         <div
           className="custom-select-display"
           onClick={() => setOpen((prev) => !prev)}

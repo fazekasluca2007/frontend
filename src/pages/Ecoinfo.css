@@ -54,21 +54,149 @@
   text-align: center;
 }
 
+@media (max-width: 992px) {
+  .eco-container {
+    padding: 1.8rem 1rem;
+    max-width: 850px;
+  }
+
+  .eco-hero {
+    padding: 1.8rem;
+  }
+
+  .eco-hero h1 {
+    font-size: 2rem;
+  }
+
+  .eco-hero p {
+    font-size: 1.05rem;
+  }
+
+  .eco-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .eco-section p {
+    font-size: 0.98rem;
+  }
+}
 
 @media (max-width: 768px) {
   .eco-container {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .eco-hero {
     padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.8rem;
+  }
+
+  .eco-hero h1 {
+    font-size: 1.7rem;
+    margin-bottom: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .eco-hero p {
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .eco-section h2 {
     font-size: 1.3rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.7rem;
   }
 
   .eco-section p {
     font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 0.9rem;
+  }
+
+  .eco-footer {
+    padding: 1.3rem;
+    margin-top: 2.5rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .eco-container {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .eco-hero {
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .eco-hero h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .eco-hero p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .eco-section h2 {
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .eco-section p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+
+  .eco-footer {
+    padding: 1.1rem;
+    margin-top: 2rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .eco-container {
+    padding: 1rem 0.6rem;
+  }
+
+  .eco-hero {
+    padding: 1rem;
+  }
+
+  .eco-hero h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .eco-hero p {
+    font-size: 0.85rem;
+  }
+
+  .eco-section h2 {
+    font-size: 1.05rem;
+    margin-top: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .eco-section p {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .eco-footer {
+    padding: 1rem;
+    margin-top: 1.8rem;
+    font-size: 0.85rem;
   }
 }

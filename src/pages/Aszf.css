@@ -50,48 +50,176 @@
   color: #00b3b3;
 }
 
-@media (max-width: 768px) {
+.aszf-back-link:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 992px) {
   .aszf-page {
-    padding: 25px;
+    padding: 35px;
   }
 
   .aszf-page h1 {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
+  }
+
+  .aszf-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .aszf-section p,
+  .aszf-section li {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .aszf-page {
+    padding: 25px;
+    border-radius: 12px;
+  }
+
+  .aszf-page h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem !important;
+    line-height: 1.3;
+  }
+
+  .aszf-section {
+    margin-bottom: 25px;
   }
 
   .aszf-section h3 {
     font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .aszf-section p,
+  .aszf-section li {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .aszf-section ul {
+    padding-left: 18px;
+  }
+
+  .aszf-back-link {
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+    gap: 5px;
+  }
+
+  .aszf-back-link i {
+    font-size: 0.95rem;
+  }
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .my-5 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
   }
 }
 
+@media (max-width: 576px) {
+  .aszf-page {
+    padding: 20px;
+    border-radius: 10px;
+  }
 
-.field {
-  text-align: left;
-  margin-bottom: 0.8rem;
+  .aszf-page h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem !important;
+    line-height: 1.3;
+  }
+
+  .aszf-section {
+    margin-bottom: 20px;
+  }
+
+  .aszf-section h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .aszf-section p,
+  .aszf-section li {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .aszf-section ul {
+    padding-left: 16px;
+  }
+
+  .aszf-section li {
+    margin-bottom: 6px;
+  }
+
+  .aszf-back-link {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+    gap: 4px;
+    padding: 5px 0;
+  }
+
+  .aszf-back-link i {
+    font-size: 0.9rem;
+  }
+
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .my-5 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
 }
 
-.field label {
-  font-size: 0.85rem;
-  color: #1a3c57;
-}
+@media (max-width: 400px) {
+  .aszf-page {
+    padding: 15px;
+  }
 
-.bookings {
-  margin-top: 2rem;
-  text-align: left;
-}
+  .aszf-page h1 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem !important;
+  }
 
-.bookings ul {
-  list-style: none;
-  padding: 0;
-}
+  .aszf-section {
+    margin-bottom: 18px;
+  }
 
-.bookings li {
-  background: #fff;
-  padding: 0.6rem;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  display: flex;
-  justify-content: space-between;
+  .aszf-section h3 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .aszf-section p,
+  .aszf-section li {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .aszf-section ul {
+    padding-left: 14px;
+  }
+
+  .aszf-back-link {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+  .container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
