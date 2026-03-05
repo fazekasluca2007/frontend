@@ -227,7 +227,7 @@ export default function Login({ onLogin }) {
     } finally {
       setLoading(false);
     }
-  };  const sendWelcomeEmail = async (email, name) => {
+  }; const sendWelcomeEmail = async (email, name) => {
     try {
       await fetch(URL + "Mail", {
         method: "POST",
@@ -249,30 +249,33 @@ export default function Login({ onLogin }) {
             <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f0f6fb; padding: 40px 20px;">
               <tr>
                 <td align="center">
-          
                   <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); overflow: hidden; max-width: 100%;">
-                      <!-- Header with Gradient -->
+                    
+                    <!-- Header with Gradient -->
                     <tr>
-                      <td style="background: linear-gradient(135deg, #1a3c57 0%, #2e7d32 50%, #43a047 100%); padding: 40px 30px; text-align: center;">
+                      <td style="background: linear-gradient(135deg, #1a3c57 0%, #2c5f8d 100%); padding: 40px 30px; text-align: center;">
                         <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                           ✈️ EcoTrip 
                         </h1>
                         <p style="margin: 10px 0 0 0; color: #e8f5e9; font-size: 16px; font-weight: 400;">
-                          Utazzon velünk - válasszon hagyományos vagy öko szállást!
+                          Üdvözöljük az EcoTrip közösségében!
                         </p>
                       </td>
                     </tr>
-                  
                     <tr>
                       <td style="padding: 0 40px 30px;">
                         <h2 style="margin: 0 0 20px 0; color: #1a3c57; font-size: 28px; font-weight: 600; text-align: center;">
-                          Üdvözlünk, ${name}! 🎉
+                          Sikeres regisztráció! 🎉
                         </h2>
                         
                         <p style="margin: 0 0 30px 0; color: #2c3e50; font-size: 16px; line-height: 1.8; text-align: center;">
-                          Köszönjük, hogy csatlakozott az <strong style="color: #2e7d32;">EcoTrip</strong> közösségéhez!<br>
-                          Nálunk megtalálja a tökéletes szállást - akár öko-tudatos, akár hagyományos élményt keres!
+                          Kedves <strong style="color: #2e7d32;">${name}</strong>!<br>
+                          Köszönjük, hogy csatlakozott az EcoTrip közösségéhez! Nálunk megtalálja a tökéletes szállást - akár öko-tudatos, akár hagyományos élményt keres!
                         </p>
+                        
+                        <h3 style="margin: 0 0 20px 0; color: #1a3c57; font-size: 22px; font-weight: 600; text-align: center;">
+                          Fedezze fel ajánlatainkat! 🌍
+                        </h3>
                     
                         <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
                           <tr>
@@ -293,15 +296,23 @@ export default function Login({ onLogin }) {
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
                                       <strong style="color: #1565c0;">⭐</strong> Kipróbált helyszínek
                                     </p>
-                                    <p style="margin: 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
+                                    <p style="margin: 0 0 20px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
                                       <strong style="color: #1565c0;">💰</strong> Kedvező árak
                                     </p>
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                      <tr>
+                                        <td align="center">
+                                          <a href="http://localhost:3000/utjaink" style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3);">
+                                            ✈️ Hagyományos utak
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </table>
                                   </td>
                                 </tr>
                               </table>
                             </td>
                             
-                      
                             <td style="width: 48%; vertical-align: top; padding-left: 10px;">
                               <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #e8f5e9; border-radius: 12px; padding: 20px; height: 100%;">
                                 <tr>
@@ -318,9 +329,18 @@ export default function Login({ onLogin }) {
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
                                       <strong style="color: #2e7d32;">💚</strong> Környezetbarát
                                     </p>
-                                    <p style="margin: 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
+                                    <p style="margin: 0 0 20px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
                                       <strong style="color: #2e7d32;">🌍</strong> Zöld turizmus
                                     </p>
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                      <tr>
+                                        <td align="center">
+                                          <a href="http://localhost:3000/okoutjaink" style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);">
+                                            🌿 Öko utak
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </table>
                                   </td>
                                 </tr>
                               </table>
@@ -328,30 +348,10 @@ export default function Login({ onLogin }) {
                           </tr>
                         </table>
                         
-                        <p style="margin: 25px 0 30px 0; color: #2c3e50; font-size: 16px; line-height: 1.8; text-align: center;">
-                          Böngéssze kínálatunkat és találja meg az álmai szállását - <strong>bármelyik kategóriában</strong>!
+                        <p style="margin: 25px 0 0 0; color: #6c757d; font-size: 14px; line-height: 1.8; text-align: center; font-style: italic;">
+                          Kezdje el az utazást velünk, és találja meg az álmai szállását!<br>
+                          Jó pihenést és kellemes utazást kívánunk! ✨
                         </p>
-                 
-                        <table width="100%" cellpadding="0" cellspacing="0" style="margin: 10px 0;">
-                          <tr>
-                            <td align="center" style="padding: 0;">
-                              <table cellpadding="0" cellspacing="0" style="margin: 0 auto;">
-                                <tr>
-                                  <td style="padding: 10px;">
-                                    <a href="http://localhost:3000/utjaink" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3); white-space: nowrap;">
-                                      ✈️ Hagyományos utak
-                                    </a>
-                                  </td>
-                                  <td style="padding: 10px;">
-                                    <a href="http://localhost:3000/okoutjaink" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3); white-space: nowrap;">
-                                      🌿 Öko utak
-                                    </a>
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                        </table>
                       </td>
                     </tr>
             
@@ -370,7 +370,6 @@ export default function Login({ onLogin }) {
                           📧 <a href="mailto:ecotripmail@gmail.com" style="color: #2e7d32; text-decoration: none; font-weight: 500;">ecotripmail@gmail.com</a>
                         </p>
                         
-                     
                         <table cellpadding="0" cellspacing="0" style="margin: 0 auto 25px;">
                           <tr>
                             <td style="padding: 0 10px;">
