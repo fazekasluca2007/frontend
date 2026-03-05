@@ -1,22 +1,16 @@
-body {
-  background-color: #f0f6fb;
-  color: #2c3e50;
-}
-
 .gyik-question {
   background: linear-gradient(90deg, #6daedb, #7dbf7d, #a87c5c);
   color: #fff;
   padding: 15px;
   border-radius: 5px;
   font-weight: 500;
-  text-align: left;  
-  cursor: pointer;     
+  text-align: left;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 
 .gyik-question:hover {
   transform: translateX(8px);
@@ -32,57 +26,48 @@ body {
   animation: slideDown 0.3s ease;
 }
 
-
-.eco-tips-unique {
+.eco-tips {
   background: #ffffff;
-  border-left: 6px solid  #a87c5c;
+  border-left: 6px solid #a87c5c;
   border-radius: 12px;
   padding: 30px 35px;
 }
 
-.eco-unique-title {
-  font-size: 1.6rem;
+.eco-tips-title {
+  font-size: 26px;
   color: #2c3e50;
   margin-bottom: 10px;
 }
 
-.eco-unique-intro {
-  font-size: 0.95rem;
+.eco-tips-intro {
+  font-size: 15px;
   color: #5d6d7e;
   max-width: 720px;
   margin-bottom: 25px;
 }
 
-.eco-unique-list {
+.eco-tips-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.eco-unique-item {
+.eco-tips-item {
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  font-size: 0.95rem;
+  font-size: 15px;
   color: #34495e;
 }
 
-.eco-unique-item span {
-  font-size: 1.4rem;
+.eco-tips-item span {
+  font-size: 22px;
   line-height: 1;
 }
 
-.eco-unique-item strong {
+.eco-tips-item strong {
   color: #2c3e50;
 }
-
-.eco-unique-item.emphasis {
-  background: #f0f6fb;
-  border-radius: 8px;
-  padding: 10px 12px;
-}
-
-
 
 .arrow {
   transition: transform 0.3s ease;
@@ -92,188 +77,89 @@ body {
   transform: rotate(180deg);
 }
 
-
 @keyframes slideDown {
   0% { opacity: 0; transform: translateY(-10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-
-@media (max-width: 992px) {
-  .gyik-question {
-    padding: 14px;
-    font-size: 0.95rem;
-  }
-
-  .gyik-answer {
-    padding: 14px;
-    font-size: 0.95rem;
-  }
-
-  .eco-tips-unique {
-    padding: 25px 30px;
-  }
-
-  .eco-unique-title {
-    font-size: 1.5rem;
-  }
-
-  .eco-unique-intro {
-    font-size: 0.9rem;
-  }
-}
-
+/* Tablet nézet */
 @media (max-width: 768px) {
   .gyik-question {
     padding: 12px;
-    font-size: 0.9rem;
+    font-size: 14px;
   }
-
   .gyik-question:hover {
     transform: translateX(5px);
   }
-
   .gyik-answer {
     padding: 12px;
-    font-size: 0.9rem;
+    font-size: 14px;
   }
-
-  .eco-tips-unique {
-    padding: 20px 25px;
+  .eco-tips {
+    padding: 22px 28px;
   }
-
-  .eco-unique-title {
-    font-size: 1.3rem;
-    margin-bottom: 8px;
+  .eco-tips-title {
+    font-size: 22px;
   }
-
-  .eco-unique-intro {
-    font-size: 0.85rem;
-    margin-bottom: 20px;
+  .eco-tips-intro {
+    font-size: 14px;
   }
-
-  .eco-unique-list {
+  .eco-tips-list {
     gap: 12px;
   }
-
-  .eco-unique-item {
-    font-size: 0.9rem;
+  .eco-tips-item {
+    font-size: 14px;
     gap: 10px;
   }
-
-  .eco-unique-item span {
-    font-size: 1.3rem;
+  .eco-tips-item span {
+    font-size: 20px;
   }
-
-  .eco-unique-item.emphasis {
-    padding: 8px 10px;
-  }
-
-  .container {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
   h2 {
-    font-size: 1.5rem;
+    font-size: 22px;
   }
 }
 
+/* Mobil nézet */
 @media (max-width: 576px) {
   .gyik-question {
-    padding: 10px 12px;
-    font-size: 0.85rem;
+    padding: 10px;
+    font-size: 13px;
   }
-
   .gyik-question:hover {
     transform: translateX(3px);
   }
-
   .gyik-answer {
-    padding: 10px 12px;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    padding: 10px;
+    font-size: 13px;
   }
-
-  .eco-tips-unique {
+  .eco-tips {
     padding: 18px 20px;
     border-left-width: 4px;
   }
-
-  .eco-unique-title {
-    font-size: 1.2rem;
-    margin-bottom: 6px;
+  .eco-tips-title {
+    font-size: 18px;
   }
-
-  .eco-unique-intro {
-    font-size: 0.8rem;
-    margin-bottom: 18px;
-    line-height: 1.4;
+  .eco-tips-intro {
+    font-size: 12px;
   }
-
-  .eco-unique-list {
+  .eco-tips-list {
     gap: 10px;
   }
-
-  .eco-unique-item {
-    font-size: 0.85rem;
+  .eco-tips-item {
+    font-size: 13px;
     gap: 8px;
   }
-
-  .eco-unique-item span {
-    font-size: 1.2rem;
+  .eco-tips-item span {
+    font-size: 18px;
   }
-
-  .eco-unique-item.emphasis {
-    padding: 7px 9px;
-  }
-
   .container {
     padding-left: 10px;
     padding-right: 10px;
   }
-
   h2 {
-    font-size: 1.3rem;
+    font-size: 18px;
   }
-
   .arrow {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .gyik-question {
-    padding: 9px 10px;
-    font-size: 0.8rem;
-  }
-
-  .gyik-answer {
-    padding: 9px 10px;
-    font-size: 0.8rem;
-  }
-
-  .eco-tips-unique {
-    padding: 15px 18px;
-  }
-
-  .eco-unique-title {
-    font-size: 1.1rem;
-  }
-
-  .eco-unique-intro {
-    font-size: 0.75rem;
-  }
-
-  .eco-unique-item {
-    font-size: 0.8rem;
-  }
-
-  .eco-unique-item span {
-    font-size: 1.1rem;
-  }
-
-  h2 {
-    font-size: 1.1rem;
+    font-size: 18px;
   }
 }

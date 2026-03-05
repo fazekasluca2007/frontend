@@ -138,7 +138,6 @@ export default function Reviews() {
   const renderStars = (db) =>
     Array.from({ length: db }).map((_, i) => (
       <i key={i} className="bi bi-star-fill review-star"></i>
-      
     ));
 
   const handleEdit = (v) => {
@@ -152,7 +151,7 @@ export default function Reviews() {
   const confirmDelete = (id) => {
     const toastId = toast.error(
       <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné v?</p>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné?</p>
         <div className="d-flex gap-2">
           <button 
             className="btn btn-light btn-sm px-3" 
@@ -236,7 +235,6 @@ export default function Reviews() {
         const newPage = Math.ceil((newIndex + 1) / perPage);
         setPage(newPage);
 
-       
         setTimeout(() => {
           const elem = document.querySelector(".reviews-grid");
           if (elem) elem.scrollIntoView({ behavior: "smooth" });
@@ -266,9 +264,7 @@ export default function Reviews() {
         <>
           <section className="reviews-section">
             <div className="container">
-              
               <div className="position-relative d-flex align-items-center justify-content-center mb-5" style={{ minHeight: "60px" }}>
-                
                 {!loggedIn && (
                   <div className="login-prompt position-absolute start-0 d-none d-lg-flex align-items-center gap-2">
                     <span>Szeretne véleményt írni? Jelentkezzen be!</span>
@@ -283,8 +279,8 @@ export default function Reviews() {
 
               {!loggedIn && (
                 <div className="d-lg-none text-center mb-4 login-prompt">
-                   <span>Szeretne véleményt írni? </span>
-                   <Link to="/bejelentkezes" className="text-dark fw-bold">Jelentkezzen be!</Link>
+                  <span>Szeretne véleményt írni? </span>
+                  <Link to="/bejelentkezes" className="text-dark fw-bold">Jelentkezzen be!</Link>
                 </div>
               )}
 
@@ -293,21 +289,12 @@ export default function Reviews() {
                   <div key={v.id} className="review-card">
                     <div className="review-stars">{renderStars(v.stars)}</div>
                     <p className="review-text">"{v.review}"</p>
-                    
                     <div className="d-flex justify-content-between align-items-end mt-auto">
                       <h6 className="review-author mb-0">{v.name}</h6>
                       {loggedIn && v.name === loggedUserName && (
                         <div className="review-actions">
-                          <i 
-                            className="bi bi-pencil text-primary me-2 pointer-icon" 
-                            onClick={() => handleEdit(v)}
-                            title="Szerkesztés"
-                          ></i>
-                          <i 
-                            className="bi bi-trash text-danger pointer-icon" 
-                            onClick={() => confirmDelete(v.id)}
-                            title="Törlés"
-                          ></i>
+                          <i className="bi bi-pencil text-primary me-2 pointer-icon" onClick={() => handleEdit(v)} title="Szerkesztés"></i>
+                          <i className="bi bi-trash text-danger pointer-icon" onClick={() => confirmDelete(v.id)} title="Törlés"></i>
                         </div>
                       )}
                     </div>
@@ -341,17 +328,15 @@ export default function Reviews() {
                     placeholder="Írja le a tapasztalatait..."
                   />
                   <RatingSelect value={rating} onChange={setRating} />
-                  
                   <div className="d-flex flex-column align-items-center gap-2">
                     <button className="btn btn-success w-100">
                       {editId ? "Módosítás mentése" : "Vélemény beküldése"}
                     </button>
-                    
-                  {editId && (
-                  <button type="button" className="cancel-btn" onClick={() => {setEditId(null); setText(""); setRating("");}}>
-                    Mégse
-                  </button>
-                  )}
+                    {editId && (
+                      <button type="button" className="cancel-btn" onClick={() => {setEditId(null); setText(""); setRating("");}}>
+                        Mégse
+                      </button>
+                    )}
                   </div>
                 </form>
               </div>

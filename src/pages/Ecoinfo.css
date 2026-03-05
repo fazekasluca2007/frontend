@@ -2,7 +2,7 @@
   font-family: inherit;
   background-color: #f0f6fb;
   color: #2c3e50;
-  padding: 2rem 1rem;
+  padding: 32px 16px;
   text-align: left;
   max-width: 900px;
   margin: 0 auto;
@@ -10,193 +10,128 @@
 
 .eco-hero {
   background: rgba(255, 255, 255, 0.85);
-  padding: 2rem;
+  padding: 32px;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
 .eco-hero h1 {
   color: darkcyan;
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
+  font-size: 35px;
+  margin-bottom: 16px;
   text-align: center;
 }
 
 .eco-hero p {
-  font-size: 1.1rem;
+  font-size: 18px;
   line-height: 1.6;
 }
-
 
 .eco-section h2 {
   color: darkcyan;
-  margin-top: 2rem;
-  margin-bottom: 0.8rem;
-  font-size: 1.5rem;
+  margin-top: 32px;
+  margin-bottom: 13px;
+  font-size: 24px;
 }
 
 .eco-section p {
-  font-size: 1rem;
+  font-size: 16px;
   line-height: 1.6;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
-/* Footer */
 .eco-footer {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 15px;
-  padding: 1.5rem;
-  margin-top: 3rem;
+  padding: 24px;
+  margin-top: 48px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   font-weight: 600;
   color: #1a3c57;
   text-align: center;
 }
 
-@media (max-width: 992px) {
-  .eco-container {
-    padding: 1.8rem 1rem;
-    max-width: 850px;
-  }
-
-  .eco-hero {
-    padding: 1.8rem;
-  }
-
-  .eco-hero h1 {
-    font-size: 2rem;
-  }
-
-  .eco-hero p {
-    font-size: 1.05rem;
-  }
-
-  .eco-section h2 {
-    font-size: 1.4rem;
-  }
-
-  .eco-section p {
-    font-size: 0.98rem;
-  }
-}
-
+/* Tablet nézet */
 @media (max-width: 768px) {
   .eco-container {
-    padding: 1.5rem 1rem;
+    padding: 24px 16px;
   }
 
   .eco-hero {
-    padding: 1.5rem;
+    padding: 24px;
     border-radius: 12px;
-    margin-bottom: 1.8rem;
+    margin-bottom: 29px;
   }
 
   .eco-hero h1 {
-    font-size: 1.7rem;
-    margin-bottom: 0.9rem;
-    line-height: 1.3;
+    font-size: 27px;
+    margin-bottom: 14px;
   }
 
   .eco-hero p {
-    font-size: 1rem;
+    font-size: 16px;
     line-height: 1.5;
   }
 
   .eco-section h2 {
-    font-size: 1.3rem;
-    margin-top: 1.8rem;
-    margin-bottom: 0.7rem;
+    font-size: 21px;
+    margin-top: 29px;
+    margin-bottom: 11px;
   }
 
   .eco-section p {
-    font-size: 0.95rem;
+    font-size: 15px;
     line-height: 1.5;
-    margin-bottom: 0.9rem;
+    margin-bottom: 14px;
   }
 
   .eco-footer {
-    padding: 1.3rem;
-    margin-top: 2.5rem;
+    padding: 21px;
+    margin-top: 40px;
     border-radius: 12px;
-    font-size: 0.95rem;
+    font-size: 15px;
   }
 }
 
+/* Mobil nézet */
 @media (max-width: 576px) {
   .eco-container {
-    padding: 1.2rem 0.8rem;
+    padding: 19px 13px;
   }
 
   .eco-hero {
-    padding: 1.2rem;
+    padding: 19px;
     border-radius: 10px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
   }
 
   .eco-hero h1 {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.3;
+    font-size: 22px;
+    margin-bottom: 13px;
   }
 
   .eco-hero p {
-    font-size: 0.9rem;
+    font-size: 14px;
     line-height: 1.5;
   }
 
   .eco-section h2 {
-    font-size: 1.15rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.6rem;
+    font-size: 18px;
+    margin-top: 24px;
+    margin-bottom: 10px;
   }
 
   .eco-section p {
-    font-size: 0.88rem;
+    font-size: 14px;
     line-height: 1.5;
-    margin-bottom: 0.8rem;
+    margin-bottom: 13px;
   }
 
   .eco-footer {
-    padding: 1.1rem;
-    margin-top: 2rem;
+    padding: 18px;
+    margin-top: 32px;
     border-radius: 10px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .eco-container {
-    padding: 1rem 0.6rem;
-  }
-
-  .eco-hero {
-    padding: 1rem;
-  }
-
-  .eco-hero h1 {
-    font-size: 1.25rem;
-    margin-bottom: 0.7rem;
-  }
-
-  .eco-hero p {
-    font-size: 0.85rem;
-  }
-
-  .eco-section h2 {
-    font-size: 1.05rem;
-    margin-top: 1.3rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .eco-section p {
-    font-size: 0.82rem;
-    line-height: 1.5;
-  }
-
-  .eco-footer {
-    padding: 1rem;
-    margin-top: 1.8rem;
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 }

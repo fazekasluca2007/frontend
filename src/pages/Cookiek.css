@@ -15,7 +15,7 @@
     font-weight: 600;
     text-decoration: none;
     margin-bottom: 20px;
-    font-size: 0.95rem;
+    font-size: 15px;
     transition: color 0.3s ease;
 }
 
@@ -30,7 +30,6 @@
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
 }
 
 .cookiek-container h1 {
@@ -51,7 +50,7 @@
 
 .cookiek-section p,
 .cookiek-section li {
-    font-size: 0.95rem;
+    font-size: 15px;
     line-height: 1.7;
 }
 
@@ -77,27 +76,7 @@
     box-shadow: none;
 }
 
-
-@media (max-width: 992px) {
-    .cookiek-container {
-        padding: 35px;
-        max-width: 650px;
-    }
-
-    .cookiek-container h1 {
-        font-size: 1.8rem;
-    }
-
-    .cookiek-section h3 {
-        font-size: 1.2rem;
-    }
-
-    .cookiek-section p,
-    .cookiek-section li {
-        font-size: 0.9rem;
-    }
-}
-
+/* Tablet nézet */
 @media (max-width: 768px) {
     .cookiek-page {
         padding: 15px;
@@ -110,9 +89,8 @@
     }
 
     .cookiek-container h1 {
-        font-size: 1.5rem;
+        font-size: 24px;
         margin-bottom: 20px;
-        line-height: 1.3;
     }
 
     .cookiek-section {
@@ -120,13 +98,13 @@
     }
 
     .cookiek-section h3 {
-        font-size: 1.1rem;
+        font-size: 18px;
         margin-bottom: 12px;
     }
 
     .cookiek-section p,
     .cookiek-section li {
-        font-size: 0.9rem;
+        font-size: 14px;
         line-height: 1.6;
     }
 
@@ -135,17 +113,17 @@
     }
 
     .cookiek-back-link {
-        font-size: 0.9rem;
+        font-size: 14px;
         margin-bottom: 18px;
-        gap: 5px;
     }
 
     .cookiek-back-btn {
         padding: 9px 22px;
-        font-size: 0.9rem;
+        font-size: 14px;
     }
 }
 
+/* Mobil nézet */
 @media (max-width: 576px) {
     .cookiek-page {
         padding: 10px;
@@ -158,9 +136,8 @@
     }
 
     .cookiek-container h1 {
-        font-size: 1.3rem;
+        font-size: 21px;
         margin-bottom: 18px;
-        line-height: 1.3;
     }
 
     .cookiek-section {
@@ -168,13 +145,13 @@
     }
 
     .cookiek-section h3 {
-        font-size: 1rem;
+        font-size: 16px;
         margin-bottom: 10px;
     }
 
     .cookiek-section p,
     .cookiek-section li {
-        font-size: 0.85rem;
+        font-size: 13px;
         line-height: 1.5;
     }
 
@@ -187,59 +164,13 @@
     }
 
     .cookiek-back-link {
-        font-size: 0.85rem;
+        font-size: 13px;
         margin-bottom: 15px;
-        gap: 4px;
     }
 
     .cookiek-back-btn {
         padding: 8px 20px;
-        font-size: 0.85rem;
+        font-size: 13px;
         margin-top: 15px;
-    }
-}
-
-@media (max-width: 400px) {
-    .cookiek-page {
-        padding: 8px;
-        padding-top: 15px;
-    }
-
-    .cookiek-container {
-        padding: 15px;
-    }
-
-    .cookiek-container h1 {
-        font-size: 1.2rem;
-        margin-bottom: 15px;
-    }
-
-    .cookiek-section {
-        margin-bottom: 18px;
-    }
-
-    .cookiek-section h3 {
-        font-size: 0.95rem;
-        margin-bottom: 8px;
-    }
-
-    .cookiek-section p,
-    .cookiek-section li {
-        font-size: 0.8rem;
-        line-height: 1.5;
-    }
-
-    .cookiek-section ul {
-        padding-left: 14px;
-    }
-
-    .cookiek-back-link {
-        font-size: 0.8rem;
-        margin-bottom: 12px;
-    }
-
-    .cookiek-back-btn {
-        padding: 7px 18px;
-        font-size: 0.8rem;
     }
 }

@@ -5,18 +5,18 @@
 .login-prompt, 
 .login-prompt span {
     font-family: inherit;
-    color: #1a3c57 !important; 
-    font-size: 0.9rem;
-    font-weight: 700; 
+    color: #1a3c57;
+    font-size: 14px;
+    font-weight: 700;
     margin: 0;
     text-transform: none;
     letter-spacing: normal;
 }
 
 .login-btn-circle {
-    background-color: darkcyan !important;
-    border: none !important;
-    color: white !important;
+    background-color: darkcyan;
+    border: none;
+    color: white;
     width: 28px;
     height: 28px;
     display: flex;
@@ -29,32 +29,30 @@
 }
 .login-btn-circle:hover {
     transform: scale(1.1) translateX(2px);
-    background-color: #007070 !important;
+    background-color: #007070;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .reviews-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px;                             
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
-
 
 .review-card {
     background-color: #ffffff;
     border-radius: 14px;
     padding: 24px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border-left: 10px solid #7bc96f; 
+    border-left: 10px solid #7bc96f;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    min-height: 255px;  
+    min-height: 255px;
     opacity: 0;
     animation: fadeSlideUp 0.6s ease forwards;
 }
-
 
 @keyframes fadeSlideUp {
     from {
@@ -102,41 +100,41 @@
 }
 
 .btn-success {
-    background-color: darkcyan !important;
-    border-color: darkcyan !important;
+    background-color: darkcyan;
+    border-color: darkcyan;
     font-weight: 600;
     transition: transform 0.3s ease;
 }
 
-.btn-success:hover {  
+.btn-success:hover {
     transform: scale(1.02);
-    background-color: #007070 !important;
+    background-color: #007070;
 }
 
 .cancel-btn {
-    background-color: #e0e0e0; 
+    background-color: #e0e0e0;
     color: #444;
     border: none;
     border-radius: 5px;
-    width: fit-content;  
-    display: block;      
-    margin: 10px auto;   
-    padding: 8px 20px;   
-    font-size: 15px;    
+    width: fit-content;
+    display: block;
+    margin: 10px auto;
+    padding: 8px 20px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
 }
 
 .cancel-btn:hover {
-    background-color: darkcyan; 
-    color: #ffffff;             
+    background-color: darkcyan;
+    color: #ffffff;
     transform: scale(1.05);
 }
 
 .pointer-icon {
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 18px;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -149,8 +147,6 @@
     margin-top: auto;
 }
 
-
-
 .pagination-container {
     text-align: center;
     margin-top: 40px;
@@ -162,7 +158,7 @@
     padding: 10px 15px;
     margin: 0 8px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 18px;
     border-radius: 8px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -179,13 +175,7 @@
     cursor: not-allowed;
 }
 
-
-@media (max-width: 992px) {
-    .reviews-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
+/* Tablet nézet */
 @media (max-width: 768px) {
     .reviews-section {
         padding: 40px 15px;
@@ -202,15 +192,15 @@
     }
 
     h2 {
-        font-size: 1.5rem;
+        font-size: 24px;
     }
 
     h3 {
-        font-size: 1.3rem;
+        font-size: 21px;
     }
 
     .login-prompt {
-        font-size: 0.85rem;
+        font-size: 13px;
     }
 
     .login-btn-circle {
@@ -225,17 +215,17 @@
     .pagination-btn {
         padding: 8px 12px;
         margin: 0 6px;
-        font-size: 1rem;
+        font-size: 16px;
     }
 
     .rating-select-display {
         padding: 12px 14px;
-        font-size: 0.9rem;
+        font-size: 14px;
     }
 
     .rating-select-option {
         padding: 12px 14px;
-        font-size: 0.9rem;
+        font-size: 14px;
     }
 
     form {
@@ -243,12 +233,12 @@
     }
 
     textarea.form-control {
-        font-size: 0.95rem;
+        font-size: 15px;
     }
 
     .btn-success {
         padding: 12px;
-        font-size: 1rem;
+        font-size: 16px;
     }
 
     .cancel-btn {
@@ -257,48 +247,38 @@
     }
 }
 
+/* Mobil nézet */
 @media (max-width: 576px) {
     .reviews-section {
         padding: 30px 15px;
     }
 
     .reviews-grid {
-        grid-template-columns: 1fr;
         gap: 16px;
     }
 
     .review-card {
         padding: 18px;
-        min-height: auto;
         border-left-width: 6px;
     }
 
     .review-text {
-        font-size: 0.95rem;
+        font-size: 15px;
         margin-bottom: 12px;
     }
 
-    .review-star {
-        font-size: 16px;
-        margin-right: 2px;
-    }
-
     .review-author {
-        font-size: 0.95rem;
+        font-size: 15px;
     }
 
     h2 {
-        font-size: 1.3rem;
+        font-size: 21px;
         line-height: 1.3;
         padding: 0 10px;
     }
 
     h3 {
-        font-size: 1.2rem;
-    }
-
-    .login-prompt {
-        font-size: 0.8rem;
+        font-size: 19px;
     }
 
     .login-btn-circle {
@@ -307,32 +287,30 @@
     }
 
     .pagination-btn {
-        padding: 8px 12px;
         margin: 0 5px;
-        font-size: 1rem;
     }
 
     .pagination-container span {
-        font-size: 0.95rem;
+        font-size: 15px;
     }
 
     .pointer-icon {
-        font-size: 1rem;
+        font-size: 16px;
     }
 
     .rating-select-display {
         padding: 10px 12px;
-        font-size: 0.85rem;
+        font-size: 13px;
         min-height: 40px;
     }
 
     .rating-select-display i {
-        font-size: 0.85rem;
+        font-size: 13px;
     }
 
     .rating-select-option {
         padding: 10px 12px;
-        font-size: 0.85rem;
+        font-size: 13px;
     }
 
     .rating-select-option:hover {
@@ -344,13 +322,13 @@
     }
 
     textarea.form-control {
-        font-size: 0.9rem;
+        font-size: 14px;
         padding: 10px;
     }
 
     .btn-success {
         padding: 10px;
-        font-size: 0.95rem;
+        font-size: 15px;
     }
 
     .cancel-btn {
@@ -358,44 +336,6 @@
         padding: 6px 16px;
     }
 }
-
-@media (max-width: 400px) {
-    .reviews-section {
-        padding: 20px 10px;
-    }
-
-    .review-card {
-        padding: 15px;
-    }
-
-    h2 {
-        font-size: 1.1rem;
-    }
-
-    h3 {
-        font-size: 1.1rem;
-    }
-
-    .review-text {
-        font-size: 0.9rem;
-    }
-
-    .review-star {
-        font-size: 14px;
-    }
-
-    .pagination-btn {
-        padding: 6px 10px;
-        margin: 0 4px;
-        font-size: 0.9rem;
-    }
-
-    .rating-select-display,
-    .rating-select-option {
-        font-size: 0.8rem;
-    }
-}
-
 
 .rating-select-wrapper {
     position: relative;
@@ -427,7 +367,7 @@
 }
 
 .rating-select-display span:last-child {
-    font-size: 0.95rem;
+    font-size: 15px;
 }
 
 .rating-select-options {
@@ -478,5 +418,5 @@
 }
 
 .rating-select-option span {
-    font-size: 0.95rem;
+    font-size: 15px;
 }

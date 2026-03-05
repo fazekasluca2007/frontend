@@ -1,40 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DotLoader } from "react-spinners";
 import "./Aszf.css";
 
 export default function Aszf() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.title = "EcoTrip – Általános Szerződési Feltételek";
     window.scrollTo(0, 0);
   }, []);
 
-  const handleBack = () => {
-    setLoading(true);
-    setTimeout(() => navigate(-1), 2000); 
-  };
-
   return (
-    <>
-      
-      {loading && (
-        <div className="auth-background d-flex justify-content-center align-items-center">
-          <DotLoader color="white" size={70} />
-        </div>
-      )}
-
-      <div className="aszf-page container my-5 animate-on-scroll show">
-       
-        <button 
-          className="aszf-back-link"
-          onClick={handleBack}
-          disabled={loading}
-        >
-          <i className="bi bi-arrow-left"></i> Vissza
-        </button>
+    <div className="aszf-page container my-5">
+      <button className="aszf-back-button" onClick={() => navigate(-1)}>
+        <i className="bi bi-arrow-left"></i> Vissza
+      </button>
 
         <h1 className="mb-4 text-center">Általános Szerződési Feltételek</h1>
 
@@ -151,6 +131,5 @@ export default function Aszf() {
           </p>
         </section>
       </div>
-    </>
   );
 }
