@@ -133,6 +133,23 @@ h2, h3, h4 {
   border-radius: 50%;
 }
 
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  background-color: darkcyan !important;
+  color: white !important;
+  border: 1px solid darkcyan !important;
+}
+
+.react-datepicker__month-select option,
+.react-datepicker__year-select option {
+  background-color: white;
+  color: #333;
+}
+
+.date-picker-day:hover {
+  background-color: darkcyan !important;
+  color: white !important;
+}
 
 @media (max-width: 992px) {
   .booking-card {

@@ -214,7 +214,7 @@ export default function Booking({user}) {
     if (!fullName.trim()) newErrors.fullName = "Kérjük a teljes nevét adja meg!";
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adjon meg!";
     if (!getRawPhone().match(/^\+36(20|30|31|50|70)\d{7}$/))
-      newErrors.phone = "Érvényes magyar mobil szám szükséges! (+36 70 123 4567)";
+      newErrors.phone = "Érvényes mobil szám szükséges! (+36 70 123 4567)";
      if (!birthDate) newErrors.birthDate = "Kérjük, adja meg születési dátumát!";
     else if (!validateAge(birthDate)) newErrors.birthDate = "Legalább 16 évesnek kell lennie a foglaláshoz!";
     if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
@@ -302,6 +302,8 @@ export default function Booking({user}) {
                   inline
                   minDate={new Date()}
                   locale={hu}
+                  className="date-picker-darkcyan"
+                  dayClassName={() => "date-picker-day"}
                 />
                 <p className="mt-2">{napok} éjszaka</p>
                 <div className="text-danger">{errors.date}</div>
@@ -333,14 +335,62 @@ export default function Booking({user}) {
 
               <div className="mb-3">
                 <label className="form-label">Telefon</label>
-                <input type="tel" className={`form-control ${errors.phone ? "is-invalid" : ""}`} placeholder="+36 70 123 4567" value={phone} onChange={handlePhoneChange} maxLength={15} />
-                <div className="invalid-feedback">{errors.phone}</div>
+                <div className="input-group gap-2">
+                  <select className="form-select rounded-3" value={phone.split(" ")[0]} onChange={(e) => {
+                    const countryCode = e.target.value;
+                    setPhone(countryCode + " ");
+                  }} style={{ maxWidth: "200px" }}>
+                    <option value="+36">Magyarország +36</option>
+                    <option value="+43">Ausztria +43</option>
+                    <option value="+32">Belgium +32</option>
+                    <option value="+359">Bulgária +359</option>
+                    <option value="+385">Horvátország +385</option>
+                    <option value="+357">Ciprus +357</option>
+                    <option value="+420">Csehország +420</option>
+                    <option value="+45">Dánia +45</option>
+                    <option value="+372">Észtország +372</option>
+                    <option value="+358">Finnország +358</option>
+                    <option value="+33">Franciaország +33</option>
+                    <option value="+49">Németország +49</option>
+                    <option value="+30">Görögország +30</option>
+                    <option value="+353">Írország +353</option>
+                    <option value="+39">Olaszország +39</option>
+                    <option value="+371">Lettország +371</option>
+                    <option value="+370">Litvánia +370</option>
+                    <option value="+352">Luxemburg +352</option>
+                    <option value="+356">Málta +356</option>
+                    <option value="+31">Hollandia +31</option>
+                    <option value="+48">Lengyelország +48</option>
+                    <option value="+351">Portugália +351</option>
+                    <option value="+40">Románia +40</option>
+                    <option value="+421">Szlovákia +421</option>
+                    <option value="+386">Szlovénia +386</option>
+                    <option value="+34">panyolország +34</option>
+                    <option value="+46">Svédország +46</option>
+                    <option value="+44">Egyesült Királyság +44</option>
+                  </select>
+                  <input type="tel" className={`form-control rounded-3 ${errors.phone ? "is-invalid" : ""}`} placeholder="70 123 4567" value={phone.split(" ").slice(1).join(" ")} onChange={handlePhoneChange} />
+                </div>
+                <div className="invalid-feedback d-block">{errors.phone}</div>
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Születési dátum</label>
-                <input type="date" className={`form-control ${errors.birthDate ? "is-invalid" : ""}`} value={birthDate} onChange={e => setBirthDate(e.target.value)} />
-                <div className="invalid-feedback">{errors.birthDate}</div>
+                <DatePicker
+                  selected={birthDate ? new Date(birthDate) : null}
+                  onChange={(date) => setBirthDate(date ? formatDateLocal(date) : "")}
+                  dateFormat="yyyy.MM.dd"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  maxDate={new Date()}
+                  placeholderText="Válasszon dátumot"
+                  className={`form-control date-picker-darkcyan rounded-3 ${errors.birthDate ? "is-invalid" : ""}`}
+                  locale={hu}
+                  dayClassName={() => "date-picker-day"}
+                  onKeyDown={(e) => e.preventDefault()}
+                />
+                <div className={`invalid-feedback ${errors.birthDate ? "d-block" : ""}`}>{errors.birthDate}</div>
               </div>
 
               <h4 className="mt-4 mb-3">Fizetési mód</h4>
@@ -366,19 +416,19 @@ export default function Booking({user}) {
                 <div className="row g-3">
                   <div className="col-md-8">
                     <label className="form-label">Kártyaszám</label>
-                    <input type="text" className={`form-control ${errors.cardNumber ? "is-invalid" : ""}`} value={cardNumber} onChange={handleCardChange} maxLength={19} />
+                    <input type="text" className={`form-control rounded-3 ${errors.cardNumber ? "is-invalid" : ""}`} value={cardNumber} onChange={handleCardChange} maxLength={19} />
                     <div className="invalid-feedback">{errors.cardNumber}</div>
                   </div>
 
                   <div className="col-md-2">
                     <label className="form-label">MM/ÉÉ</label>
-                    <input type="text" className={`form-control ${errors.expiry ? "is-invalid" : ""}`} value={expiry} onChange={handleExpiryChange} maxLength={5} />
+                    <input type="text" className={`form-control rounded-3 ${errors.expiry ? "is-invalid" : ""}`} value={expiry} onChange={handleExpiryChange} maxLength={5} />
                     <div className="invalid-feedback">{errors.expiry}</div>
                   </div>
 
                   <div className="col-md-2">
                     <label className="form-label">CVC</label>
-                    <input type="text" className={`form-control ${errors.cvc ? "is-invalid" : ""}`} value={cvc} onChange={handleCvcChange} maxLength={3} />
+                    <input type="text" className={`form-control rounded-3 ${errors.cvc ? "is-invalid" : ""}`} value={cvc} onChange={handleCvcChange} maxLength={3} />
                     <div className="invalid-feedback">{errors.cvc}</div>
                   </div>
                 </div>
