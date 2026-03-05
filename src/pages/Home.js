@@ -92,7 +92,37 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const map = L.map('map').setView([47.5, 19.04], 5);
+    const map = L.map('map', {
+      scrollWheelZoom: false 
+    }).setView([47.5, 19.04], 5);
+
+    let shiftPressed = false;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Shift") shiftPressed = true;
+    };
+    const onKeyUp = (e) => {
+      if (e.key === "Shift") shiftPressed = false;
+    };
+
+    const infoControl = L.control({ position: 'bottomleft' });
+    infoControl.onAdd = function () {
+      const div = L.DomUtil.create('div', 'map-scroll-info');
+      div.innerHTML = 'A térkép görgetéséhez tartsa lenyomva a <b>Shift</b> billentyűt és használja a görgőt.';
+      return div;
+    };
+    infoControl.addTo(map);
+
+    const onWheel = (e) => {
+      if (shiftPressed) {
+        map.scrollWheelZoom.enable();
+        setTimeout(() => map.scrollWheelZoom.disable(), 500);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("keyup", onKeyUp);
+    map.getContainer().addEventListener("wheel", onWheel);
 
     map.on("popupopen", (e) => {
       const button = e.popup._contentNode.querySelector(".eco-popup-btn");
@@ -174,7 +204,12 @@ export default function Home() {
 
     setTimeout(() => map.invalidateSize(), 200);
 
-    return () => map.remove();
+    return () => {
+      map.remove();
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("keyup", onKeyUp);
+      map.getContainer().removeEventListener("wheel", onWheel);
+    };
   }, [URL]);
 
   return (

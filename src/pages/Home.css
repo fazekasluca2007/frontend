@@ -91,6 +91,15 @@ body {
   border-radius: 10px;
 }
 
+.map-scroll-info {
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 10px;
+}
+
 .values-section {
   display: flex;
   justify-content: center;
