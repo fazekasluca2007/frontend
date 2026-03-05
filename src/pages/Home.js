@@ -213,31 +213,25 @@ export default function Home() {
   }, [URL]);
 
   return (
-    <div className="position-relative text-center">
+    <>
+      <div className="position-relative text-center" style={{ position: 'relative' }}>
 
-      <div id="heroCarousel" className="carousel slide" ref={carouselRef}>
-        <div className="carousel-inner">
-          {['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia']
-            .map((img, i) => (
-              <div key={img} className={`carousel-item ${i === 0 ? 'active' : ''}`}>
-                <img
-                  src={`img/index kepek/${img}.jpg`}
-                  className="d-block w-100"
-                  alt={img}
-                />
-              </div>
-            ))}
+        <div id="heroCarousel" className="carousel slide carousel-fade" ref={carouselRef}>
+          <div className="carousel-inner">
+            {['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia']
+              .map((img, i) => (
+                <div key={img} className={`carousel-item ${i === 0 ? 'active' : ''}`}>
+                  <img
+                    src={`img/index kepek/${img}.jpg`}
+                    className="d-block w-100"
+                    alt={img}
+                  />
+                </div>
+              ))}
+          </div>
         </div>
 
-        <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon"></span>
-        </button>
-
-        <button className="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-          <span className="carousel-control-next-icon"></span>
-        </button>
-
-        <div className="position-absolute top-50 start-50 translate-middle hero-overlay">
+        <div className="position-absolute top-50 start-50 translate-middle hero-overlay" style={{ zIndex: 999 }}>
           <h1>Üdvözlünk az EcoTrip oldalán!</h1>
 
           <NavLink
@@ -352,6 +346,6 @@ export default function Home() {
         </div>
       )}
 
-    </div>
+    </>
   );
 }
