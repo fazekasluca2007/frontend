@@ -9,8 +9,8 @@ export default function Footer() {
         <div className="row">
 
           <div className="col-md-4 mb-3">
-            <h5>Kapcsolat</h5>
-            <ul className="list-unstyled">
+            <h5 className="footer-heading">Kapcsolat</h5>
+            <ul className="footer-list">
               <li>Miskolc</li>
               <li>+36 70 285 4560</li>
               <li>ecotripmail@gmail.com</li>
@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
 
           <div className="col-md-4 text-md-center">
-            <h5 className="footer-title">Oldalak</h5>
+            <h5 className="footer-heading">Oldalak</h5>
             <ul className="footer-list">
               <li><NavLink to="/utjaink">Útjaink</NavLink></li>
               <li><NavLink to="/okoutjaink">ÖkoÚtjaink</NavLink></li>
@@ -29,32 +29,30 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="col-md-4 mb-3 hover-szin text-center">
-            <h5>Kövess minket!</h5>
-            <ul className="list-unstyled d-flex flex-column align-items-center gap-2 mt-2 sites">
-              <li>
-                <a href="https://facebook.com" className="text-white fs-4" target="_blank" rel="noreferrer">
-                  <i class="bi bi-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="https://instagram.com" className="text-white fs-4" target="_blank" rel="noreferrer">
-                  <i class="bi bi-instagram"></i>
-                </a>
-              </li>
-              <li>
-                <a href="https://twitter.com" className="text-white fs-4" rel="noreferrer">
-                  <i class="bi bi-twitter-x"></i>
-                </a>
-              </li>
-            </ul>
+          <div className="col-md-4 mb-3 text-center">
+            <h5 className="footer-heading">Kövess minket!</h5>
+
+            <div className="social-icons mt-2">
+              <a href="https://facebook.com" target="_blank" rel="noreferrer">
+                <i className="bi bi-facebook"></i>
+              </a>
+
+              <a href="https://instagram.com" target="_blank" rel="noreferrer">
+                <i className="bi bi-instagram"></i>
+              </a>
+
+              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+                <i className="bi bi-twitter-x"></i>
+              </a>
+            </div>
           </div>
 
         </div>
 
-        <div className="text-center mt-3">
+        <div className="footer-bottom text-center mt-4 pt-3">
           <small>&copy; 2026 EcoTrip - Minden jog fenntartva</small>
         </div>
+
       </div>
     </footer>
   );
