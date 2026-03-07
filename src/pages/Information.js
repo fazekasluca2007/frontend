@@ -14,13 +14,13 @@ export default function Information() {
   const trip_id = location.state?.trip_id;
   const ecotrip_id = location.state?.ecotrip_id;
 
-  const [data, setData] = useState(null);
+  const [tripDetails, setTripDetails] = useState(null);
   const [napok, setNapok] = useState(1);
   const [fo, setFo] = useState(1);
   const [error, setError] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const images = data ? [data.main_image, ...(data.gallery_images || [])] : [];
+  const images = tripDetails ? [tripDetails.main_image, ...(tripDetails.gallery_images || [])] : [];
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -29,12 +29,12 @@ export default function Information() {
     if (trip_id) {
       fetch(URL + `Trips/detailed/${trip_id}`)
         .then(res => res.json())
-        .then(data => setData(Array.isArray(data) ? data[0] : data))
+        .then(fetchedData => setTripDetails(Array.isArray(fetchedData) ? fetchedData[0] : fetchedData))
         .catch(() => setError(true));
     } else if (ecotrip_id) {
       fetch(URL + `EcoTrip/detailed/${ecotrip_id}`)
         .then(res => res.json())
-        .then(data => setData(Array.isArray(data) ? data[0] : data))
+        .then(fetchedData => setTripDetails(Array.isArray(fetchedData) ? fetchedData[0] : fetchedData))
         .catch(() => setError(true));
     }
   }, [trip_id, ecotrip_id, URL]);
@@ -54,7 +54,7 @@ export default function Information() {
   };
 
   const handleBooking = () => {
-    if (!data) return;
+    if (!tripDetails) return;
 
     if (!loggedIn) {
       toast.error("A foglaláshoz jelentkezzen be!");
@@ -67,7 +67,7 @@ export default function Information() {
   };
 
   if (error) return <p>Hiba történt az adatok betöltésekor.</p>;
-  if (!data) return <p>Adatok betöltése...</p>;
+  if (!tripDetails) return <p>Adatok betöltése...</p>;
 
   const formatWord = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
@@ -92,7 +92,7 @@ export default function Information() {
               <div className="main-image">
                 <img
                   src={`/${images[currentImage]}`}
-                  alt={data.hotel_name}
+                  alt={tripDetails.hotel_name}
                   className="w-100 rounded shadow"
                 />
               </div>
@@ -115,25 +115,25 @@ export default function Information() {
 
           <div className="col-lg-6">
             <h2 className="mb-3 custom-border pb-2">
-              {data.city} – {data.hotel_name}
+              {tripDetails.city} – {tripDetails.hotel_name}
             </h2>
 
             <div className="review-stars mb-3">
-              {Array.from({ length: data.stars }).map((_, i) => (
+              {Array.from({ length: tripDetails.stars }).map((_, i) => (
                 <i key={i} className="bi bi-star-fill review-star"></i>
               ))}
             </div>
 
-            {data.long_description && <p>{data.long_description}</p>}
+            {tripDetails.long_description && <p>{tripDetails.long_description}</p>}
 
-            {data.routes && (
+            {tripDetails.routes && (
               <>
                 <h5 className="mt-4">Úticélok:</h5>
 
                 <div className="accordion" id="routesAccordion">
-                  {(Array.isArray(data.routes)
-                    ? data.routes
-                    : data.routes.split(",")
+                  {(Array.isArray(tripDetails.routes)
+                    ? tripDetails.routes
+                    : tripDetails.routes.split(",")
                   ).map((route, index) => (
                     <div className="accordion-item" key={index}>
                       <h2 className="accordion-header">
@@ -159,7 +159,7 @@ export default function Information() {
                               <i className="bi bi-buildings text-success"></i>{" "}
                               Hotel:
                             </strong>{" "}
-                            {data.hotel_name}
+                            {tripDetails.hotel_name}
                           </p>
                           <p>
                             <strong>
@@ -197,3 +197,5 @@ export default function Information() {
     </>
   );
 }
+
+

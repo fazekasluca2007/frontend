@@ -129,7 +129,7 @@ export default function Booking({user}) {
                                     <strong>Helyszín:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    ${hotel.city}, ${hotel.country}
+                                    ${hotel.city}
                                   </td>
                                 </tr>
                                 <tr>
@@ -688,3 +688,4 @@ export default function Booking({user}) {
     </div>
   );
 }
+
