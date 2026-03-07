@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Nav from "./pages/components/Nav";
 import Footer from "./pages/components/Footer";
+import ScrollToTop from "./pages/ScrollToTop";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Trip from "./pages/Trip";
@@ -62,33 +63,38 @@ function App() {
     <BrowserRouter>
       <Nav user={user} onLogout={logout} />
 
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/bejelentkezes' element={<Login onLogin={login} />} />
-        <Route path="/profile" element={
-          <UserPage
-            user={user}
-            updateProfileImage={updateProfileImage}
-            updateUser={updateUser}
-            onLogout={logout} 
-          />
-        } />
-        <Route path='/utjaink' element={<Trip />} />
-        <Route path='/okoutjaink' element={<Ecotrips />} />
-        <Route path='/rolunk' element={<About />} />
-        <Route path='/gyik' element={<FAQ />} />
-        <Route path='/velemenyek' element={<Reviews />} />
-        <Route path='/informaciok' element={<Information />} />
-        <Route path='/foglalas' element={<Booking user={user}/>} />
-        <Route path='/okoleiras' element={<Ecoinfo />} />
-        <Route path='/aszf' element={<Aszf />} />
-        <Route path='/sutik' element={<Cookiek />} />
+      <div className="App">
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/bejelentkezes' element={<Login onLogin={login} />} />
+          <Route path="/profile" element={
+            <UserPage
+              user={user}
+              updateProfileImage={updateProfileImage}
+              updateUser={updateUser}
+              onLogout={logout} 
+            />
+          } />
+          <Route path='/utjaink' element={<Trip />} />
+          <Route path='/okoutjaink' element={<Ecotrips />} />
+          <Route path='/rolunk' element={<About />} />
+          <Route path='/gyik' element={<FAQ />} />
+          <Route path='/velemenyek' element={<Reviews />} />
+          <Route path='/informaciok' element={<Information />} />
+          <Route path='/foglalas' element={<Booking user={user}/>} />
+          <Route path='/okoleiras' element={<Ecoinfo />} />
+          <Route path='/aszf' element={<Aszf />} />
+          <Route path='/sutik' element={<Cookiek />} />
 
-      </Routes>
+        </Routes>
+      </div>
 
+      <ScrollToTop />
       <Footer />
     </BrowserRouter>
   );
 }
 
 export default App;
+
+

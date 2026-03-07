@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif !important;
+  padding-top: 90px;
 }
 
 .App-header {
