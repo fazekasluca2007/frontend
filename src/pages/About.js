@@ -63,7 +63,10 @@ export default function About() {
 
   return (
     <div>
-      <section className="about-hero text-center" style={{ background: "url('img/index kepek/folyo.avif') center center/cover no-repeat" }}>
+      <section className="about-hero text-center">
+        <video autoPlay loop muted playsInline className="hero-video-bg">
+          <source src="//fzks.hu/video/erdo.mp4" type="video/mp4" />
+        </video>
         <div className="hero-content">
           <h1>Ismerjen meg minket közelebbről</h1>
           <p>„A legjobb emlékek gyakran ott kezdődnek, ahol a térkép véget ér."</p>
