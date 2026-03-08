@@ -9,7 +9,7 @@ import { differenceInCalendarDays } from "date-fns";
 import { ca, hu } from "date-fns/locale";
 import "./Booking.css";
 
-export default function Booking({user}) {
+export default function Booking({ user }) {
   const URL = process.env.REACT_APP_BACKEND_URL;
 
   const location = useLocation();
@@ -29,7 +29,8 @@ export default function Booking({user}) {
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("+36 ");
+  const [countryCode, setCountryCode] = useState("+36");
+  const [localPhone, setLocalPhone] = useState("");
   const [birthDate, setBirthDate] = useState("");
 
   const [cardNumber, setCardNumber] = useState("");
@@ -307,47 +308,84 @@ export default function Booking({user}) {
     }
   };
 
-  const formatHungarianPhone = (value) => {
-    let digits = value.replace(/\D/g, "");
-    if (digits.startsWith("36")) digits = digits.slice(2);
-    digits = digits.slice(0, 9);
-    const part1 = digits.slice(0, 2);
-    const part2 = digits.slice(2, 5);
-    const part3 = digits.slice(5, 9);
-    let formatted = "+36";
-    if (part1) formatted += " " + part1;
-    if (part2) formatted += " " + part2;
-    if (part3) formatted += " " + part3;
-    return formatted;
+  const countryCodes = [
+    { name: "Magyarország", code: "+36", format: [2, 3, 4], example: "70 123 4567" },
+    { name: "Ausztria", code: "+43", format: [3, 3, 3], example: "664 123 456" },
+    { name: "Belgium", code: "+32", format: [3, 2, 2, 2], example: "470 12 34 56" },
+    { name: "Bulgária", code: "+359", format: [2, 3, 4], example: "87 123 4567" },
+    { name: "Horvátország", code: "+385", format: [2, 3, 4], example: "91 234 5678" },
+    { name: "Ciprus", code: "+357", format: [2, 3, 3], example: "96 123 456" },
+    { name: "Csehország", code: "+420", format: [3, 3, 3], example: "601 123 456" },
+    { name: "Dánia", code: "+45", format: [2, 2, 2, 2], example: "20 12 34 56" },
+    { name: "Észtország", code: "+372", format: [4, 4], example: "5123 4567" },
+    { name: "Finnország", code: "+358", format: [2, 3, 4], example: "40 123 4567" },
+    { name: "Franciaország", code: "+33", format: [1, 2, 2, 2, 2], example: "6 12 34 56 78" },
+    { name: "Németország", code: "+49", format: [3, 4, 4], example: "151 2345 6789" },
+    { name: "Görögország", code: "+30", format: [3, 3, 4], example: "691 234 5678" },
+    { name: "Írország", code: "+353", format: [2, 3, 4], example: "85 123 4567" },
+    { name: "Olaszország", code: "+39", format: [3, 3, 4], example: "312 345 6789" },
+    { name: "Lettország", code: "+371", format: [2, 3, 3], example: "21 234 567" },
+    { name: "Litvánia", code: "+370", format: [3, 5], example: "612 34567" },
+    { name: "Luxemburg", code: "+352", format: [3, 3, 3], example: "621 123 456" },
+    { name: "Málta", code: "+356", format: [4, 4], example: "9912 3456" },
+    { name: "Hollandia", code: "+31", format: [1, 4, 4], example: "6 1234 5678" },
+    { name: "Lengyelország", code: "+48", format: [3, 3, 3], example: "512 345 678" },
+    { name: "Portugália", code: "+351", format: [3, 3, 3], example: "912 345 678" },
+    { name: "Románia", code: "+40", format: [3, 3, 3], example: "712 345 678" },
+    { name: "Szlovákia", code: "+421", format: [3, 3, 3], example: "912 345 678" },
+    { name: "Szlovénia", code: "+386", format: [2, 3, 3], example: "31 234 567" },
+    { name: "Spanyolország", code: "+34", format: [3, 3, 3], example: "612 345 678" },
+    { name: "Svédország", code: "+46", format: [2, 3, 2, 2], example: "70 123 45 67" },
+    { name: "Egyesült Királyság", code: "+44", format: [4, 3, 3], example: "7911 123 456" },
+  ];
+
+  const getSelectedCountry = () =>
+    countryCodes.find((c) => c.code === countryCode) || countryCodes[0];
+
+  const formatPhone = (digits, formatGroups) => {
+    let result = "";
+    let pos = 0;
+    for (let i = 0; i < formatGroups.length; i++) {
+      const chunk = digits.slice(pos, pos + formatGroups[i]);
+      if (!chunk) break;
+      if (i > 0) result += " ";
+      result += chunk;
+      pos += formatGroups[i];
+    }
+    return result;
   };
 
-  const handlePhoneChange = (e) => {
-    const raw = formatHungarianPhone(e.target.value);
-    setPhone(raw);
+  const handleLocalPhoneChange = (e) => {
+    const country = getSelectedCountry();
+    const maxDigits = country.format.reduce((a, b) => a + b, 0);
+    const digits = e.target.value.replace(/\D/g, "").slice(0, maxDigits);
+    setLocalPhone(formatPhone(digits, country.format));
   };
 
-  const getRawPhone = () =>
-    phone.replace(/\D/g, "").startsWith("36")
-      ? "+" + phone.replace(/\D/g, "")
-      : "+36" + phone.replace(/\D/g, "");
+  const getRawPhone = () => {
+    const digits = localPhone.replace(/\D/g, "");
+    return countryCode + digits;
+  };
 
   const isPhoneValid = () => {
-    const raw = getRawPhone().replace("+36", "");
-    return raw.length === 9;
-  }
+    const country = getSelectedCountry();
+    const required = country.format.reduce((a, b) => a + b, 0);
+    const digits = localPhone.replace(/\D/g, "");
+    return digits.length === required;
+  };
 
- 
+
   const validateAge = (dateString) => {
     if (!dateString) return false;
     const today = new Date();
     const birth = new Date(dateString);
     let age = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
-    
+
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
       age--;
     }
-    
+
     return age >= 16;
   };
   const formatCardNumber = (value) => {
@@ -358,7 +396,7 @@ export default function Booking({user}) {
   const handleCardChange = (e) => setCardNumber(formatCardNumber(e.target.value));
 
   const isCardValid = () => {
-    return cardNumber.replace(/\s/g,"").length === 16;
+    return cardNumber.replace(/\s/g, "").length === 16;
   }
 
   const handleExpiryChange = (e) => {
@@ -424,7 +462,7 @@ export default function Booking({user}) {
   const cashFee = Math.round(totalPrice * cashFeePercent);
   const totalWithCashFee = totalPrice + cashFee;
 
- 
+
   const isEcoTrip = !!ecotrip_id;
   const depositPaid = (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") ? depositAmount : 0;
   const finalAmount = paymentMethod === "készpénz" ? totalWithCashFee : totalPrice;
@@ -435,9 +473,9 @@ export default function Booking({user}) {
 
     if (!fullName.trim()) newErrors.fullName = "Kérjük a teljes nevét adja meg!";
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adjon meg!";
-    if (!getRawPhone().match(/^\+36(20|30|31|50|70)\d{7}$/))
-      newErrors.phone = "Érvényes mobil szám szükséges! (+36 70 123 4567)";
-     if (!birthDate) newErrors.birthDate = "Kérjük, adja meg születési dátumát!";
+    if (!isPhoneValid())
+      newErrors.phone = `Érvényes telefonszámot adjon meg! (pl. ${getSelectedCountry().example})`;
+    if (!birthDate) newErrors.birthDate = "Kérjük, adja meg születési dátumát!";
     else if (!validateAge(birthDate)) newErrors.birthDate = "Legalább 16 évesnek kell lennie a foglaláshoz!";
     if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
 
@@ -461,18 +499,9 @@ export default function Booking({user}) {
         body: JSON.stringify({
           tripId: trip_id ?? ecotrip_id,
           seats: fo,
-          days: napok,
-          startDate: formatDateLocal(startDate),
-          endDate: formatDateLocal(endDate),
-          paymentType: paymentMethod,
-          fullName,
-          email,
-          phone: getRawPhone(),
-          cardNumber: paymentMethod !== "készpénz"
-            ? cardNumber.replace(/\s/g, "")
-            : null,
-          expiry,
-          cvc,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          paymentType: paymentMethod
         }),
       });
 
@@ -498,106 +527,133 @@ export default function Booking({user}) {
   };
 
   return (
-    <div>
+    <div className="bk-page">
       <ToastContainer theme="colored" />
-      <div className="container py-5">
-        <div className="row justify-content-center">
-          <div className="col-lg-8 p-4 rounded shadow booking-card">
-            <h2 className="mb-4 text-center border-bottom pb-3">Foglalási adatok</h2>
-            <h3 className="text-center mb-4">{hotel.city} – {hotel.hotel_name}</h3>
 
-            <p><strong>Fő / Éj:</strong> {fo} / {napok}</p>
-            <p><strong>Fő / éj ár:</strong> {hotel.price} Ft</p>
-            <p className="fs-5"><strong>Teljes összeg:</strong> {" "}{paymentMethod == "készpénz" ? totalWithCashFee : totalPrice} Ft</p>
-            <p className="text-muted fst-italic mt-2">A feltüntetett árak már tartalmazzák az oldalunk szolgáltatási díjait.</p>
+      <div className="bk-book">
 
-            <hr className="my-4" />
+        <div className={`bk-left ${isEcoTrip ? "bk-left--eco" : "bk-left--trip"}`}>
+          <div className="bk-left-inner">
+            <div className="bk-badge">{isEcoTrip ? <><i className="bi bi-leaf-fill text-light"></i> Öko-utazás</> : <><i className="bi bi-airplane-fill text-light"></i> Utazás</>}</div>
+            <h1 className="bk-city">{hotel.city}</h1>
+            <p className="bk-hotel">{hotel.hotel_name}</p>
+
+            <div className="bk-divider" />
+
+            <div className="bk-section-label"><i className="bi bi-calendar3 text-light"></i> Utazás dátuma</div>
+            <div className="bk-datepicker-wrap">
+              <DatePicker
+                selected={startDate}
+                onChange={handleDateChange}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                inline
+                minDate={new Date()}
+                locale={hu}
+                className="date-picker-darkcyan"
+                dayClassName={() => "date-picker-day"}
+              />
+            </div>
+            {errors.date && <div className="bk-field-error">{errors.date}</div>}
+
+            <div className="bk-nights-row">
+              <span className="bk-nights-icon"><i class="bi bi-moon-fill text-warning"></i></span>
+              <span className="bk-nights-num">{napok}</span>
+              <span className="bk-nights-label">éjszaka</span>
+            </div>
+
+            <div className="bk-section-label"><i className="bi bi-people-fill text-light"></i> Vendégek száma</div>
+            <div className="bk-fo-row">
+              <button type="button" className="bk-fo-btn" onClick={() => setFo(prev => (prev > 1 ? prev - 1 : 1))}>−</button>
+              <span className="bk-fo-val">{fo} fő</span>
+              <button type="button" className="bk-fo-btn" onClick={() => setFo(prev => (prev < 10 ? prev + 1 : 10))}>+</button>
+            </div>
+
+            <div className="bk-divider" />
+
+            <div className="bk-price-row">
+              <span>Ár / fő / éj</span>
+              <span className="bk-price-val">{hotel.price.toLocaleString("hu-HU")} Ft</span>
+            </div>
+            <div className="bk-price-row">
+              <span>Vendégek × Éjszakák</span>
+              <span className="bk-price-val">{fo} × {napok}</span>
+            </div>
+            <div className="bk-total-box">
+              <span className="bk-total-label">Végösszeg</span>
+              <span className="bk-total-amount">
+                {totalPrice.toLocaleString("hu-HU")} Ft
+              </span>
+            </div>
+
+            <p className="bk-disclaimer">Az árak tartalmazzák az oldalunk szolgáltatási díjait.</p>
+          </div>
+        </div>
+
+        <div className="bk-right">
+          <div className="bk-right-inner">
+            <h2 className="bk-form-title">Foglalási adatok</h2>
+
             <form onSubmit={handleSubmit}>
-              <label className="form-label">Dátum kiválasztása:</label>
-              <div className="mb-4">
-                <DatePicker
-                  selected={startDate}
-                  onChange={handleDateChange}
-                  startDate={startDate}
-                  endDate={endDate}
-                  selectsRange
-                  inline
-                  minDate={new Date()}
-                  locale={hu}
-                  className="date-picker-darkcyan"
-                  dayClassName={() => "date-picker-day"}
+
+              <div className="bk-section-title">
+                <span className="bk-section-icon"><i className="bi bi-person-fill text-dark"></i></span> Személyes adatok
+              </div>
+
+              <div className="bk-field">
+                <label className="bk-label">Teljes név</label>
+                <input
+                  type="text"
+                  className={`bk-input ${errors.fullName ? "bk-input--error" : ""}`}
+                  placeholder="Kovács János"
+                  value={fullName}
+                  onChange={e => setFullName(e.target.value)}
                 />
-                <p className="mt-2">{napok} éjszaka</p>
-                <div className="text-danger">{errors.date}</div>
+                {errors.fullName && <div className="bk-field-error">{errors.fullName}</div>}
               </div>
 
-              <div className="mb-4">
-                <label className="form-label">Fő:</label>
-                <div className="fo-spinner">
-                  <button type="button" className="btn-minus" onClick={() => setFo(prev => (prev > 1 ? prev - 1 : 1))}>−</button>
-                  <input type="text" readOnly className="form-control fo-input" value={fo} />
-                  <button type="button" className="btn-plus" onClick={() => setFo(prev => (prev < 10 ? prev + 1 : 10))}>+</button>
-                </div>
+              <div className="bk-field">
+                <label className="bk-label">Email-cím</label>
+                <input
+                  type="email"
+                  className={`bk-input ${errors.email ? "bk-input--error" : ""}`}
+                  placeholder="pelda@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+                {errors.email && <div className="bk-field-error">{errors.email}</div>}
               </div>
 
-              <hr className="my-4" />
-              <h4 className="mb-3">Személyes adatok</h4>
-
-              <div className="mb-3">
-                <label className="form-label">Teljes név</label>
-                <input type="text" className={`form-control ${errors.fullName ? "is-invalid" : ""}`} placeholder="Teljes név" value={fullName} onChange={e => setFullName(e.target.value)} />
-                <div className="invalid-feedback">{errors.fullName}</div>
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Email</label>
-                <input type="email" className={`form-control ${errors.email ? "is-invalid" : ""}`} placeholder="ecotripmail@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
-                <div className="invalid-feedback">{errors.email}</div>
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Telefon</label>
-                <div className="input-group gap-2">
-                  <select className="form-select rounded-3" value={phone.split(" ")[0]} onChange={(e) => {
-                    const countryCode = e.target.value;
-                    setPhone(countryCode + " ");
-                  }} style={{ maxWidth: "200px" }}>
-                    <option value="+36">Magyarország +36</option>
-                    <option value="+43">Ausztria +43</option>
-                    <option value="+32">Belgium +32</option>
-                    <option value="+359">Bulgária +359</option>
-                    <option value="+385">Horvátország +385</option>
-                    <option value="+357">Ciprus +357</option>
-                    <option value="+420">Csehország +420</option>
-                    <option value="+45">Dánia +45</option>
-                    <option value="+372">Észtország +372</option>
-                    <option value="+358">Finnország +358</option>
-                    <option value="+33">Franciaország +33</option>
-                    <option value="+49">Németország +49</option>
-                    <option value="+30">Görögország +30</option>
-                    <option value="+353">Írország +353</option>
-                    <option value="+39">Olaszország +39</option>
-                    <option value="+371">Lettország +371</option>
-                    <option value="+370">Litvánia +370</option>
-                    <option value="+352">Luxemburg +352</option>
-                    <option value="+356">Málta +356</option>
-                    <option value="+31">Hollandia +31</option>
-                    <option value="+48">Lengyelország +48</option>
-                    <option value="+351">Portugália +351</option>
-                    <option value="+40">Románia +40</option>
-                    <option value="+421">Szlovákia +421</option>
-                    <option value="+386">Szlovénia +386</option>
-                    <option value="+34">panyolország +34</option>
-                    <option value="+46">Svédország +46</option>
-                    <option value="+44">Egyesült Királyság +44</option>
+              <div className="bk-field">
+                <label className="bk-label">Telefon</label>
+                <div className="bk-phone-row">
+                  <select
+                    className="bk-select"
+                    value={countryCode}
+                    onChange={(e) => { setCountryCode(e.target.value); setLocalPhone(""); }}
+                  >
+                    {countryCodes.map((c) => (
+                      <option key={c.code} value={c.code}>{c.name} {c.code}</option>
+                    ))}
                   </select>
-                  <input type="tel" className={`form-control rounded-3 ${errors.phone ? "is-invalid" : ""}`} placeholder="70 123 4567" value={phone.split(" ").slice(1).join(" ")} onChange={handlePhoneChange} />
+                  <input
+                    type="tel"
+                    className={`bk-input ${errors.phone ? "bk-input--error" : ""}`}
+                    placeholder={getSelectedCountry().example}
+                    value={localPhone}
+                    onChange={handleLocalPhoneChange}
+                    maxLength={
+                      getSelectedCountry().format.reduce((a, b) => a + b, 0) +
+                      getSelectedCountry().format.length - 1
+                    }
+                  />
                 </div>
-                <div className="invalid-feedback d-block">{errors.phone}</div>
+                {errors.phone && <div className="bk-field-error">{errors.phone}</div>}
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">Születési dátum</label>
+              <div className="bk-field">
+                <label className="bk-label">Születési dátum</label>
                 <DatePicker
                   selected={birthDate ? new Date(birthDate) : null}
                   onChange={(date) => setBirthDate(date ? formatDateLocal(date) : "")}
@@ -607,83 +663,108 @@ export default function Booking({user}) {
                   dropdownMode="select"
                   maxDate={new Date()}
                   placeholderText="Válasszon dátumot"
-                  className={`form-control date-picker-darkcyan rounded-3 ${errors.birthDate ? "is-invalid" : ""}`}
+                  className={`bk-input bk-input--date ${errors.birthDate ? "bk-input--error" : ""}`}
                   locale={hu}
                   dayClassName={() => "date-picker-day"}
                   onKeyDown={(e) => e.preventDefault()}
                 />
-                <div className={`invalid-feedback ${errors.birthDate ? "d-block" : ""}`}>{errors.birthDate}</div>
+                {errors.birthDate && <div className="bk-field-error">{errors.birthDate}</div>}
               </div>
 
-              <h4 className="mt-4 mb-3">Fizetési mód</h4>
+              <div className="bk-section-title" style={{ marginTop: "28px" }}>
+                Fizetési mód
+              </div>
 
-              <div className="mb-3">
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="bankkártya" checked={paymentMethod === "bankkártya"} onChange={handlePaymentChange} />
-                  <label className="form-check-label">Bankkártya</label>
-                </div>
-
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="szép kártya" checked={paymentMethod === "szép kártya"} onChange={handlePaymentChange} />
-                  <label className="form-check-label">SZÉP kártya</label>
-                </div>
-
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" name="paymentMethod" value="készpénz" checked={paymentMethod === "készpénz"} onChange={handlePaymentChange} />
-                  <label className="form-check-label">Készpénz</label>
-                </div>
+              <div className="bk-payment-options">
+                {[
+                  { value: "bankkártya", label: "Bankkártya" },
+                  { value: "szép kártya", label: "SZÉP kártya" },
+                  { value: "készpénz", label: "Készpénz" },
+                ].map((opt) => (
+                  <label
+                    key={opt.value}
+                    className={`bk-payment-card ${paymentMethod === opt.value ? "bk-payment-card--active" : ""}`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value={opt.value}
+                      checked={paymentMethod === opt.value}
+                      onChange={handlePaymentChange}
+                    />
+                    <span className="bk-pay-label">{opt.label}</span>
+                  </label>
+                ))}
               </div>
 
               {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
-                <div className="row g-3">
-                  <div className="col-md-8">
-                    <label className="form-label">Kártyaszám</label>
-                    <input type="text" className={`form-control rounded-3 ${errors.cardNumber ? "is-invalid" : ""}`} value={cardNumber} onChange={handleCardChange} maxLength={19} />
-                    <div className="invalid-feedback">{errors.cardNumber}</div>
+                <div className="bk-card-fields">
+                  <div className="bk-field" style={{ flex: "1 1 100%" }}>
+                    <label className="bk-label">Kártyaszám</label>
+                    <input
+                      type="text"
+                      className={`bk-input ${errors.cardNumber ? "bk-input--error" : ""}`}
+                      placeholder="1234 5678 9012 3456"
+                      value={cardNumber}
+                      onChange={handleCardChange}
+                      maxLength={19}
+                    />
+                    {errors.cardNumber && <div className="bk-field-error">{errors.cardNumber}</div>}
                   </div>
-
-                  <div className="col-md-2">
-                    <label className="form-label">MM/ÉÉ</label>
-                    <input type="text" className={`form-control rounded-3 ${errors.expiry ? "is-invalid" : ""}`} value={expiry} onChange={handleExpiryChange} maxLength={5} />
-                    <div className="invalid-feedback">{errors.expiry}</div>
+                  <div className="bk-field" style={{ flex: "1 1 48%" }}>
+                    <label className="bk-label">Lejárat (MM/ÉÉ)</label>
+                    <input
+                      type="text"
+                      className={`bk-input ${errors.expiry ? "bk-input--error" : ""}`}
+                      placeholder="09/27"
+                      value={expiry}
+                      onChange={handleExpiryChange}
+                      maxLength={5}
+                    />
+                    {errors.expiry && <div className="bk-field-error">{errors.expiry}</div>}
                   </div>
-
-                  <div className="col-md-2">
-                    <label className="form-label">CVC</label>
-                    <input type="text" className={`form-control rounded-3 ${errors.cvc ? "is-invalid" : ""}`} value={cvc} onChange={handleCvcChange} maxLength={3} />
-                    <div className="invalid-feedback">{errors.cvc}</div>
+                  <div className="bk-field" style={{ flex: "1 1 48%" }}>
+                    <label className="bk-label">CVC</label>
+                    <input
+                      type="text"
+                      className={`bk-input ${errors.cvc ? "bk-input--error" : ""}`}
+                      placeholder="123"
+                      value={cvc}
+                      onChange={handleCvcChange}
+                      maxLength={3}
+                    />
+                    {errors.cvc && <div className="bk-field-error">{errors.cvc}</div>}
                   </div>
                 </div>
               )}
 
               {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
-                <div className="alert alert-info mt-3">
-                  A foglalás véglegesítéséhez <strong>50% előleg</strong> fizetése szükséges.
-                  <br />
-                  Fizetendő előleg összege: <strong>{depositAmount} Ft</strong>
+                <div className="bk-alert bk-alert--info">
+                  A foglalás véglegesítéséhez <strong>50% előleg</strong> szükséges.<br />
+                  Most fizetendő: <strong>{depositAmount.toLocaleString("hu-HU")} Ft</strong>
                 </div>
               )}
-
               {paymentMethod === "készpénz" && (
-                <div className="alert alert-info mt-3">
-                  Készpénzes fizetés esetén <strong>8% kezelési díjat</strong> számítunk fel, ami a helyszínen kerül kifizetésre.
-                  <br />
-                  Kezelési díj: <strong>{cashFee} Ft</strong>
-                  <br />
-                  Fizetendő végösszeg: <strong>{totalWithCashFee} Ft</strong>
+                <div className="bk-alert bk-alert--info">
+                  Készpénz esetén <strong>8% kezelési díj</strong> kerül felszámításra a helyszínen.<br />
+                  Kezelési díj: <strong>{cashFee.toLocaleString("hu-HU")} Ft</strong> –
+                  Végösszeg: <strong>{totalWithCashFee.toLocaleString("hu-HU")} Ft</strong>
                 </div>
               )}
 
               {isSubmitting ? (
-                <div className="d-flex justify-content-center mt-4">
-                  <DotLoader color="#7dbf7d" size={50} />
+                <div className="bk-loader">
+                  <DotLoader color="#008b8b" size={52} />
                 </div>
               ) : (
-                <button className="btn btn-success btn-lg w-100 mt-4">Foglalás megerősítése</button>
+                <button type="submit" className="bk-submit-btn">
+                  Foglalás megerősítése →
+                </button>
               )}
             </form>
           </div>
         </div>
+
       </div>
     </div>
   );
