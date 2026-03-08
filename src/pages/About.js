@@ -57,7 +57,7 @@ export default function About() {
     {
       name: "Szabó Flóra",
       img: "img/rolunk kepek/flora.jpeg",
-      text: "Úgy gondolom, hogy az utazás akkor teljes, ha az élmények mellett a természet iránti felelősség is jelen van.",
+      text: "Úgy gondolom, hogy az utazás akkor teljes,ha az élmények mellett a természet iránti felelősség is jelen van.",
     },
   ];
 
@@ -112,7 +112,7 @@ export default function About() {
         <h2 className="text-center mb-5 text-gradient animate-on-scroll">Ismerje meg a csapatunkat</h2>
         <div className="row gy-4 justify-content-center">
           {team.map((member, index) => (
-            <div key={index} className="col-md-3 text-center animate-on-scroll" style={{ transitionDelay: `${index * 0.15}s` }}>
+            <div key={index} className="col-md-3 d-flex text-center animate-on-scroll" style={{ transitionDelay: `${index * 0.15}s` }}>
               <div className="team-card">
                 <img src={member.img} alt={member.name} />
                 <h5>{member.name}</h5>
