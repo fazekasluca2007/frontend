@@ -7,39 +7,39 @@ import "./Trip.css";
 import Trip_card from "./components/Trip_card";
 import CustomSelect from "./components/CustomSelect";
 
-const Trip = () => {
-  const URL = process.env.REACT_APP_BACKEND_URL;
+export default function Trip() {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [trips, setTrips] = useState([]);
-  const [positions, setPositions] = useState({});
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [sliderPositions, setSliderPositions] = useState({});
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(URL + "Trips/tripcards")
+    setIsLoading(true);
+    fetch(backendUrl + "Trips/tripcards")
       .then((response) => response.json())
       .then((json) => {
         setTrips(json.result);
-        setError(false);
-        setLoading(false);
+        setHasError(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.error("Fetch error:", err);
-        setError(true);
-        setLoading(false);
+        setHasError(true);
+        setIsLoading(false);
       });
-  }, [URL]);
- 
+  }, [backendUrl]);
+
   useEffect(() => {
     if (selectedCity) {
       const countryForCity = trips.find((c) =>
         c.hotels.some((h) => h.city === selectedCity)
       )?.country;
-  
+
       if (countryForCity && countryForCity !== selectedCountry) {
         setSelectedCountry(countryForCity);
       }
@@ -48,11 +48,11 @@ const Trip = () => {
 
   useEffect(() => {
     if (selectedCountry) {
-      setPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
+      setSliderPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
     } else {
       const resetPositions = {};
       trips.forEach((c) => (resetPositions[c.country] = 0));
-      setPositions(resetPositions);
+      setSliderPositions(resetPositions);
     }
   }, [selectedCountry, selectedCity, trips]);
 
@@ -61,36 +61,37 @@ const Trip = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const moveSlide = (country, step, hotelsLength) => {
-    let cardsPerView = 4;
-    if (window.innerWidth <= 992 && window.innerWidth > 576) cardsPerView = 2;
-    if (window.innerWidth <= 576) cardsPerView = 1;
+  const getCardsPerView = () => {
+    if (window.innerWidth <= 576) return 1;
+    if (window.innerWidth <= 992) return 2;
+    return 4;
+  };
 
+  const moveSlide = (country, step, hotelsLength) => {
+    const cardsPerView = getCardsPerView();
     const maxPos = Math.max(0, hotelsLength - cardsPerView);
 
-    setPositions((prev) => {
+    setSliderPositions((prev) => {
       const current = prev[country] || 0;
-      let newPos = current + step;
-      newPos = Math.max(0, Math.min(newPos, maxPos));
+      const newPos = Math.max(0, Math.min(current + step, maxPos));
       return { ...prev, [country]: newPos };
     });
   };
 
-  const cities = selectedCountry
-    ? [
-      ...new Set(
-        trips
-          .find((c) => c.country === selectedCountry)
-          ?.hotels.map((h) => h.city) || []
-      ),
-    ]
-    : [
-      ...new Set(
-        trips.flatMap((c) => c.hotels.map((h) => h.city))
-      ),
-    ];
+  const getAvailableCities = () => {
+    if (selectedCountry) {
+      return [
+        ...new Set(
+          trips
+            .find((c) => c.country === selectedCountry)
+            ?.hotels.map((h) => h.city) || []
+        ),
+      ];
+    }
+    return [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
+  };
 
-  const handleBooking = (hotel) => {
+  const handleHotelClick = (hotel) => {
     navigate("/informaciok", {
       state: { trip_id: hotel.id },
     });
@@ -100,19 +101,19 @@ const Trip = () => {
     <>
       <ToastContainer theme="colored" />
 
-      {(loading || error) && (
+      {(isLoading || hasError) && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
       )}
 
-      {error && (
+      {hasError && (
         <p className="error text-center my-4">
           Hiba az adatok lekérése során. Kérjük, próbálja újra később.
         </p>
       )}
 
-      {!error && !loading && (
+      {!hasError && !isLoading && (
         <>
           <div className="trip-filter container my-4">
             <div className="trip-filter-inner">
@@ -147,7 +148,7 @@ const Trip = () => {
                     value={selectedCity}
                     onChange={setSelectedCity}
                     placeholder="Válassz várost…"
-                    options={cities}
+                    options={getAvailableCities()}
                     type="city"
                   />
                 </div>
@@ -165,13 +166,9 @@ const Trip = () => {
                   ? country.hotels.filter((h) => h.city === selectedCity)
                   : country.hotels;
 
-                const pos = positions[country.country] || 0;
+                const pos = sliderPositions[country.country] || 0;
 
-                let cardsPerView = 4;
-                if (window.innerWidth <= 992 && window.innerWidth > 576)
-                  cardsPerView = 2;
-                if (window.innerWidth <= 576) cardsPerView = 1;
-
+                const cardsPerView = getCardsPerView();
                 const cardWidthPercent = 100 / cardsPerView;
                 const maxPos = Math.max(0, filteredHotels.length - cardsPerView);
                 const movePercent = -(pos * cardWidthPercent);
@@ -212,7 +209,7 @@ const Trip = () => {
                             <Trip_card
                               key={hotel.id}
                               hotel={hotel}
-                              onClick={() => handleBooking(hotel)}
+                              onClick={() => handleHotelClick(hotel)}
                             />
                           ))}
                         </div>
@@ -236,6 +233,4 @@ const Trip = () => {
       )}
     </>
   );
-};
-
-export default Trip;
+}

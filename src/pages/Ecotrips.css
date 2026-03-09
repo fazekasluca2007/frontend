@@ -21,7 +21,7 @@
 }
 
 .hotel-card {
-  border: 1px solid #ddd !important;
+  border: 1px solid #ddd;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
@@ -44,27 +44,27 @@
 }
 .hotel-card-body button {
   margin-top: auto;
-  background-color: darkcyan !important;
-  border-color: darkcyan !important;
-  border: none !important;
-  color: #fff !important;
+  background-color: darkcyan;
+  border-color: darkcyan;
+  border: none;
+  color: #fff;
 }
 
 .btn.btn-primary.btn-lg {
-  background-color: darkcyan !important;
-  border-color: darkcyan !important;
+  background-color: darkcyan;
+  border-color: darkcyan;
   transition: 0.3s ease;
 }
 
 .btn.btn-primary.btn-lg:hover {
   transform: scale(1.05);
-  background-color: #007070 !important;
-  border-color: #007070 !important;
+  background-color: #007070;
+  border-color: #007070;
 }
 
 .btn.btn-primary.btn-lg:active {
-  background-color: #007070 !important;
-  border-color: #007070 !important;
+  background-color: #007070;
+  border-color: #007070;
 }
 
 .review-stars i { font-size: 1.2rem; }
@@ -89,6 +89,10 @@
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.custom-select-display .arrow i {
+  font-size: 1.2rem;
 }
 
 .custom-select-options {
@@ -116,10 +120,6 @@
 .custom-select-option:hover {
   background-color: darkcyan;
   color: #fff;
-}
-
-.custom-select-display .arrow i {
-  font-size: 1.2rem;
 }
 
 .slider-btn {
@@ -171,7 +171,7 @@
   }
 
   .country-banner img {
-    margin: 0 auto 10px !important;
+    margin: 0 auto 10px;
   }
 
   .country-banner h3 {

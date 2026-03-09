@@ -6,24 +6,25 @@ import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { differenceInCalendarDays } from "date-fns";
-import { ca, hu } from "date-fns/locale";
+import { hu } from "date-fns/locale";
 import "./Booking.css";
 
 export default function Booking({ user }) {
-  const URL = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const trip_id = location.state?.trip_id;
-  const ecotrip_id = location.state?.ecotrip_id;
+  const tripId = location.state?.trip_id;
+  const ecoTripId = location.state?.ecotrip_id;
+  const isEcoTrip = !!ecoTripId;
 
   const [hotel, setHotel] = useState(null);
-  const [error, setError] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [fo, setFo] = useState(location.state?.fo ?? 1);
-  const [napok, setNapok] = useState(location.state?.napok ?? 1);
+  const [guests, setGuests] = useState(location.state?.fo ?? 1);
+  const [nights, setNights] = useState(location.state?.napok ?? 1);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -49,14 +50,13 @@ export default function Booking({ user }) {
 
   const sendBookingEmail = async () => {
     try {
-
       const paymentLabels = {
         "bankkártya": "Bankkártya",
         "szép kártya": "SZÉP kártya",
-        "készpénz": "Készpénz"
+        "készpénz": "Készpénz",
       };
 
-      await fetch(URL + "Mail", {
+      await fetch(backendUrl + "Mail", {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({
@@ -159,7 +159,7 @@ export default function Booking({ user }) {
                                     <strong>Éjszakák száma:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    🌙 ${napok} éjszaka
+                                    🌙 ${nights} éjszaka
                                   </td>
                                 </tr>
                                 <tr>
@@ -167,7 +167,7 @@ export default function Booking({ user }) {
                                     <strong>Vendégek száma:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    👥 ${fo} fő
+                                    👥 ${guests} fő
                                   </td>
                                 </tr>
                                 <tr>
@@ -339,7 +339,7 @@ export default function Booking({ user }) {
     { name: "Egyesült Királyság", code: "+44", format: [4, 3, 3], example: "7911 123 456" },
   ];
 
-  const getSelectedCountry = () =>
+  const getCountry = () =>
     countryCodes.find((c) => c.code === countryCode) || countryCodes[0];
 
   const formatPhone = (digits, formatGroups) => {
@@ -356,7 +356,7 @@ export default function Booking({ user }) {
   };
 
   const handleLocalPhoneChange = (e) => {
-    const country = getSelectedCountry();
+    const country = getCountry();
     const maxDigits = country.format.reduce((a, b) => a + b, 0);
     const digits = e.target.value.replace(/\D/g, "").slice(0, maxDigits);
     setLocalPhone(formatPhone(digits, country.format));
@@ -368,12 +368,11 @@ export default function Booking({ user }) {
   };
 
   const isPhoneValid = () => {
-    const country = getSelectedCountry();
+    const country = getCountry();
     const required = country.format.reduce((a, b) => a + b, 0);
     const digits = localPhone.replace(/\D/g, "");
     return digits.length === required;
   };
-
 
   const validateAge = (dateString) => {
     if (!dateString) return false;
@@ -381,23 +380,20 @@ export default function Booking({ user }) {
     const birth = new Date(dateString);
     let age = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
-
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
       age--;
     }
-
     return age >= 16;
   };
+
   const formatCardNumber = (value) => {
-    let digits = value.replace(/\D/g, "").slice(0, 16);
+    const digits = value.replace(/\D/g, "").slice(0, 16);
     return digits.replace(/(.{4})/g, "$1 ").trim();
   };
 
   const handleCardChange = (e) => setCardNumber(formatCardNumber(e.target.value));
 
-  const isCardValid = () => {
-    return cardNumber.replace(/\s/g, "").length === 16;
-  }
+  const isCardValid = () => cardNumber.replace(/\s/g, "").length === 16;
 
   const handleExpiryChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
@@ -411,19 +407,19 @@ export default function Booking({ user }) {
     setCvc(value);
   };
 
-  const handlePaymentChange = (e) => setPaymentMethod(e.target.value);
-
   const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
     if (start && end) {
-      let diff = differenceInCalendarDays(end, start);
+      const diff = differenceInCalendarDays(end, start);
       if (diff > 20) {
         toast.error("Maximum 20 napot választhat!");
         setEndDate(null);
-        setNapok(1);
-      } else setNapok(diff);
+        setNights(1);
+      } else {
+        setNights(diff);
+      }
     }
   };
 
@@ -432,39 +428,37 @@ export default function Booking({ user }) {
   }, []);
 
   useEffect(() => {
-    if (trip_id) {
-      fetch(URL + `Trips/detailed/${trip_id}`)
+    if (tripId) {
+      fetch(backendUrl + `Trips/detailed/${tripId}`)
         .then((res) => res.json())
         .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
-        .catch(() => setError(true));
-    } else if (ecotrip_id) {
-      fetch(URL + `EcoTrip/detailed/${ecotrip_id}`)
+        .catch(() => setHasError(true));
+    } else if (ecoTripId) {
+      fetch(backendUrl + `EcoTrip/detailed/${ecoTripId}`)
         .then((res) => res.json())
         .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
-        .catch(() => setError(true));
+        .catch(() => setHasError(true));
     }
-  }, [trip_id, ecotrip_id]);
+  }, [tripId, ecoTripId]);
 
   useEffect(() => {
     if (user && user.user) {
       setFullName(user.user.fullName || "");
       setEmail(user.user.email || "");
     }
-  }, [user])
+  }, [user]);
 
-  if (error) return <p>Hiba történt az adatok betöltésekor.</p>;
+  if (hasError) return <p>Hiba történt az adatok betöltésekor.</p>;
   if (!hotel) return <p>Adatok betöltése...</p>;
 
-  const totalPrice = hotel.price * napok * fo;
+  const totalPrice = hotel.price * nights * guests;
 
-  const depositAmount = Math.round(totalPrice * 0.5)
+  const deposit = Math.round(totalPrice * 0.5);
   const cashFeePercent = 0.08;
   const cashFee = Math.round(totalPrice * cashFeePercent);
   const totalWithCashFee = totalPrice + cashFee;
 
-
-  const isEcoTrip = !!ecotrip_id;
-  const depositPaid = (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") ? depositAmount : 0;
+  const depositPaid = (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") ? deposit : 0;
   const finalAmount = paymentMethod === "készpénz" ? totalWithCashFee : totalPrice;
 
   const handleSubmit = async (e) => {
@@ -474,7 +468,7 @@ export default function Booking({ user }) {
     if (!fullName.trim()) newErrors.fullName = "Kérjük a teljes nevét adja meg!";
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Érvényes email címet adjon meg!";
     if (!isPhoneValid())
-      newErrors.phone = `Érvényes telefonszámot adjon meg! (pl. ${getSelectedCountry().example})`;
+      newErrors.phone = `Érvényes telefonszámot adjon meg! (pl. ${getCountry().example})`;
     if (!birthDate) newErrors.birthDate = "Kérjük, adja meg születési dátumát!";
     else if (!validateAge(birthDate)) newErrors.birthDate = "Legalább 16 évesnek kell lennie a foglaláshoz!";
     if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
@@ -488,20 +482,20 @@ export default function Booking({ user }) {
     setErrors(newErrors);
     if (Object.keys(newErrors).length !== 0) return;
 
-    const finalAmount = paymentMethod === "készpénz" ? totalWithCashFee : depositAmount
+    const submitAmount = paymentMethod === "készpénz" ? totalWithCashFee : deposit;
 
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(URL + "Bookings", {
+      const response = await fetch(backendUrl + "Bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
-          tripId: trip_id ?? ecotrip_id,
-          seats: fo,
+          tripId: tripId ?? ecoTripId,
+          seats: guests,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
-          paymentType: paymentMethod
+          paymentType: paymentMethod,
         }),
       });
 
@@ -558,16 +552,16 @@ export default function Booking({ user }) {
             {errors.date && <div className="bk-field-error">{errors.date}</div>}
 
             <div className="bk-nights-row">
-              <span className="bk-nights-icon"><i class="bi bi-moon-fill text-warning"></i></span>
-              <span className="bk-nights-num">{napok}</span>
+              <span className="bk-nights-icon"><i className="bi bi-moon-fill text-warning"></i></span>
+              <span className="bk-nights-num">{nights}</span>
               <span className="bk-nights-label">éjszaka</span>
             </div>
 
             <div className="bk-section-label"><i className="bi bi-people-fill text-light"></i> Vendégek száma</div>
             <div className="bk-fo-row">
-              <button type="button" className="bk-fo-btn" onClick={() => setFo(prev => (prev > 1 ? prev - 1 : 1))}>−</button>
-              <span className="bk-fo-val">{fo} fő</span>
-              <button type="button" className="bk-fo-btn" onClick={() => setFo(prev => (prev < 10 ? prev + 1 : 10))}>+</button>
+              <button type="button" className="bk-fo-btn" onClick={() => setGuests(prev => (prev > 1 ? prev - 1 : 1))}>−</button>
+              <span className="bk-fo-val">{guests} fő</span>
+              <button type="button" className="bk-fo-btn" onClick={() => setGuests(prev => (prev < 10 ? prev + 1 : 10))}>+</button>
             </div>
 
             <div className="bk-divider" />
@@ -578,7 +572,7 @@ export default function Booking({ user }) {
             </div>
             <div className="bk-price-row">
               <span>Vendégek × Éjszakák</span>
-              <span className="bk-price-val">{fo} × {napok}</span>
+              <span className="bk-price-val">{guests} × {nights}</span>
             </div>
             <div className="bk-total-box">
               <span className="bk-total-label">Végösszeg</span>
@@ -640,12 +634,12 @@ export default function Booking({ user }) {
                   <input
                     type="tel"
                     className={`bk-input ${errors.phone ? "bk-input--error" : ""}`}
-                    placeholder={getSelectedCountry().example}
+                    placeholder={getCountry().example}
                     value={localPhone}
                     onChange={handleLocalPhoneChange}
                     maxLength={
-                      getSelectedCountry().format.reduce((a, b) => a + b, 0) +
-                      getSelectedCountry().format.length - 1
+                      getCountry().format.reduce((a, b) => a + b, 0) +
+                      getCountry().format.length - 1
                     }
                   />
                 </div>
@@ -690,7 +684,7 @@ export default function Booking({ user }) {
                       name="paymentMethod"
                       value={opt.value}
                       checked={paymentMethod === opt.value}
-                      onChange={handlePaymentChange}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
                     />
                     <span className="bk-pay-label">{opt.label}</span>
                   </label>
@@ -741,7 +735,7 @@ export default function Booking({ user }) {
               {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
                 <div className="bk-alert bk-alert--info">
                   A foglalás véglegesítéséhez <strong>50% előleg</strong> szükséges.<br />
-                  Most fizetendő: <strong>{depositAmount.toLocaleString("hu-HU")} Ft</strong>
+                  Most fizetendő: <strong>{deposit.toLocaleString("hu-HU")} Ft</strong>
                 </div>
               )}
               {paymentMethod === "készpénz" && (
@@ -754,7 +748,7 @@ export default function Booking({ user }) {
 
               {isSubmitting ? (
                 <div className="bk-loader">
-                  <DotLoader color="#008b8b" size={52} />
+                  <DotLoader color="#7dbf7d" size={52} />
                 </div>
               ) : (
                 <button type="submit" className="bk-submit-btn">
@@ -769,4 +763,3 @@ export default function Booking({ user }) {
     </div>
   );
 }
-

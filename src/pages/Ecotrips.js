@@ -1,127 +1,118 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Ecotrips.css";
-import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer, toast } from "react-toastify";
+import BeatLoader from "react-spinners/BeatLoader";
 import "react-toastify/dist/ReactToastify.css";
+import "./Ecotrips.css";
 import Trip_card from "./components/Trip_card";
 import CustomSelect from "./components/CustomSelect";
 
-const EcoTrip = () => {
-  const URL = process.env.REACT_APP_BACKEND_URL;
+export default function Ecotrips() {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
 
+  const [trips, setTrips] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [ecotrips, setEcotrips] = useState([]);
-  const [positions, setPositions] = useState({});
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(URL + "EcoTrip/ecotripcards")
-      .then((response) => response.json())
-      .then((json) => {
-        setEcotrips(json.result);
-        setError(false);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setError(true);
-        setLoading(false);
-      });
-  }, [URL]);
-
-  useEffect(() => {
-    if (selectedCity) {
-      const countryForCity = ecotrips.find((c) =>
-        c.hotels.some((h) => h.city === selectedCity)
-      )?.country;
-  
-      if (countryForCity && countryForCity !== selectedCountry) {
-        setSelectedCountry(countryForCity);
-      }
-    }
-  }, [selectedCity, ecotrips]);
-
-  useEffect(() => {
-    if (selectedCountry) {
-      setPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
-    } else {
-      const resetPositions = {};
-      ecotrips.forEach((c) => (resetPositions[c.country] = 0));
-      setPositions(resetPositions);
-    }
-  }, [selectedCountry, selectedCity, ecotrips]);
+  const [sliderPositions, setSliderPositions] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     document.title = "EcoTrip – Ökoútjaink";
     window.scrollTo(0, 0);
   }, []);
 
-  const moveSlide = (country, step, hotelsLength) => {
-    let cardsPerView = 4;
-    if (window.innerWidth <= 992 && window.innerWidth > 576) cardsPerView = 2;
-    if (window.innerWidth <= 576) cardsPerView = 1;
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(backendUrl + "EcoTrip/ecotripcards")
+      .then((res) => res.json())
+      .then((json) => {
+        setTrips(json.result);
+        setHasError(false);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setHasError(true);
+        setIsLoading(false);
+      });
+  }, [backendUrl]);
 
-    const maxPos = Math.max(0, hotelsLength - cardsPerView);
+  useEffect(() => {
+    if (!selectedCity) return;
+    const matchingCountry = trips.find((c) =>
+      c.hotels.some((h) => h.city === selectedCity)
+    )?.country;
+    if (matchingCountry && matchingCountry !== selectedCountry) {
+      setSelectedCountry(matchingCountry);
+    }
+  }, [selectedCity, trips]);
 
-    setPositions((prev) => {
+  useEffect(() => {
+    if (selectedCountry) {
+      setSliderPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
+    } else {
+      const reset = {};
+      trips.forEach((c) => (reset[c.country] = 0));
+      setSliderPositions(reset);
+    }
+  }, [selectedCountry, selectedCity, trips]);
+
+  const getCardsPerView = () => {
+    if (window.innerWidth <= 576) return 1;
+    if (window.innerWidth <= 992) return 2;
+    return 4;
+  };
+
+  const moveSlide = (country, step, hotelCount) => {
+    const cardsPerView = getCardsPerView();
+    const maxPos = Math.max(0, hotelCount - cardsPerView);
+    setSliderPositions((prev) => {
       const current = prev[country] || 0;
-      let newPos = current + step;
-      newPos = Math.max(0, Math.min(newPos, maxPos));
-      return { ...prev, [country]: newPos };
+      const next = Math.max(0, Math.min(current + step, maxPos));
+      return { ...prev, [country]: next };
     });
   };
 
-  const cities = selectedCountry
-    ? [
-        ...new Set(
-          ecotrips
-            .find((c) => c.country === selectedCountry)
-            ?.hotels.map((h) => h.city) || []
-        ),
-      ]
-      : [
-        ...new Set(
-          ecotrips.flatMap((c) => c.hotels.map((h) => h.city))
-        ),
-      ];
+  const getAvailableCities = () => {
+    if (selectedCountry) {
+      const country = trips.find((c) => c.country === selectedCountry);
+      return [...new Set(country?.hotels.map((h) => h.city) || [])];
+    }
+    return [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
+  };
 
-  const handleBooking = (hotel) => {
-    const loggedIn = localStorage.getItem("user") !== null;
-
-    if (!loggedIn) {
+  const handleHotelClick = (hotel) => {
+    if (!localStorage.getItem("user")) {
       toast.info("A foglaláshoz kérem jelentkezzen be!", {
         position: "top-right",
         autoClose: 3000,
       });
+      return;
     }
-
-    navigate("/informaciok", {
-      state: { ecotrip_id: hotel.id },
-    });
+    navigate("/informaciok", { state: { ecotrip_id: hotel.id } });
   };
+
+  const cities = getAvailableCities();
 
   return (
     <>
       <ToastContainer theme="colored" position="top-right" />
 
-      {(loading || error) && (
+      {(isLoading || hasError) && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
       )}
 
-      {error && (
+      {hasError && (
         <p className="error text-center my-4">
           Hiba az adatok lekérése során. Kérjük, próbálja újra később.
         </p>
       )}
 
-      {!error && !loading && (
+      {!hasError && !isLoading && (
         <>
           <div className="trip-filter container my-4">
             <div className="trip-filter-inner">
@@ -137,7 +128,7 @@ const EcoTrip = () => {
                       setSelectedCity("");
                     }}
                     placeholder="Válassz országot…"
-                    options={ecotrips.map((c) => c.country)}
+                    options={trips.map((c) => c.country)}
                     type="country"
                   />
                 </div>
@@ -159,22 +150,15 @@ const EcoTrip = () => {
           </div>
 
           <div className="container my-5">
-            {ecotrips
-              .filter((country) =>
-                selectedCountry ? country.country === selectedCountry : true
-              )
+            {trips
+              .filter((c) => (selectedCountry ? c.country === selectedCountry : true))
               .map((country) => {
                 const filteredHotels = selectedCity
                   ? country.hotels.filter((h) => h.city === selectedCity)
                   : country.hotels;
 
-                const pos = positions[country.country] || 0;
-
-                let cardsPerView = 4;
-                if (window.innerWidth <= 992 && window.innerWidth > 576)
-                  cardsPerView = 2;
-                if (window.innerWidth <= 576) cardsPerView = 1;
-
+                const pos = sliderPositions[country.country] || 0;
+                const cardsPerView = getCardsPerView();
                 const cardWidthPercent = 100 / cardsPerView;
                 const maxPos = Math.max(0, filteredHotels.length - cardsPerView);
                 const movePercent = -(pos * cardWidthPercent);
@@ -196,9 +180,7 @@ const EcoTrip = () => {
                     <div className="slider-wrapper">
                       <button
                         className="slider-btn left"
-                        onClick={() =>
-                          moveSlide(country.country, -1, filteredHotels.length)
-                        }
+                        onClick={() => moveSlide(country.country, -1, filteredHotels.length)}
                         disabled={pos === 0}
                       >
                         ❮
@@ -213,7 +195,7 @@ const EcoTrip = () => {
                             <Trip_card
                               key={hotel.id}
                               hotel={hotel}
-                              onClick={() => handleBooking(hotel)}
+                              onClick={() => handleHotelClick(hotel)}
                             />
                           ))}
                         </div>
@@ -221,9 +203,7 @@ const EcoTrip = () => {
 
                       <button
                         className="slider-btn right"
-                        onClick={() =>
-                          moveSlide(country.country, 1, filteredHotels.length)
-                        }
+                        onClick={() => moveSlide(country.country, 1, filteredHotels.length)}
                         disabled={pos >= maxPos}
                       >
                         ❯
@@ -237,6 +217,4 @@ const EcoTrip = () => {
       )}
     </>
   );
-};
-
-export default EcoTrip;
+}

@@ -5,81 +5,80 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Information.css";
 
 export default function Information() {
-  const URL = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [currentImage, setCurrentImage] = useState(0);
 
-  const trip_id = location.state?.trip_id;
-  const ecotrip_id = location.state?.ecotrip_id;
+  const tripId = location.state?.trip_id;
+  const ecoTripId = location.state?.ecotrip_id;
 
-  const [tripDetails, setTripDetails] = useState(null);
-  const [napok, setNapok] = useState(1);
-  const [fo, setFo] = useState(1);
-  const [error, setError] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [hotelData, setHotelData] = useState(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [days, setDays] = useState(1);
+  const [guests, setGuests] = useState(1);
+  const [hasError, setHasError] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const images = tripDetails ? [tripDetails.main_image, ...(tripDetails.gallery_images || [])] : [];
+  const images = hotelData ? [hotelData.main_image, ...(hotelData.gallery_images || [])] : [];
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    setLoggedIn(user !== null);
+    setIsLoggedIn(localStorage.getItem("user") !== null);
 
-    if (trip_id) {
-      fetch(URL + `Trips/detailed/${trip_id}`)
-        .then(res => res.json())
-        .then(fetchedData => setTripDetails(Array.isArray(fetchedData) ? fetchedData[0] : fetchedData))
-        .catch(() => setError(true));
-    } else if (ecotrip_id) {
-      fetch(URL + `EcoTrip/detailed/${ecotrip_id}`)
-        .then(res => res.json())
-        .then(fetchedData => setTripDetails(Array.isArray(fetchedData) ? fetchedData[0] : fetchedData))
-        .catch(() => setError(true));
+    if (tripId) {
+      fetch(backendUrl + `Trips/detailed/${tripId}`)
+        .then((res) => res.json())
+        .then((data) => setHotelData(Array.isArray(data) ? data[0] : data))
+        .catch(() => setHasError(true));
+    } else if (ecoTripId) {
+      fetch(backendUrl + `EcoTrip/detailed/${ecoTripId}`)
+        .then((res) => res.json())
+        .then((data) => setHotelData(Array.isArray(data) ? data[0] : data))
+        .catch(() => setHasError(true));
     }
-  }, [trip_id, ecotrip_id, URL]);
+  }, [tripId, ecoTripId, backendUrl]);
 
   useEffect(() => {
     document.title = "EcoTrip – Információk";
   }, []);
 
-  const handleNapokChange = (e) => {
+  const handleDaysChange = (e) => {
     const value = Number(e.target.value);
-    setNapok(value < 1 ? 1 : value > 10 ? 10 : value);
+    setDays(value < 1 ? 1 : value > 10 ? 10 : value);
   };
 
-  const handleFoChange = (e) => {
+  const handleGuestsChange = (e) => {
     const value = Number(e.target.value);
-    setFo(value < 1 ? 1 : value > 10 ? 10 : value);
+    setGuests(value < 1 ? 1 : value > 10 ? 10 : value);
   };
 
-  const handleBooking = () => {
-    if (!tripDetails) return;
+  const handleBookingClick = () => {
+    if (!hotelData) return;
 
-    if (!loggedIn) {
+    if (!isLoggedIn) {
       toast.error("A foglaláshoz jelentkezzen be!");
       return;
     }
 
     navigate("/foglalas", {
-      state: { trip_id, ecotrip_id, napok, fo }
+      state: { trip_id: tripId, ecotrip_id: ecoTripId, napok: days, fo: guests },
     });
   };
 
-  if (error) return <p>Hiba történt az adatok betöltésekor.</p>;
-  if (!tripDetails) return <p>Adatok betöltése...</p>;
+  const capitalizeFirst = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
-  const formatWord = (word) => word.charAt(0).toUpperCase() + word.slice(1);
-
-  const getDestinationFromRoute = (route) => {
+  const getDestination = (route) => {
     const parts = route.split("_");
-    return formatWord(parts[parts.length - 1]);
+    return capitalizeFirst(parts[parts.length - 1]);
   };
 
-  const getRouteInfoFromRoute = (route) => {
+  const getRouteInfo = (route) => {
     const parts = route.split("_");
-    return parts.slice(0, -1).map(formatWord).join(" ");
+    return parts.slice(0, -1).map(capitalizeFirst).join(" ");
   };
+
+  if (hasError) return <p>Hiba történt az adatok betöltésekor.</p>;
+  if (!hotelData) return <p>Adatok betöltése...</p>;
 
   return (
     <>
@@ -91,8 +90,8 @@ export default function Information() {
             <div className="image-gallery">
               <div className="main-image">
                 <img
-                  src={`/${images[currentImage]}`}
-                  alt={tripDetails.hotel_name}
+                  src={`/${images[activeImageIndex]}`}
+                  alt={hotelData.hotel_name}
                   className="w-100 rounded shadow"
                 />
               </div>
@@ -104,8 +103,8 @@ export default function Information() {
                       key={idx}
                       src={`/${img}`}
                       alt={`Thumbnail ${idx}`}
-                      className={`thumbnail ${currentImage === idx ? "active" : ""}`}
-                      onClick={() => setCurrentImage(idx)}
+                      className={`thumbnail ${activeImageIndex === idx ? "active" : ""}`}
+                      onClick={() => setActiveImageIndex(idx)}
                     />
                   ))}
                 </div>
@@ -115,25 +114,25 @@ export default function Information() {
 
           <div className="col-lg-6">
             <h2 className="mb-3 custom-border pb-2">
-              {tripDetails.city} – {tripDetails.hotel_name}
+              {hotelData.city} – {hotelData.hotel_name}
             </h2>
 
             <div className="review-stars mb-3">
-              {Array.from({ length: tripDetails.stars }).map((_, i) => (
+              {Array.from({ length: hotelData.stars }).map((_, i) => (
                 <i key={i} className="bi bi-star-fill review-star"></i>
               ))}
             </div>
 
-            {tripDetails.long_description && <p>{tripDetails.long_description}</p>}
+            {hotelData.long_description && <p>{hotelData.long_description}</p>}
 
-            {tripDetails.routes && (
+            {hotelData.routes && (
               <>
                 <h5 className="mt-4">Úticélok:</h5>
 
                 <div className="accordion" id="routesAccordion">
-                  {(Array.isArray(tripDetails.routes)
-                    ? tripDetails.routes
-                    : tripDetails.routes.split(",")
+                  {(Array.isArray(hotelData.routes)
+                    ? hotelData.routes
+                    : hotelData.routes.split(",")
                   ).map((route, index) => (
                     <div className="accordion-item" key={index}>
                       <h2 className="accordion-header">
@@ -144,7 +143,7 @@ export default function Information() {
                           data-bs-target={`#route-${index}`}
                         >
                           <i className="bi bi-geo-alt-fill text-danger"></i>{" "}
-                          {getDestinationFromRoute(route.trim())}
+                          {getDestination(route.trim())}
                         </button>
                       </h2>
 
@@ -159,21 +158,21 @@ export default function Information() {
                               <i className="bi bi-buildings text-success"></i>{" "}
                               Hotel:
                             </strong>{" "}
-                            {tripDetails.hotel_name}
+                            {hotelData.hotel_name}
                           </p>
                           <p>
                             <strong>
                               <i className="bi bi-signpost-2 text-warning"></i>{" "}
                               Útvonal:
                             </strong>{" "}
-                            {getRouteInfoFromRoute(route.trim())}
+                            {getRouteInfo(route.trim())}
                           </p>
                           <p>
                             <strong>
                               <i className="bi bi-geo-alt-fill text-danger"></i>{" "}
                               Végállomás:
                             </strong>{" "}
-                            {getDestinationFromRoute(route.trim())}
+                            {getDestination(route.trim())}
                           </p>
                         </div>
                       </div>
@@ -187,7 +186,7 @@ export default function Information() {
 
             <button
               className="btn btn-primary btn-lg"
-              onClick={handleBooking}
+              onClick={handleBookingClick}
             >
               Kezdje el a foglalást
             </button>
@@ -197,5 +196,3 @@ export default function Information() {
     </>
   );
 }
-
-
