@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Footer.css';
 import { NavLink } from 'react-router-dom';
 
-export default function Footer() {  return (    <footer className="footer-custom text-white">
+export default function Footer() {
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    if (!footerRef.current) return;
+
+    const revealNodes = footerRef.current.querySelectorAll('.animate-on-scroll');
+    const revealThreshold = 0.15;
+    const staggerStep = 0.08; // seconds between each item's delay
+
+    function handleIntersections(entries) {
+      entries.forEach(item => {
+        if (item.isIntersecting) {
+          item.target.classList.add('show');
+        } else {
+          item.target.classList.remove('show');
+        }
+      });
+    }
+
+    const intersectionObserver = new IntersectionObserver(handleIntersections, { threshold: revealThreshold });
+
+    revealNodes.forEach((node, index) => {
+      node.style.transitionDelay = `${index * staggerStep}s`;
+      intersectionObserver.observe(node);
+    });
+
+    return () => intersectionObserver.disconnect();
+  }, []);
+
+  return (
+    <footer ref={footerRef} className="footer-custom text-white">
       <div className="container py-4">
         <div className="row g-3 gy-4">
           
        
-          <div className="col-12 col-md-4 footer-section">
+          <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-geo-alt-fill me-2"></i>
               Kapcsolat
@@ -19,7 +50,7 @@ export default function Footer() {  return (    <footer className="footer-custom
             </ul>
           </div>
 
-          <div className="col-12 col-md-4 footer-section">
+          <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-map me-2"></i>
               Oldalak
@@ -34,7 +65,7 @@ export default function Footer() {  return (    <footer className="footer-custom
             </ul>
           </div>
 
-          <div className="col-12 col-md-4 footer-section">
+          <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-heart-fill me-2"></i>
               Kövess minket!
@@ -57,7 +88,7 @@ export default function Footer() {  return (    <footer className="footer-custom
 
         </div>
 
-        <div className="footer-bottom text-center mt-4 pt-3">
+        <div className="footer-bottom text-center mt-4 pt-3 animate-on-scroll">
           <small>&copy; 2026 EcoTrip - Minden jog fenntartva</small>
         </div>
 

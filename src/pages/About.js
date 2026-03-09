@@ -28,7 +28,7 @@ export default function About() {
   const cards = [
     {
       title: "Fenntartható utazás",
-      text: "Az EcoTrip küldetése, hogy megmutassa utazni lehet tudatosan és környezettudatosan.",
+      text: "Az EcoTrip küldetése, hogy megmutassa utazni lehet tudatosan és környezettudatosan is.",
       color: "blue"
     },
     {

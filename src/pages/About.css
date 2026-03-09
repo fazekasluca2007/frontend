@@ -61,15 +61,16 @@
 }
 
 .blue {
-  background: linear-gradient(135deg, darkcyan);
+  /* subtle two-stop gradient for consistency */
+  background: linear-gradient(135deg, #2a9db3 0%, #1f6f88 100%);
 }
 
 .green {
-  background: linear-gradient(135deg, #7dbf7d);
+  background: linear-gradient(135deg, #8fd196 0%, #4b9a4a 100%);
 }
 
 .brown {
-  background: linear-gradient(135deg, #a87c5c);
+  background: linear-gradient(135deg, #d4a98a 0%, #8f6a4f 100%);
 }
 
 #foldgomb {
@@ -82,36 +83,58 @@
 }
 
 .info-card {
-  background: #f0f6fb;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,250,255,0.9));
   color: #1a3c57;
-  padding: 25px 20px;
-  border-radius: 20px;
-  border: 2px solid #7dbf7d;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  padding: 28px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(26,60,87,0.06);
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 8px 18px rgba(10, 30, 60, 0.05);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  overflow: hidden;
+}
+
+.info-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 72px;
+  border-bottom-right-radius: 10px;
+  background: var(--accent, linear-gradient(90deg, #7dbf7d, #5aa06a));
 }
 
 .info-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  border-color: darkcyan;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(10, 30, 60, 0.08);
 }
 
 .info-card h5 {
-  color: #1a3c57;
-  margin-bottom: 12px;
+  color: #123241;
+  margin-bottom: 10px;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: 18px;
 }
-
 
 .info-card p {
-  font-size: 16px;
+  font-size: 15.5px;
   line-height: 1.6;
+  color: rgba(26,60,87,0.9);
+  margin: 0; 
 }
+
+.info-card.blue::before { background: linear-gradient(90deg, #2a9db3, #1f6f88); }
+.info-card.green::before { background: linear-gradient(90deg, #7dbf7d, #4b9a4a); }
+.info-card.brown::before { background: linear-gradient(90deg, #c29472, #8f6a4f); }
 
 .team-card {
   background: #f0f6fb;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   border-radius: 30px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -195,6 +218,10 @@
     padding: 22px 18px;
   }
 
+  .info-card::before {
+    width: 56px;
+  }
+
   .info-card h5 {
     font-size: 16px;
   }
@@ -256,6 +283,10 @@
 
   .info-card {
     padding: 18px 14px;
+  }
+
+  .info-card::before {
+    width: 48px;
   }
 
   .info-card h5 {
