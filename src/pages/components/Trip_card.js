@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Trip_card = ({ hotel, onClick }) => {
+const Trip_card = ({ hotel, onClick, isEco }) => {
     return (
       <div className="hotel-card">
         <img
@@ -20,7 +20,7 @@ const Trip_card = ({ hotel, onClick }) => {
           <p>{hotel.city} {hotel.country}</p>
   
           <button
-            className="btn btn-primary btn-lg mt-auto"
+            className={isEco ? "btn btn-eco btn-lg mt-auto" : "btn btn-primary btn-lg mt-auto"}
             onClick={onClick}
           >
             További részletek

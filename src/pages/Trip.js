@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer } from "react-toastify";
@@ -44,7 +44,7 @@ export default function Trip() {
         setSelectedCountry(countryForCity);
       }
     }
-  }, [selectedCity, trips]);
+  }, [selectedCity, trips, selectedCountry]);
 
   useEffect(() => {
     if (selectedCountry) {
@@ -61,13 +61,13 @@ export default function Trip() {
     window.scrollTo(0, 0);
   }, []);
 
-  const getCardsPerView = () => {
+  const getCardsPerView = useCallback(() => {
     if (window.innerWidth <= 576) return 1;
     if (window.innerWidth <= 992) return 2;
     return 4;
-  };
+  }, []);
 
-  const moveSlide = (country, step, hotelsLength) => {
+  const moveSlide = useCallback((country, step, hotelsLength) => {
     const cardsPerView = getCardsPerView();
     const maxPos = Math.max(0, hotelsLength - cardsPerView);
 
@@ -76,9 +76,9 @@ export default function Trip() {
       const newPos = Math.max(0, Math.min(current + step, maxPos));
       return { ...prev, [country]: newPos };
     });
-  };
+  }, [getCardsPerView]);
 
-  const getAvailableCities = () => {
+  const availableCities = useMemo(() => {
     if (selectedCountry) {
       return [
         ...new Set(
@@ -89,7 +89,7 @@ export default function Trip() {
       ];
     }
     return [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
-  };
+  }, [selectedCountry, trips]);
 
   const handleHotelClick = (hotel) => {
     navigate("/informaciok", {
@@ -148,7 +148,7 @@ export default function Trip() {
                     value={selectedCity}
                     onChange={setSelectedCity}
                     placeholder="Válassz várost…"
-                    options={getAvailableCities()}
+                    options={availableCities}
                     type="city"
                   />
                 </div>

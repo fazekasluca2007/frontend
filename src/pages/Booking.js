@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DotLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,6 +8,90 @@ import "react-datepicker/dist/react-datepicker.css";
 import { differenceInCalendarDays } from "date-fns";
 import { hu } from "date-fns/locale";
 import "./Booking.css";
+
+const COUNTRY_CODES = [
+  { name: "Magyarország", code: "+36", format: [2, 3, 4], example: "70 123 4567" },
+  { name: "Ausztria", code: "+43", format: [3, 3, 3], example: "664 123 456" },
+  { name: "Belgium", code: "+32", format: [3, 2, 2, 2], example: "470 12 34 56" },
+  { name: "Bulgária", code: "+359", format: [2, 3, 4], example: "87 123 4567" },
+  { name: "Horvátország", code: "+385", format: [2, 3, 4], example: "91 234 5678" },
+  { name: "Ciprus", code: "+357", format: [2, 3, 3], example: "96 123 456" },
+  { name: "Csehország", code: "+420", format: [3, 3, 3], example: "601 123 456" },
+  { name: "Dánia", code: "+45", format: [2, 2, 2, 2], example: "20 12 34 56" },
+  { name: "Észtország", code: "+372", format: [4, 4], example: "5123 4567" },
+  { name: "Finnország", code: "+358", format: [2, 3, 4], example: "40 123 4567" },
+  { name: "Franciaország", code: "+33", format: [1, 2, 2, 2, 2], example: "6 12 34 56 78" },
+  { name: "Németország", code: "+49", format: [3, 4, 4], example: "151 2345 6789" },
+  { name: "Görögország", code: "+30", format: [3, 3, 4], example: "691 234 5678" },
+  { name: "Írország", code: "+353", format: [2, 3, 4], example: "85 123 4567" },
+  { name: "Olaszország", code: "+39", format: [3, 3, 4], example: "312 345 6789" },
+  { name: "Lettország", code: "+371", format: [2, 3, 3], example: "21 234 567" },
+  { name: "Litvánia", code: "+370", format: [3, 5], example: "612 34567" },
+  { name: "Luxemburg", code: "+352", format: [3, 3, 3], example: "621 123 456" },
+  { name: "Málta", code: "+356", format: [4, 4], example: "9912 3456" },
+  { name: "Hollandia", code: "+31", format: [1, 4, 4], example: "6 1234 5678" },
+  { name: "Lengyelország", code: "+48", format: [3, 3, 3], example: "512 345 678" },
+  { name: "Portugália", code: "+351", format: [3, 3, 3], example: "912 345 678" },
+  { name: "Románia", code: "+40", format: [3, 3, 3], example: "712 345 678" },
+  { name: "Szlovákia", code: "+421", format: [3, 3, 3], example: "912 345 678" },
+  { name: "Szlovénia", code: "+386", format: [2, 3, 3], example: "31 234 567" },
+  { name: "Spanyolország", code: "+34", format: [3, 3, 3], example: "612 345 678" },
+  { name: "Svédország", code: "+46", format: [2, 3, 2, 2], example: "70 123 45 67" },
+  { name: "Egyesült Királyság", code: "+44", format: [4, 3, 3], example: "7911 123 456" },
+];
+
+const PAYMENT_LABELS = {
+  "bankkártya": "Bankkártya",
+  "szép kártya": "SZÉP kártya",
+  "készpénz": "Készpénz",
+};
+
+const CASH_FEE_PERCENT = 0.08;
+
+const PAYMENT_OPTIONS = [
+  { value: "bankkártya", label: "Bankkártya" },
+  { value: "szép kártya", label: "SZÉP kártya" },
+  { value: "készpénz", label: "Készpénz" },
+];
+
+function PhoneCodeSelect({ options, value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selected = options.find((c) => c.code === value) || options[0];
+
+  return (
+    <div className="bk-phone-select-wrapper" ref={wrapperRef}>
+      <div className="bk-phone-select-display" onClick={() => setOpen((p) => !p)}>
+        <span>{selected.name} {selected.code}</span>
+        <i className={`bi bi-chevron-${open ? "up" : "down"} bk-phone-select-arrow`}></i>
+      </div>
+      {open && (
+        <ul className="bk-phone-select-options">
+          {options.map((c) => (
+            <li
+              key={c.code}
+              className={`bk-phone-select-option${c.code === value ? " bk-phone-select-option--active" : ""}`}
+              onClick={() => { onChange(c.code); setOpen(false); }}
+            >
+              {c.name} {c.code}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function Booking({ user }) {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -37,7 +121,7 @@ export default function Booking({ user }) {
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState("bankkártya");
 
   const [errors, setErrors] = useState({});
 
@@ -50,12 +134,6 @@ export default function Booking({ user }) {
 
   const sendBookingEmail = async () => {
     try {
-      const paymentLabels = {
-        "bankkártya": "Bankkártya",
-        "szép kártya": "SZÉP kártya",
-        "készpénz": "Készpénz",
-      };
-
       await fetch(backendUrl + "Mail", {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -180,7 +258,7 @@ export default function Booking({ user }) {
                                     <strong>Fizetési mód:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    💳 ${paymentLabels[paymentMethod]}
+                                    💳 ${PAYMENT_LABELS[paymentMethod]}
                                   </td>
                                 </tr>
                                 ${depositPaid > 0 ? `
@@ -308,39 +386,8 @@ export default function Booking({ user }) {
     }
   };
 
-  const countryCodes = [
-    { name: "Magyarország", code: "+36", format: [2, 3, 4], example: "70 123 4567" },
-    { name: "Ausztria", code: "+43", format: [3, 3, 3], example: "664 123 456" },
-    { name: "Belgium", code: "+32", format: [3, 2, 2, 2], example: "470 12 34 56" },
-    { name: "Bulgária", code: "+359", format: [2, 3, 4], example: "87 123 4567" },
-    { name: "Horvátország", code: "+385", format: [2, 3, 4], example: "91 234 5678" },
-    { name: "Ciprus", code: "+357", format: [2, 3, 3], example: "96 123 456" },
-    { name: "Csehország", code: "+420", format: [3, 3, 3], example: "601 123 456" },
-    { name: "Dánia", code: "+45", format: [2, 2, 2, 2], example: "20 12 34 56" },
-    { name: "Észtország", code: "+372", format: [4, 4], example: "5123 4567" },
-    { name: "Finnország", code: "+358", format: [2, 3, 4], example: "40 123 4567" },
-    { name: "Franciaország", code: "+33", format: [1, 2, 2, 2, 2], example: "6 12 34 56 78" },
-    { name: "Németország", code: "+49", format: [3, 4, 4], example: "151 2345 6789" },
-    { name: "Görögország", code: "+30", format: [3, 3, 4], example: "691 234 5678" },
-    { name: "Írország", code: "+353", format: [2, 3, 4], example: "85 123 4567" },
-    { name: "Olaszország", code: "+39", format: [3, 3, 4], example: "312 345 6789" },
-    { name: "Lettország", code: "+371", format: [2, 3, 3], example: "21 234 567" },
-    { name: "Litvánia", code: "+370", format: [3, 5], example: "612 34567" },
-    { name: "Luxemburg", code: "+352", format: [3, 3, 3], example: "621 123 456" },
-    { name: "Málta", code: "+356", format: [4, 4], example: "9912 3456" },
-    { name: "Hollandia", code: "+31", format: [1, 4, 4], example: "6 1234 5678" },
-    { name: "Lengyelország", code: "+48", format: [3, 3, 3], example: "512 345 678" },
-    { name: "Portugália", code: "+351", format: [3, 3, 3], example: "912 345 678" },
-    { name: "Románia", code: "+40", format: [3, 3, 3], example: "712 345 678" },
-    { name: "Szlovákia", code: "+421", format: [3, 3, 3], example: "912 345 678" },
-    { name: "Szlovénia", code: "+386", format: [2, 3, 3], example: "31 234 567" },
-    { name: "Spanyolország", code: "+34", format: [3, 3, 3], example: "612 345 678" },
-    { name: "Svédország", code: "+46", format: [2, 3, 2, 2], example: "70 123 45 67" },
-    { name: "Egyesült Királyság", code: "+44", format: [4, 3, 3], example: "7911 123 456" },
-  ];
-
   const getCountry = () =>
-    countryCodes.find((c) => c.code === countryCode) || countryCodes[0];
+    COUNTRY_CODES.find((c) => c.code === countryCode) || COUNTRY_CODES[0];
 
   const formatPhone = (digits, formatGroups) => {
     let result = "";
@@ -360,11 +407,6 @@ export default function Booking({ user }) {
     const maxDigits = country.format.reduce((a, b) => a + b, 0);
     const digits = e.target.value.replace(/\D/g, "").slice(0, maxDigits);
     setLocalPhone(formatPhone(digits, country.format));
-  };
-
-  const getRawPhone = () => {
-    const digits = localPhone.replace(/\D/g, "");
-    return countryCode + digits;
   };
 
   const isPhoneValid = () => {
@@ -428,17 +470,16 @@ export default function Booking({ user }) {
   }, []);
 
   useEffect(() => {
-    if (tripId) {
-      fetch(backendUrl + `Trips/detailed/${tripId}`)
-        .then((res) => res.json())
-        .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
-        .catch(() => setHasError(true));
-    } else if (ecoTripId) {
-      fetch(backendUrl + `EcoTrip/detailed/${ecoTripId}`)
-        .then((res) => res.json())
-        .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
-        .catch(() => setHasError(true));
-    }
+    const endpoint = tripId
+      ? `Trips/detailed/${tripId}`
+      : `EcoTrip/detailed/${ecoTripId}`;
+
+    if (!tripId && !ecoTripId) return;
+
+    fetch(backendUrl + endpoint)
+      .then((res) => res.json())
+      .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
+      .catch(() => setHasError(true));
   }, [tripId, ecoTripId]);
 
   useEffect(() => {
@@ -451,14 +492,13 @@ export default function Booking({ user }) {
   if (hasError) return <p>Hiba történt az adatok betöltésekor.</p>;
   if (!hotel) return <p>Adatok betöltése...</p>;
 
+  const isCardPayment = paymentMethod === "bankkártya" || paymentMethod === "szép kártya";
+
   const totalPrice = hotel.price * nights * guests;
-
   const deposit = Math.round(totalPrice * 0.5);
-  const cashFeePercent = 0.08;
-  const cashFee = Math.round(totalPrice * cashFeePercent);
+  const cashFee = Math.round(totalPrice * CASH_FEE_PERCENT);
   const totalWithCashFee = totalPrice + cashFee;
-
-  const depositPaid = (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") ? deposit : 0;
+  const depositPaid = isCardPayment ? deposit : 0;
   const finalAmount = paymentMethod === "készpénz" ? totalWithCashFee : totalPrice;
 
   const handleSubmit = async (e) => {
@@ -473,16 +513,19 @@ export default function Booking({ user }) {
     else if (!validateAge(birthDate)) newErrors.birthDate = "Legalább 16 évesnek kell lennie a foglaláshoz!";
     if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
 
-    if (paymentMethod === "bankkártya" || paymentMethod === "szép kártya") {
+    if (isCardPayment) {
       if (!isCardValid()) newErrors.cardNumber = "16 számjegyű kártyaszám szükséges!";
       if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) newErrors.expiry = "Érvényes formátum: MM/ÉÉ";
       if (!cvc.match(/^\d{3}$/)) newErrors.cvc = "3 számjegyű CVC szükséges!";
     }
 
     setErrors(newErrors);
-    if (Object.keys(newErrors).length !== 0) return;
-
-    const submitAmount = paymentMethod === "készpénz" ? totalWithCashFee : deposit;
+    if (Object.keys(newErrors).length !== 0) {
+      Object.values(newErrors).forEach((msg) =>
+        toast.error(msg, { position: "top-right", autoClose: 4000, theme: "colored" })
+      );
+      return;
+    }
 
     try {
       setIsSubmitting(true);
@@ -622,15 +665,11 @@ export default function Booking({ user }) {
               <div className="bk-field">
                 <label className="bk-label">Telefon</label>
                 <div className="bk-phone-row">
-                  <select
-                    className="bk-select"
+                  <PhoneCodeSelect
+                    options={COUNTRY_CODES}
                     value={countryCode}
-                    onChange={(e) => { setCountryCode(e.target.value); setLocalPhone(""); }}
-                  >
-                    {countryCodes.map((c) => (
-                      <option key={c.code} value={c.code}>{c.name} {c.code}</option>
-                    ))}
-                  </select>
+                    onChange={(code) => { setCountryCode(code); setLocalPhone(""); }}
+                  />
                   <input
                     type="tel"
                     className={`bk-input ${errors.phone ? "bk-input--error" : ""}`}
@@ -648,33 +687,34 @@ export default function Booking({ user }) {
 
               <div className="bk-field">
                 <label className="bk-label">Születési dátum</label>
-                <DatePicker
-                  selected={birthDate ? new Date(birthDate) : null}
-                  onChange={(date) => setBirthDate(date ? formatDateLocal(date) : "")}
-                  dateFormat="yyyy.MM.dd"
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  maxDate={new Date()}
-                  placeholderText="Válasszon dátumot"
-                  className={`bk-input bk-input--date ${errors.birthDate ? "bk-input--error" : ""}`}
-                  locale={hu}
-                  dayClassName={() => "date-picker-day"}
-                  onKeyDown={(e) => e.preventDefault()}
-                />
+                <div className="bk-birth-datepicker-wrap">
+                  <DatePicker
+                    selected={birthDate ? new Date(birthDate) : null}
+                    onChange={(date) => setBirthDate(date ? formatDateLocal(date) : "")}
+                    dateFormat="yyyy.MM.dd"
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="scroll"
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={80}
+                    maxDate={new Date()}
+                    placeholderText="Válasszon dátumot"
+                    className={`bk-input bk-input--date ${errors.birthDate ? "bk-input--error" : ""}`}
+                    popperPlacement="bottom-start"
+                    locale={hu}
+                    dayClassName={() => "date-picker-day"}
+                    onKeyDown={(e) => e.preventDefault()}
+                  />
+                </div>
                 {errors.birthDate && <div className="bk-field-error">{errors.birthDate}</div>}
               </div>
 
-              <div className="bk-section-title" style={{ marginTop: "28px" }}>
+              <div className="bk-section-title bk-section-title--payment">
                 Fizetési mód
               </div>
 
               <div className="bk-payment-options">
-                {[
-                  { value: "bankkártya", label: "Bankkártya" },
-                  { value: "szép kártya", label: "SZÉP kártya" },
-                  { value: "készpénz", label: "Készpénz" },
-                ].map((opt) => (
+                {PAYMENT_OPTIONS.map((opt) => (
                   <label
                     key={opt.value}
                     className={`bk-payment-card ${paymentMethod === opt.value ? "bk-payment-card--active" : ""}`}
@@ -691,9 +731,9 @@ export default function Booking({ user }) {
                 ))}
               </div>
 
-              {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
+              {isCardPayment && (
                 <div className="bk-card-fields">
-                  <div className="bk-field" style={{ flex: "1 1 100%" }}>
+                  <div className="bk-field bk-field--full">
                     <label className="bk-label">Kártyaszám</label>
                     <input
                       type="text"
@@ -705,7 +745,7 @@ export default function Booking({ user }) {
                     />
                     {errors.cardNumber && <div className="bk-field-error">{errors.cardNumber}</div>}
                   </div>
-                  <div className="bk-field" style={{ flex: "1 1 48%" }}>
+                  <div className="bk-field bk-field--half">
                     <label className="bk-label">Lejárat (MM/ÉÉ)</label>
                     <input
                       type="text"
@@ -717,7 +757,7 @@ export default function Booking({ user }) {
                     />
                     {errors.expiry && <div className="bk-field-error">{errors.expiry}</div>}
                   </div>
-                  <div className="bk-field" style={{ flex: "1 1 48%" }}>
+                  <div className="bk-field bk-field--half">
                     <label className="bk-label">CVC</label>
                     <input
                       type="text"
@@ -732,7 +772,7 @@ export default function Booking({ user }) {
                 </div>
               )}
 
-              {(paymentMethod === "bankkártya" || paymentMethod === "szép kártya") && (
+              {isCardPayment && (
                 <div className="bk-alert bk-alert--info">
                   A foglalás véglegesítéséhez <strong>50% előleg</strong> szükséges.<br />
                   Most fizetendő: <strong>{deposit.toLocaleString("hu-HU")} Ft</strong>

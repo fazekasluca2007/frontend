@@ -95,6 +95,7 @@
   border-radius: 8px;
   box-shadow: none;
   width: 100%;
+  font-family: inherit;
 }
 .bk-datepicker-wrap .react-datepicker__header {
   background: rgba(255,255,255,0.12);
@@ -133,6 +134,18 @@
 }
 .bk-datepicker-wrap .react-datepicker__month-container {
   width: 100%;
+}
+.bk-datepicker-wrap .react-datepicker__month-select,
+.bk-datepicker-wrap .react-datepicker__year-select {
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+}
+.bk-datepicker-wrap .react-datepicker__month-select option,
+.bk-datepicker-wrap .react-datepicker__year-select option {
+  background: #fff;
+  color: #333;
 }
 
 .bk-nights-row {
@@ -192,7 +205,6 @@
   font-size: 0.88rem;
   padding: 5px 0;
 }
-.bk-price-row--fee { color: rgba(255,220,130,0.9); }
 .bk-price-val {
   font-weight: 600;
   color: rgba(255,255,255,0.95);
@@ -217,19 +229,6 @@
   color: #7bc96f;
   font-size: 1.4rem;
   font-weight: 700;
-}
-
-.bk-deposit-note {
-  margin-top: 12px;
-  border-left: 3px solid #7bc96f;
-  padding: 8px 12px;
-  color: rgba(255,255,255,0.85);
-  font-size: 0.85rem;
-  line-height: 1.6;
-}
-.bk-deposit-note strong {
-  color: #fff;
-  font-size: 1rem;
 }
 
 .bk-disclaimer {
@@ -309,28 +308,135 @@
 }
 .bk-input--date { cursor: pointer; }
 
+.bk-birth-datepicker-wrap .react-datepicker {
+  border: 1px solid #b0d4d4;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.bk-birth-datepicker-wrap .react-datepicker__header {
+  background: darkcyan;
+  border-bottom: 1px solid #007070;
+  border-radius: 8px 8px 0 0;
+}
+.bk-birth-datepicker-wrap .react-datepicker__current-month,
+.bk-birth-datepicker-wrap .react-datepicker__day-name {
+  color: #fff;
+}
+.bk-birth-datepicker-wrap .react-datepicker__day:hover {
+  background: darkcyan;
+  color: #fff;
+  border-radius: 50%;
+}
+.bk-birth-datepicker-wrap .react-datepicker__day--selected {
+  background: darkcyan;
+  color: #fff;
+  border-radius: 50%;
+}
+.bk-birth-datepicker-wrap .react-datepicker__day--outside-month {
+  color: #aaa;
+}
+.bk-birth-datepicker-wrap .react-datepicker__navigation-icon::before {
+  border-color: #fff;
+}
+.bk-birth-datepicker-wrap .react-datepicker__year-read-view--down-arrow,
+.bk-birth-datepicker-wrap .react-datepicker__month-read-view--down-arrow {
+  border-top-color: #fff;
+}
+.bk-birth-datepicker-wrap .react-datepicker__year-dropdown,
+.bk-birth-datepicker-wrap .react-datepicker__month-dropdown {
+  background: #fff;
+  border: 1px solid #b0d4d4;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.bk-birth-datepicker-wrap .react-datepicker__year-option:hover,
+.bk-birth-datepicker-wrap .react-datepicker__month-option:hover {
+  background: darkcyan;
+  color: #fff;
+}
+.bk-birth-datepicker-wrap .react-datepicker__year-option--selected_year,
+.bk-birth-datepicker-wrap .react-datepicker__year-option--selected {
+  background: darkcyan;
+  color: #fff;
+}
+
+.bk-section-title--payment {
+  margin-top: 28px;
+}
+
+.bk-field--full {
+  flex: 1 1 100%;
+}
+
+.bk-field--half {
+  flex: 1 1 48%;
+}
+
 .bk-phone-row {
   display: flex;
   gap: 8px;
 }
 .bk-phone-row .bk-input { flex: 1; }
 
-.bk-select {
+.bk-phone-select-wrapper {
+  position: relative;
   flex: 0 0 auto;
   max-width: 210px;
+  min-width: 160px;
+}
+.bk-phone-select-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 9px 10px;
   font-size: 0.85rem;
   border: 1px solid #bfcad4;
   border-radius: 8px;
   background: #fff;
   color: #2c3e50;
-  outline: none;
   cursor: pointer;
   transition: border-color 0.2s;
+  user-select: none;
 }
-.bk-select:focus {
-  border-color: #1a3c57;
-  box-shadow: 0 0 0 3px rgba(26,60,87,0.1);
+.bk-phone-select-display:hover {
+  border-color: darkcyan;
+}
+.bk-phone-select-arrow {
+  font-size: 0.8rem;
+  margin-left: 6px;
+  color: #888;
+}
+.bk-phone-select-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #bfcad4;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  z-index: 1000;
+  padding: 4px 0;
+  list-style: none;
+  margin: 0;
+}
+.bk-phone-select-option {
+  padding: 9px 14px;
+  font-size: 0.85rem;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.bk-phone-select-option:hover {
+  background: darkcyan;
+  color: #fff;
+}
+.bk-phone-select-option--active {
+  background: darkcyan;
+  color: #fff;
+  font-weight: 600;
 }
 
 .bk-field-error {
@@ -396,11 +502,6 @@
   border-left: 4px solid #1a3c57;
   color: #1a3c57;
 }
-.bk-alert--warn {
-  background: #fffbeb;
-  border-left: 4px solid #e6a817;
-  color: #7a5200;
-}
 
 .bk-loader {
   display: flex;
@@ -427,55 +528,6 @@
   transform: scale(1.05);
 }
 
-.bk-submit-btn:active {
-  background-color: #007070;
-}
-
-.react-datepicker {
-  border: 1px solid #bfcad4;
-  font-family: inherit;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(26,60,87,0.12);
-}
-.react-datepicker__header {
-  background-color: darkcyan;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-.react-datepicker__current-month,
-.react-datepicker__day-name {
-  color: #fff;
-}
-.react-datepicker__day--selected,
-.react-datepicker__day--in-range,
-.react-datepicker__day--in-selecting-range {
-  background-color: darkcyan;
-  color: #fff;
-  border-radius: 50%;
-}
-.react-datepicker__day:hover {
-  background-color: #7bc96f;
-  color: #fff;
-  border-radius: 50%;
-}
-.react-datepicker__month-select,
-.react-datepicker__year-select {
-  background-color: darkcyan;
-  color: #fff;
-  border: 1px solid #007070;
-  border-radius: 4px;
-}
-.react-datepicker__month-select option,
-.react-datepicker__year-select option {
-  background: #fff;
-  color: #333;
-}
-.react-datepicker__month-select option:hover,
-.react-datepicker__year-select option:hover {
-  background-color: darkcyan;
-  color: #fff;
-}
-
 @media (max-width: 900px) {
   .bk-book {
     flex-direction: column;
@@ -493,6 +545,5 @@
   .bk-city { font-size: 1.6rem; }
   .bk-form-title { font-size: 1.25rem; }
   .bk-payment-options { gap: 6px; }
-  .bk-select { max-width: 150px; font-size: 0.78rem; padding: 9px 8px; }
   .bk-submit-btn { font-size: 0.95rem; padding: 12px; }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -59,13 +59,13 @@ export default function Ecotrips() {
     }
   }, [selectedCountry, selectedCity, trips]);
 
-  const getCardsPerView = () => {
+  const getCardsPerView = useCallback(() => {
     if (window.innerWidth <= 576) return 1;
     if (window.innerWidth <= 992) return 2;
     return 4;
-  };
+  }, []);
 
-  const moveSlide = (country, step, hotelCount) => {
+  const moveSlide = useCallback((country, step, hotelCount) => {
     const cardsPerView = getCardsPerView();
     const maxPos = Math.max(0, hotelCount - cardsPerView);
     setSliderPositions((prev) => {
@@ -73,15 +73,15 @@ export default function Ecotrips() {
       const next = Math.max(0, Math.min(current + step, maxPos));
       return { ...prev, [country]: next };
     });
-  };
+  }, [getCardsPerView]);
 
-  const getAvailableCities = () => {
+  const availableCities = useMemo(() => {
     if (selectedCountry) {
       const country = trips.find((c) => c.country === selectedCountry);
       return [...new Set(country?.hotels.map((h) => h.city) || [])];
     }
     return [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
-  };
+  }, [selectedCountry, trips]);
 
   const handleHotelClick = (hotel) => {
     if (!localStorage.getItem("user")) {
@@ -94,13 +94,11 @@ export default function Ecotrips() {
     navigate("/informaciok", { state: { ecotrip_id: hotel.id } });
   };
 
-  const cities = getAvailableCities();
-
   return (
     <>
       <ToastContainer theme="colored" position="top-right" />
 
-      {(isLoading || hasError) && (
+      {isLoading && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
@@ -114,13 +112,13 @@ export default function Ecotrips() {
 
       {!hasError && !isLoading && (
         <>
-          <div className="trip-filter container my-4">
-            <div className="trip-filter-inner">
-              <h2 className="filter-title">Válassza ki az úticélját!</h2>
+          <div className="eco-filter container my-4">
+            <div className="eco-filter-inner">
+              <h2 className="eco-filter-title">Válassza ki az úticélját!</h2>
 
-              <div className="filter-field">
+              <div className="eco-filter-field">
                 <label>Ország</label>
-                <div className="filter-input-wrapper">
+                <div className="eco-filter-input-wrapper">
                   <CustomSelect
                     value={selectedCountry}
                     onChange={(val) => {
@@ -134,14 +132,14 @@ export default function Ecotrips() {
                 </div>
               </div>
 
-              <div className="filter-field">
+              <div className="eco-filter-field">
                 <label>Város</label>
-                <div className="filter-input-wrapper">
+                <div className="eco-filter-input-wrapper">
                   <CustomSelect
                     value={selectedCity}
                     onChange={setSelectedCity}
                     placeholder="Válassz várost…"
-                    options={cities}
+                    options={availableCities}
                     type="city"
                   />
                 </div>
@@ -149,7 +147,7 @@ export default function Ecotrips() {
             </div>
           </div>
 
-          <div className="container my-5">
+          <div className="eco-container container my-5">
             {trips
               .filter((c) => (selectedCountry ? c.country === selectedCountry : true))
               .map((country) => {
@@ -165,7 +163,7 @@ export default function Ecotrips() {
 
                 return (
                   <div key={country.country} className="my-5">
-                    <div className="country-banner d-flex align-items-center mb-4">
+                    <div className="eco-country-banner d-flex align-items-center mb-4">
                       <img
                         src={`/${country.flag}`}
                         alt={country.country}
@@ -196,6 +194,7 @@ export default function Ecotrips() {
                               key={hotel.id}
                               hotel={hotel}
                               onClick={() => handleHotelClick(hotel)}
+                              isEco={true}
                             />
                           ))}
                         </div>

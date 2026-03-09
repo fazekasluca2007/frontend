@@ -1,5 +1,5 @@
-.country-banner {
-  background: linear-gradient(90deg, #6daedb, #7dbf7d, #a87c5c);
+.eco-country-banner {
+  background: linear-gradient(135deg, #2d6a4f 0%, #3a8659 50%, #7bc96f 100%);
   color: #fff;
   padding: 15px;
   border-radius: 12px;
@@ -42,84 +42,95 @@
   display: flex;
   flex-direction: column;
 }
-.hotel-card-body button {
-  margin-top: auto;
-  background-color: darkcyan;
-  border-color: darkcyan;
-  border: none;
+
+.btn.btn-eco.btn-lg {
+  background-color: #2d6a4f;
+  border-color: #2d6a4f;
   color: #fff;
-}
-
-.btn.btn-primary.btn-lg {
-  background-color: darkcyan;
-  border-color: darkcyan;
   transition: 0.3s ease;
-}
-
-.btn.btn-primary.btn-lg:hover {
-  transform: scale(1.05);
-  background-color: #007070;
-  border-color: #007070;
-}
-
-.btn.btn-primary.btn-lg:active {
-  background-color: #007070;
-  border-color: #007070;
-}
-
-.review-stars i { font-size: 1.2rem; }
-
-.custom-select-wrapper {
-  position: relative;
+  font-size: 1rem;
+  padding: 10px 0;
+  border-radius: 12px;
   width: 100%;
 }
 
-.custom-select-display {
+.btn.btn-eco.btn-lg:hover {
+  background-color: #1f4a37;
+  border-color: #1f4a37;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.btn.btn-eco.btn-lg:active,
+.btn.btn-eco.btn-lg:focus {
+  background-color: #1f4a37;
+  border-color: #1f4a37;
+  color: #fff;
+  box-shadow: none;
+}
+
+.eco-filter-inner .custom-select-display {
   padding: 12px 14px;
   border-radius: 12px;
-  border: 2px solid #d1d5db;
-  background: #fff;
+  border: 2px solid #3a8659;
+  background: #f0f9f5;
   cursor: pointer;
   font-weight: 500;
-  position: relative;
+  color: #1f4a37;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
-.custom-select-display .arrow {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.custom-select-display .arrow i {
-  font-size: 1.2rem;
-}
-
-.custom-select-options {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 2px solid #d1d5db;
-  border-radius: 12px;
-  background: #fff;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-}
-
-.custom-select-option {
-  padding: 12px 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.custom-select-option:hover {
-  background-color: darkcyan;
+.eco-filter-inner .custom-select-option:hover {
+  background-color: #3a8659;
   color: #fff;
+}
+
+.eco-filter {
+  display: flex;
+  justify-content: center;
+}
+
+.eco-filter-inner {
+  background: linear-gradient(135deg, #2d6a4f, #3a8659, #7bc96f);
+  border-radius: 20px;
+  padding: 25px 30px;
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 4px 25px rgba(45, 106, 79, 0.15);
+  border: 1px solid #c5d9c5;
+  flex-wrap: wrap;
+}
+
+.eco-filter-title {
+  width: 100%;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.eco-filter-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.eco-filter-field label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.eco-filter-input-wrapper {
+  position: relative;
 }
 
 .slider-btn {
@@ -128,20 +139,15 @@
   transform: translateY(-50%);
   border: none;
   background: none;
-  color: #1a3c57;
+  color: #2d6a4f;
   font-size: 2rem;
   cursor: pointer;
   z-index: 10;
   padding: 0;
 }
 
-.slider-btn.left {
-  left: -20px;
-}
-
-.slider-btn.right {
-  right: -20px;
-}
+.slider-btn.left { left: -20px; }
+.slider-btn.right { right: -20px; }
 
 
 @media (max-width: 992px) {
@@ -150,35 +156,58 @@
     max-width: calc(50% - 1rem); 
   }
 
+  .eco-filter-inner {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .eco-filter-title {
+    font-size: 1.4rem;
+  }
+
   .slider-btn {
     font-size: 1.5rem;
   }
 
-  .slider-btn.left {
-    left: -10px;
-  }
-
-  .slider-btn.right {
-    right: -10px;
-  }
+  .slider-btn.left { left: -10px; }
+  .slider-btn.right { right: -10px; }
 }
 
 @media (max-width: 768px) {
-  .country-banner {
+  .eco-filter-inner {
+    padding: 15px;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  .eco-filter-title {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+
+  .eco-filter-field {
+    width: 100%;
+  }
+
+  .eco-filter-field label {
+    font-size: 0.9rem;
+  }
+
+  .eco-country-banner {
     padding: 12px;
     flex-direction: column;
     text-align: center;
   }
 
-  .country-banner img {
+  .eco-country-banner img {
     margin: 0 auto 10px;
   }
 
-  .country-banner h3 {
+  .eco-country-banner h3 {
     font-size: 1.3rem;
   }
 
-  .country-banner p {
+  .eco-country-banner p {
     font-size: 0.9rem;
   }
 
@@ -198,51 +227,16 @@
     border-radius: 50%;
   }
 
-  .slider-btn.left {
-    left: 5px;
-  }
+  .slider-btn.left { left: 5px; }
+  .slider-btn.right { right: 5px; }
 
-  .slider-btn.right {
-    right: 5px;
-  }
+  .szallaskepek { height: 250px; }
 
-  .szallaskepek {
-    height: 250px;
-  }
+  .hotel-card-body { padding: 12px; }
 
-  .hotel-card-body {
-    padding: 12px;
-  }
-
-  .hotel-card-body h5 {
-    font-size: 1rem;
-  }
-
-  .hotel-card-body p {
-    font-size: 0.85rem;
-  }
-
-  .hotel-card-body button {
-    font-size: 0.9rem;
-    padding: 8px 0;
-  }
-
-  .review-stars i {
-    font-size: 1rem;
-  }
-
-  .custom-select-display {
+  .eco-filter-inner .custom-select-display {
     padding: 10px 12px;
     font-size: 0.9rem;
-  }
-
-  .custom-select-option {
-    padding: 10px 12px;
-    font-size: 0.9rem;
-  }
-
-  .btn.btn-primary.btn-lg:hover {
-    transform: scale(1.05);
   }
 }
 
@@ -252,100 +246,33 @@
     max-width: 100%; 
   }
 
-  .country-banner {
-    padding: 10px;
+  .eco-filter-inner {
+    padding: 15px;
+    border-radius: 15px;
   }
 
-  .country-banner h3 {
-    font-size: 1.1rem;
-  }
+  .eco-filter-title { font-size: 1.1rem; }
 
-  .country-banner p {
-    font-size: 0.85rem;
-  }
+  .eco-country-banner { padding: 10px; }
+  .eco-country-banner h3 { font-size: 1.1rem; }
+  .eco-country-banner p { font-size: 0.85rem; }
 
-  .zaszlokep {
-    width: 50px;
-    height: 32px;
-  }
+  .zaszlokep { width: 50px; height: 32px; }
 
-  .slider-btn {
-    font-size: 1.5rem;
-    width: 35px;
-    height: 35px;
-  }
+  .slider-btn { font-size: 1.5rem; width: 35px; height: 35px; }
+  .slider-btn.left { left: 0; }
+  .slider-btn.right { right: 0; }
 
-  .slider-btn.left {
-    left: 0;
-  }
+  .slider-track { gap: 0.8rem; padding: 0 5px; }
+  .szallaskepek { height: 220px; }
 
-  .slider-btn.right {
-    right: 0;
-  }
+  .hotel-card-body { padding: 10px; }
 
-  .slider-track {
-    gap: 0.8rem;
-    padding: 0 5px;
-  }
-
-  .szallaskepek {
-    height: 220px;
-  }
-
-  .hotel-card-body {
-    padding: 10px;
-  }
-
-  .hotel-card-body h5 {
-    font-size: 0.95rem;
-  }
-
-  .hotel-card-body p {
-    font-size: 0.8rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .hotel-card-body button {
-    font-size: 0.85rem;
-    padding: 7px 0;
-  }
-
-  .review-stars {
-    margin-bottom: 8px;
-  }
-
-  .review-stars i {
-    font-size: 0.9rem;
-    margin-right: 2px;
-  }
-
-  .custom-select-display {
-    padding: 10px;
-    font-size: 0.85rem;
-  }
-
-  .custom-select-option {
-    padding: 10px;
-    font-size: 0.85rem;
-  }
-
-  .btn.btn-primary.btn-lg:hover {
-    transform: scale(1.03);
-  }
+  .eco-filter-inner .custom-select-display { padding: 10px; font-size: 0.85rem; }
 }
 
 @media (max-width: 400px) {
-  .country-banner h3 {
-    font-size: 1rem;
-  }
-
-  .slider-btn {
-    font-size: 1.3rem;
-    width: 30px;
-    height: 30px;
-  }
-
-  .szallaskepek {
-    height: 200px;
-  }
+  .eco-country-banner h3 { font-size: 1rem; }
+  .slider-btn { font-size: 1.3rem; width: 30px; height: 30px; }
+  .szallaskepek { height: 200px; }
 }
