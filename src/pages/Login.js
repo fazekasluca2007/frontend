@@ -516,7 +516,7 @@ export default function Login({ onLogin }) {
                   onClick={() => setNotRobot(!notRobot)}
                 >
                   <div className="fake-checkbox">
-                    {notRobot && <span className="checkmark">✔</span>}
+                    {notRobot && <span className="checkmark"><i class="bi bi-check-lg text-primary"></i></span>}
                   </div>
                   <span className="fake-text">Nem vagyok robot</span>
                   <div className="fake-logo">
@@ -537,7 +537,7 @@ export default function Login({ onLogin }) {
                   Nincs fiókja?{" "}
                   <button
                     type="button"
-                    className="btn btn-link"
+                    className="btn btn-link auth-link"
                     onClick={() => setIsLogin(false)}
                   >
                     Regisztráljon!
@@ -548,7 +548,7 @@ export default function Login({ onLogin }) {
                   Van már fiókja?{" "}
                   <button
                     type="button"
-                    className="btn btn-link"
+                    className="btn btn-link auth-link"
                     onClick={() => setIsLogin(true)}
                   >
                     Bejelentkezés

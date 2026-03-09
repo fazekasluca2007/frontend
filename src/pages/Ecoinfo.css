@@ -1,137 +1,123 @@
-.eco-container {
-  font-family: inherit;
-  background-color: #f0f6fb;
+.ecoinfo-page {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   color: #2c3e50;
-  padding: 32px 16px;
-  text-align: left;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
-.eco-hero {
-  background: rgba(255, 255, 255, 0.85);
-  padding: 32px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 32px;
-}
-
-.eco-hero h1 {
-  color: darkcyan;
-  font-size: 35px;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-.eco-hero p {
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-.eco-section h2 {
-  color: darkcyan;
-  margin-top: 32px;
-  margin-bottom: 13px;
-  font-size: 24px;
-}
-
-.eco-section p {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.eco-footer {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 15px;
-  padding: 24px;
-  margin-top: 48px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-weight: 600;
+.ecoinfo-page h1 {
   color: #1a3c57;
-  text-align: center;
+  font-weight: bold;
 }
 
-/* Tablet nézet */
+.ecoinfo-section {
+  margin-bottom: 35px;
+}
+
+.ecoinfo-section h3 {
+  color: darkcyan;
+  margin-bottom: 15px;
+}
+
+.ecoinfo-section p {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.ecoinfo-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: darkcyan;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.ecoinfo-back-button i {
+  font-size: 16px;
+}
+
+.ecoinfo-back-button:hover {
+  color: #00b3b3;
+}
+
 @media (max-width: 768px) {
-  .eco-container {
-    padding: 24px 16px;
-  }
-
-  .eco-hero {
-    padding: 24px;
+  .ecoinfo-page {
+    padding: 25px;
     border-radius: 12px;
-    margin-bottom: 29px;
   }
 
-  .eco-hero h1 {
-    font-size: 27px;
-    margin-bottom: 14px;
+  .ecoinfo-page h1 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    line-height: 1.3;
   }
 
-  .eco-hero p {
-    font-size: 16px;
-    line-height: 1.5;
+  .ecoinfo-section {
+    margin-bottom: 25px;
   }
 
-  .eco-section h2 {
-    font-size: 21px;
-    margin-top: 29px;
-    margin-bottom: 11px;
+  .ecoinfo-section h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
   }
 
-  .eco-section p {
+  .ecoinfo-section p {
     font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 14px;
+    line-height: 1.6;
   }
 
-  .eco-footer {
-    padding: 21px;
-    margin-top: 40px;
-    border-radius: 12px;
+  .ecoinfo-back-button {
+    font-size: 15px;
+    margin-bottom: 18px;
+    gap: 5px;
+  }
+
+  .ecoinfo-back-button i {
     font-size: 15px;
   }
 }
 
-/* Mobil nézet */
 @media (max-width: 576px) {
-  .eco-container {
-    padding: 19px 13px;
-  }
-
-  .eco-hero {
-    padding: 19px;
+  .ecoinfo-page {
+    padding: 20px;
     border-radius: 10px;
-    margin-bottom: 24px;
   }
 
-  .eco-hero h1 {
-    font-size: 22px;
-    margin-bottom: 13px;
+  .ecoinfo-page h1 {
+    font-size: 21px;
+    margin-bottom: 20px;
   }
 
-  .eco-hero p {
-    font-size: 14px;
-    line-height: 1.5;
+  .ecoinfo-section {
+    margin-bottom: 20px;
   }
 
-  .eco-section h2 {
-    font-size: 18px;
-    margin-top: 24px;
+  .ecoinfo-section h3 {
+    font-size: 16px;
     margin-bottom: 10px;
   }
 
-  .eco-section p {
+  .ecoinfo-section p {
     font-size: 14px;
     line-height: 1.5;
-    margin-bottom: 13px;
   }
 
-  .eco-footer {
-    padding: 18px;
-    margin-top: 32px;
-    border-radius: 10px;
+  .ecoinfo-back-button {
+    font-size: 14px;
+    margin-bottom: 15px;
+    gap: 4px;
+  }
+
+
+  .ecoinfo-back-button i {
     font-size: 14px;
   }
 }

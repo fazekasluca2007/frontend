@@ -69,22 +69,34 @@
   margin-top: auto;
   background-color: darkcyan !important;
   border-color: darkcyan !important;
-  color: #fff;
+  border: none !important;
+  color: #fff !important;
   font-size: 1rem;
-  padding: 10px 0;
+  padding: 10px 0 !important;
   border-radius: 12px;
 }
+
+.hotel-card-body button:hover,
 .hotel-card-body button.btn.btn-primary:hover,
 .hotel-card-body button.btn-primary:hover {
+  background-color: #007070 !important;
+  border-color: #007070 !important;
+  color: #fff !important;
+  transform: scale(1.05);
+}
+
+.hotel-card-body button:focus,
+.hotel-card-body button:active {
   background-color: darkcyan !important;
   border-color: darkcyan !important;
   color: #fff !important;
   transform: none !important;
+  box-shadow: none !important;
 }
 
 .hotel-card-body button.btn,
 .hotel-card-body button.btn-primary {
-  transition: none !important;
+  transition: 0.3s ease !important;
 }
 
 .review-stars {

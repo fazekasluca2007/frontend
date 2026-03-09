@@ -100,15 +100,30 @@
 }
 
 .btn-success {
-    background-color: darkcyan;
-    border-color: darkcyan;
-    font-weight: 600;
-    transition: transform 0.3s ease;
+  background-color: darkcyan !important;
+  border-color: darkcyan !important;
+  color: white !important;
+  font-weight: 600;
+  transition: 0.3s ease !important;
 }
 
 .btn-success:hover {
-    transform: scale(1.02);
-    background-color: #007070;
+  transform: scale(1.05);
+  background-color: #007070 !important;
+  border-color: #007070 !important;
+  color: white !important;
+}
+
+.btn-success:focus {
+  background-color: darkcyan !important;
+  border-color: darkcyan !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.btn-success:active {
+  background-color: #007070 !important;
+  border-color: #007070 !important;
 }
 
 .cancel-btn {
@@ -175,7 +190,6 @@
     cursor: not-allowed;
 }
 
-/* Tablet nézet */
 @media (max-width: 768px) {
     .reviews-section {
         padding: 40px 15px;
@@ -247,7 +261,6 @@
     }
 }
 
-/* Mobil nézet */
 @media (max-width: 576px) {
     .reviews-section {
         padding: 30px 15px;

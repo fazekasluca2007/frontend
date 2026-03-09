@@ -50,7 +50,7 @@ export default function Nav({ user, onLogout }) {
         <div className="d-none d-lg-flex position-absolute start-50 translate-middle-x">
           <ul className="navbar-nav d-flex flex-row">
             <li className="nav-item"><NavLink className="nav-link" to="/utjaink">Útjaink</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/okoutjaink">ÖkoÚtjaink</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link" to="/okoutjaink">Ökoútjaink</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/rolunk">Rólunk</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/gyik">GYIK</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/velemenyek">Vélemények</NavLink></li>

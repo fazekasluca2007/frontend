@@ -40,27 +40,24 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!window.bootstrap || !carouselRef.current) return;
+    if (!carouselRef.current) return;
 
-    if (carouselInstance.current) {
-      carouselInstance.current.dispose();
-    }
+    const items = Array.from(carouselRef.current.querySelectorAll('.carousel-item'));
+    if (items.length === 0) return;
 
-    carouselInstance.current = new window.bootstrap.Carousel(
-      carouselRef.current,
-      {
-        interval: 3000,
-        pause: false,
-        wrap: true
-      }
-    );
+    let currentIndex = 0;
 
-    carouselInstance.current.cycle();
-
-    return () => {
-      carouselInstance.current?.dispose();
-      carouselInstance.current = null;
+    const goToSlide = (nextIndex) => {
+      items[currentIndex].classList.remove('active');
+      items[nextIndex].classList.add('active');
+      currentIndex = nextIndex;
     };
+
+    const interval = setInterval(() => {
+      goToSlide((currentIndex + 1) % items.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -185,7 +182,7 @@ export default function Home() {
                 <hr/>
                 <p style="font-size:13px">${szallas.description}</p>
                 <button 
-                  class="eco-popup-btn"
+                  class="eco-popup-btn ${type === 'eco' ? 'eco-popup-btn--eco' : ''}"
                   data-id="${szallas.tripId}"
                   data-type="${type}"
                 >
@@ -290,7 +287,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="login-prompt">
+      <div className="login-prompt animate-on-scroll">
         <span>
           Szeretne többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogasson el erre az oldalra, hogy mindent megtudhasson!
         </span>

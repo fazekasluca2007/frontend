@@ -306,15 +306,6 @@
   font-style: italic;
 }
 
-.delete-profile-box .form-check-input {
-  width: 14px;
-  height: 14px;
-  margin-top: 8px;
-  cursor: pointer;
-  display: block;
-  
-}
-
 .delete-check {
   display: flex;
   justify-content: center;
@@ -625,7 +616,6 @@
   }
 }
 
-/* Extra Small Mobile */
 @media (max-width: 400px) {
   .profile-container {
     padding: 10px;

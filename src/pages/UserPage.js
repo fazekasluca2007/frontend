@@ -161,9 +161,13 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const newAvatar = URL.createObjectURL(file);
-      setCustomAvatar(newAvatar);
-      setSelectedAvatar(newAvatar);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        setCustomAvatar(dataUrl);
+        setSelectedAvatar(dataUrl);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -390,7 +394,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                     profilját?
                   </p>
 
-                  <div className="form-check delete-check">
+                  <div className="delete-check">
                     <label className="form-check-label" htmlFor="confirmDelete">
                       Igen, biztos.
                     </label>
@@ -422,7 +426,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
                   <button
                     type="button"
-                    className="btn btn-primary btn-lg w-100"
+                    className="btn btn-primary btn-lg w-100 mt-2"
                     onClick={executeProfileDelete}
                   >
                     Profil végleges törlése

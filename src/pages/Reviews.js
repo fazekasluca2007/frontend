@@ -154,15 +154,15 @@ export default function Reviews() {
         <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné?</p>
         <div className="d-flex gap-2">
           <button 
-            className="btn btn-light btn-sm px-3" 
-            style={{ fontSize: "12px", fontWeight: "bold" }}
+            className="btn btn-sm px-3" 
+            style={{ fontSize: "12px", fontWeight: "bold", backgroundColor: "darkcyan", color: "white", border: "none", borderRadius: "12px" }}
             onClick={() => { executeDelete(id); toast.dismiss(toastId); }}
           >
             Igen
           </button>
           <button 
-            className="btn btn-outline-light btn-sm px-3" 
-            style={{ fontSize: "12px" }}
+            className="btn btn-sm px-3" 
+            style={{ fontSize: "12px", backgroundColor: "#e0e0e0", color: "#444", border: "none", borderRadius: "12px" }}
             onClick={() => toast.dismiss(toastId)}
           >
             Mégse

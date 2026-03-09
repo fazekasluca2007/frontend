@@ -44,22 +44,27 @@
 }
 .hotel-card-body button {
   margin-top: auto;
+  background-color: darkcyan !important;
+  border-color: darkcyan !important;
+  border: none !important;
+  color: #fff !important;
 }
 
 .btn.btn-primary.btn-lg {
   background-color: darkcyan !important;
   border-color: darkcyan !important;
-  transition: transform 0.4s ease, background-color 0.3s ease, box-shadow 0.4s ease;
+  transition: 0.3s ease;
 }
+
 .btn.btn-primary.btn-lg:hover {
-  transform: scale(1.12);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  background-color: #1a3c57 !important;
-  border-color: #1a3c57 !important;
+  transform: scale(1.05);
+  background-color: #007070 !important;
+  border-color: #007070 !important;
 }
+
 .btn.btn-primary.btn-lg:active {
-  transform: scale(0.95);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #007070 !important;
+  border-color: #007070 !important;
 }
 
 .review-stars i { font-size: 1.2rem; }
