@@ -1,40 +1,71 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
+import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
+const API_URL = process.env.REACT_APP_BACKEND_URL;
+const CAROUSEL_IMAGES = ['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia'];
+const CAROUSEL_INTERVAL = 4000;
+const MAP_CENTER = [47.5, 19.04];
+const MAP_ZOOM = 5;
+
+const MARKER_ICONS = {
+  default: L.icon({
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+  }),
+  eco: L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+  })
+};
+
+const getCookieChoice = () => {
+  const cookie = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('cookieChoice='));
+  return cookie ? cookie.split('=')[1] : null;
+};
+
+const setCookieChoice = (value) => {
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 1);
+  document.cookie = `cookieChoice=${value}; expires=${expires.toUTCString()}; path=/`;
+};
+
+const createPopupContent = (hotel, type) => `
+  <div style="min-width:220px">
+    <h6>${hotel.hotelName}</h6>
+    <div class="review-stars">
+      ${'<i class="bi bi-star-fill review-star"></i>'.repeat(Number(hotel.stars))}
+    </div>
+    ${hotel.city}, ${hotel.country}
+    <hr/>
+    <p style="font-size:13px">${hotel.description}</p>
+    <button 
+      class="eco-popup-btn ${type === 'eco' ? 'eco-popup-btn--eco' : ''}"
+      data-id="${hotel.tripId}"
+      data-type="${type}"
+    >
+      Tovább a szállásra
+    </button>
+  </div>
+`;
+
 export default function Home() {
   const navigate = useNavigate();
-
-  const URL = process.env.REACT_APP_BACKEND_URL;
-
   const carouselRef = useRef(null);
-  const carouselInstance = useRef(null);
+  const [cookieChoice, setCookieState] = useState(getCookieChoice());
 
-  const isUserLoggedIn = () => localStorage.getItem('user') !== null;
-  const loggedIn = isUserLoggedIn();
-  const [cookieChoice, setCookieChoice] = useState(null);
+  const isLoggedIn = localStorage.getItem('user') !== null;
 
-  useEffect(() => {
-    const saved = document.cookie
-      .split("; ")
-      .find(row => row.startsWith("cookieChoice="));
-
-    if (saved) {
-      setCookieChoice(saved.split("=")[1]);
-    }
-  }, []);
-
-  const setCookie = (value) => {
-    const expires = new Date();
-    expires.setFullYear(expires.getFullYear() + 1);
-
-    document.cookie = `cookieChoice=${value}; expires=${expires.toUTCString()}; path=/`;
-    setCookieChoice(value);
-  };
   useEffect(() => {
     document.title = 'EcoTrip';
   }, []);
@@ -47,199 +78,145 @@ export default function Home() {
 
     let currentIndex = 0;
 
-    const goToSlide = (nextIndex) => {
-      items[currentIndex].classList.remove('active');
-      items[nextIndex].classList.add('active');
-      currentIndex = nextIndex;
-    };
-
     const interval = setInterval(() => {
-      goToSlide((currentIndex + 1) % items.length);
-    }, 4000);
+      items[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % items.length;
+      items[currentIndex].classList.add('active');
+    }, CAROUSEL_INTERVAL);
 
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     const elements = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    elements.forEach(el => observer.observe(el));
+    elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
-  const handleHotelNavigation = (id, type) => {
-    if (type === "eco") {
-      navigate("/informaciok", {
-        state: { ecotrip_id: id }
-      });
-    } else {
-      navigate("/informaciok", {
-        state: { trip_id: id }
-      });
-    }
-  };
-
   useEffect(() => {
-    const map = L.map('map', {
-      scrollWheelZoom: false 
-    }).setView([47.5, 19.04], 5);
-
+    const map = L.map('map', { scrollWheelZoom: false }).setView(MAP_CENTER, MAP_ZOOM);
     let shiftPressed = false;
 
-    const onKeyDown = (e) => {
-      if (e.key === "Shift") shiftPressed = true;
-    };
-    const onKeyUp = (e) => {
-      if (e.key === "Shift") shiftPressed = false;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Shift') shiftPressed = true;
     };
 
-    const infoControl = L.control({ position: 'bottomleft' });
-    infoControl.onAdd = function () {
-      const div = L.DomUtil.create('div', 'map-scroll-info');
-      div.innerHTML = 'A térkép görgetéséhez tartsa lenyomva a <b>Shift</b> billentyűt és használja a görgőt.';
-      return div;
+    const handleKeyUp = (e) => {
+      if (e.key === 'Shift') shiftPressed = false;
     };
-    infoControl.addTo(map);
 
-    const onWheel = (e) => {
+    const handleWheel = () => {
       if (shiftPressed) {
         map.scrollWheelZoom.enable();
         setTimeout(() => map.scrollWheelZoom.disable(), 500);
       }
     };
 
-    document.addEventListener("keydown", onKeyDown);
-    document.addEventListener("keyup", onKeyUp);
-    map.getContainer().addEventListener("wheel", onWheel);
-
-    map.on("popupopen", (e) => {
-      const button = e.popup._contentNode.querySelector(".eco-popup-btn");
-
+    const handlePopupOpen = (e) => {
+      const button = e.popup._contentNode.querySelector('.eco-popup-btn');
       if (button) {
-        button.addEventListener("click", () => {
-          const id = button.getAttribute("data-id");
-          const type = button.getAttribute("data-type");
-
-          handleHotelNavigation(id, type);
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          const type = button.getAttribute('data-type');
+          const state = type === 'eco' ? { ecotrip_id: id } : { trip_id: id };
+          navigate('/informaciok', { state });
         });
       }
-    });
+    };
+
+    const infoControl = L.control({ position: 'bottomleft' });
+    infoControl.onAdd = () => {
+      const div = L.DomUtil.create('div', 'map-scroll-info');
+      div.innerHTML = 'A térkép görgetéséhez tartsa lenyomva a <b>Shift</b> billentyűt és használja a görgőt.';
+      return div;
+    };
+    infoControl.addTo(map);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    const defaultIcon = L.icon({
-      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41]
-    });
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+    map.getContainer().addEventListener('wheel', handleWheel);
+    map.on('popupopen', handlePopupOpen);
 
-    const greenIcon = L.icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41]
-    });
-
-    const addMarkersFromApi = async (url, icon, type) => {
+    const fetchMarkers = async (endpoint, icon, type) => {
       try {
-        const response = await fetch(url);
-        if (!response.ok) return;
+        const { data } = await axios.get(`${API_URL}${endpoint}`);
+        if (!data || !Array.isArray(data)) return;
 
-        const text = await response.text();
-        if (!text) return;
-
-        const data = JSON.parse(text);
-
-        data.forEach(szallas => {
-          const lat = Number(szallas.latitude);
-          const lng = Number(szallas.longitude);
-          if (!lat || !lng) return;
-
-          L.marker([lat, lng], { icon })
-            .addTo(map)
-            .bindPopup(`
-              <div style="min-width:220px">
-                <h6>${szallas.hotelName}</h6>
-
-                <div class="review-stars">
-                  ${'<i class="bi bi-star-fill review-star"></i>'.repeat(Number(szallas.stars))}
-                </div>
-
-                ${szallas.city}, ${szallas.country}
-                <hr/>
-                <p style="font-size:13px">${szallas.description}</p>
-                <button 
-                  class="eco-popup-btn ${type === 'eco' ? 'eco-popup-btn--eco' : ''}"
-                  data-id="${szallas.tripId}"
-                  data-type="${type}"
-                >
-                  Tovább a szállásra
-                </button>
-              </div>
-            `);
+        data.forEach((hotel) => {
+          const lat = Number(hotel.latitude);
+          const lng = Number(hotel.longitude);
+          
+          if (lat && lng) {
+            L.marker([lat, lng], { icon })
+              .addTo(map)
+              .bindPopup(createPopupContent(hotel, type));
+          }
         });
-      } catch (e) {
-        console.error('Marker hiba:', e.message);
+      } catch (error) {
+        console.error(`Failed to load ${type} markers:`, error.message);
       }
     };
 
-    addMarkersFromApi(URL + 'TripsMap/Sima', defaultIcon, "sima");
-    addMarkersFromApi(URL + 'TripsMap/Eco', greenIcon, "eco");
+    fetchMarkers('TripsMap/Sima', MARKER_ICONS.default, 'sima');
+    fetchMarkers('TripsMap/Eco', MARKER_ICONS.eco, 'eco');
 
     setTimeout(() => map.invalidateSize(), 200);
 
     return () => {
       map.remove();
-      document.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("keyup", onKeyUp);
-      map.getContainer().removeEventListener("wheel", onWheel);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+      map.getContainer().removeEventListener('wheel', handleWheel);
     };
-  }, [URL]);
+  }, [navigate]);
+
+  const handleCookieChoice = (value) => {
+    setCookieChoice(value);
+    setCookieState(value);
+  };
 
   return (
     <>
-      <div className="position-relative text-center" style={{ position: 'relative' }}>
-
+      <div className="position-relative text-center">
         <div id="heroCarousel" className="carousel slide carousel-fade" ref={carouselRef}>
           <div className="carousel-inner">
-            {['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia']
-              .map((img, i) => (
-                <div key={img} className={`carousel-item ${i === 0 ? 'active' : ''}`}>
-                  <img
-                    src={`img/index kepek/${img}.jpg`}
-                    className="d-block w-100"
-                    alt={img}
-                  />
-                </div>
-              ))}
+            {CAROUSEL_IMAGES.map((img, index) => (
+              <div key={img} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                <img
+                  src={`img/index kepek/${img}.jpg`}
+                  className="d-block w-100"
+                  alt={img}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="position-absolute top-50 start-50 translate-middle hero-overlay" style={{ zIndex: 999 }}>
+        <div className="hero-overlay">
           <h1>Üdvözlünk az EcoTrip oldalán!</h1>
-
           <NavLink
-            to={loggedIn ? '/utjaink' : '/bejelentkezes'}
+            to={isLoggedIn ? '/utjaink' : '/bejelentkezes'}
             className="btn btn-primary btn-lg mt-3"
           >
             Foglalj most
           </NavLink>
-
-          <br />
-
           <p>
             Foglaljon most, pár kattintással!
             Kezdje el még ma, és indulhat a következő élménye!
@@ -289,7 +266,8 @@ export default function Home() {
 
       <div className="login-prompt animate-on-scroll">
         <span>
-          Szeretne többet megtudni, hogy miért ajánljuk az ökoszállásokat? Látogasson el erre az oldalra, hogy mindent megtudhasson!
+          Szeretne többet megtudni, hogy miért ajánljuk az ökoszállásokat? 
+          Látogasson el erre az oldalra, hogy mindent megtudhasson!
         </span>
         <Link to="/okoleiras" className="login-btn-circle">
           <FaArrowRight size={12} />
@@ -304,12 +282,11 @@ export default function Home() {
       {!cookieChoice && (
         <div className="cookie-banner">
           <div className="cookie-content">
-
             <div className="cookie-left">
               <span className="cookie-emoji">🍪</span>
               <span className="cookie-text">
                 Az oldal sütiket használ a biztonságos működés és a jobb felhasználói élmény érdekében.
-                <br></br>
+                <br />
                 <Link to="/sutik" style={{ color: '#00b3b3', textDecoration: 'underline' }}>
                   Tudj meg többet
                 </Link>
@@ -318,31 +295,29 @@ export default function Home() {
 
             <div className="cookie-buttons">
               <button
-                onClick={() => setCookie("all")}
+                onClick={() => handleCookieChoice('all')}
                 className="cookie-btn primary"
               >
                 Összes elfogadása
               </button>
 
               <button
-                onClick={() => setCookie("necessary")}
+                onClick={() => handleCookieChoice('necessary')}
                 className="cookie-btn secondary"
               >
                 Csak a szükséges
               </button>
 
               <button
-                onClick={() => setCookie("reject")}
+                onClick={() => handleCookieChoice('reject')}
                 className="cookie-btn secondary"
               >
                 Összes elutasítása
               </button>
             </div>
-
           </div>
         </div>
       )}
-
     </>
   );
 }

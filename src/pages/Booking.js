@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { differenceInCalendarDays } from "date-fns";
 import { hu } from "date-fns/locale";
 import "./Booking.css";
+import axios from "axios";
 
 const COUNTRY_CODES = [
   { name: "Magyarország", code: "+36", format: [2, 3, 4], example: "70 123 4567" },
@@ -134,10 +135,7 @@ export default function Booking({ user }) {
 
   const sendBookingEmail = async () => {
     try {
-      await fetch(backendUrl + "Mail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({
+      await axios.post(`${backendUrl}Mail`, {
           to: email,
           subject: "Foglalás visszaigazolás - EcoTrip",
           body: `
@@ -379,7 +377,6 @@ export default function Booking({ user }) {
           </body>
           </html>
         `,
-        }),
       });
     } catch (err) {
       console.error("Email küldési hiba:", err);
@@ -476,9 +473,9 @@ export default function Booking({ user }) {
 
     if (!tripId && !ecoTripId) return;
 
-    fetch(backendUrl + endpoint)
-      .then((res) => res.json())
-      .then((data) => setHotel(Array.isArray(data) ? data[0] : data))
+    axios
+      .get(`${backendUrl}${endpoint}`)
+      .then((response) => setHotel(Array.isArray(response.data) ? response.data[0] : response.data))
       .catch(() => setHasError(true));
   }, [tripId, ecoTripId]);
 
@@ -530,19 +527,15 @@ export default function Booking({ user }) {
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(backendUrl + "Bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          tripId: tripId ?? ecoTripId,
-          seats: guests,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          paymentType: paymentMethod,
-        }),
+      await axios.post(`${backendUrl}Bookings`, {
+        tripId: tripId ?? ecoTripId,
+        seats: guests,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        paymentType: paymentMethod,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
-
-      if (!response.ok) throw new Error();
       await sendBookingEmail();
       toast.success("Sikeres foglalás! Visszaigazoló email elküldve.", {
         position: "top-right",

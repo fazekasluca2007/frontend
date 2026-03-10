@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import BeatLoader from "react-spinners/BeatLoader";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,15 +26,15 @@ export default function Ecotrips() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(backendUrl + "EcoTrip/ecotripcards")
-      .then((res) => res.json())
-      .then((json) => {
-        setTrips(json.result);
+    axios
+      .get(`${backendUrl}EcoTrip/ecotripcards`)
+      .then((response) => {
+        setTrips(response.data.result);
         setHasError(false);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Fetch error:", err);
+        console.error("Failed to load ecotrips:", err.message);
         setHasError(true);
         setIsLoading(false);
       });

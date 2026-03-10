@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const defaultAvatars = [
   "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2876.jpg",
@@ -112,22 +113,17 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const response = await fetch(URL + "Profile/profile", {
-          method: "GET",
+        const data = await axios.get(`${URL}Profile/profile`, {
           headers: {
-            "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
             "Cache-Control": "no-cache"
           },
         });
-        if (response.ok) {
-          const data = await response.json();
-          setFullName(data.fullName || "");
-          setEmail(data.email || "");
-          const currentImg = data.profileImage || defaultAvatars[0];
-          setSelectedAvatar(currentImg);
-          updateProfileImage(currentImg);
-        }
+        setFullName(data.data.fullName || "");
+        setEmail(data.data.email || "");
+        const currentImg = data.data.profileImage || defaultAvatars[0];
+        setSelectedAvatar(currentImg);
+        updateProfileImage(currentImg);
       } catch (error) {
         console.error(error);
       }
@@ -140,17 +136,12 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const response = await fetch(URL + "Bookings/my", {
-          method: "GET",
+        const response = await axios.get(`${URL}Bookings/my`, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
           },
         });
-        if (response.ok) {
-          const data = await response.json();
-          setBookings(Array.isArray(data) ? data : []);
-        }
+        setBookings(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error(error);
       }
@@ -173,46 +164,34 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const updateUsername = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch(URL + "Profile/username", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ username }),
+    await axios.put(`${URL}Profile/username`, { username }, {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    if (!response.ok) throw new Error("Hiba");
   };
 
   const updatePassword = async () => {
     if (!password || !oldPassword) return;
     const token = localStorage.getItem("token");
-    const response = await fetch(URL + "Profile/password", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ oldPassword, newPassword: password }),
+    await axios.put(`${URL}Profile/password`, { oldPassword, newPassword: password }, {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    if (!response.ok) throw new Error("Hiba");
   };
 
   const saveImageToBackend = async (imageUrl) => {
     const token = localStorage.getItem("token");
-    const response = await fetch(URL + "Profile/image", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ imageUrl }),
+    await axios.put(`${URL}Profile/image`, { imageUrl }, {
+      headers: { Authorization: `Bearer ${token}` }
     });
-    if (!response.ok) throw new Error("Hiba");
   };
   const executeDelete = async (id) => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch(URL + `Bookings/${id}`, {
-        method: "DELETE",
+      await axios.delete(`${URL}Bookings/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (response.ok) {
-        setBookings(prev => prev.filter(b => b.id !== id));
-        toast.success("Foglalás törölve");
-      }
+      setBookings(prev => prev.filter(b => b.id !== id));
+      toast.success("Foglalás törölve");
     } catch (error) {
       console.error(error);
     }
@@ -260,34 +239,30 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     if (!token) return;
 
     try {
-      const response = await fetch(URL + "Profile/delete", {
-        method: "DELETE",
+      await axios.delete(`${URL}Profile/delete`, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ password: deletePassword })
+        data: { password: deletePassword }
       });
 
-      if (response.ok) {
+      toast.success("Profilja sikeresen törölve");
 
-        toast.success("Profilja sikeresen törölve");
-
-        setTimeout(() => {
-          if (typeof updateUser === "function") updateUser(null);
-          if (typeof onLogout === "function") onLogout();
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          navigate("/");
-        }, 1500);
-
-      } else {
-        toast.error("Hibás jelszó!");
-      }
+      setTimeout(() => {
+        if (typeof updateUser === "function") updateUser(null);
+        if (typeof onLogout === "function") onLogout();
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/");
+      }, 1500);
 
     } catch (error) {
       console.error(error);
-      toast.error("Szerver hiba");
+      if (error.response && error.response.status === 401) {
+        toast.error("Hibás jelszó!");
+      } else {
+        toast.error("Szerver hiba");
+      }
     }
   };
 

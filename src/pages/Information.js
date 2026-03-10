@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Information.css";
+import axios from "axios";
 
 export default function Information() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -26,14 +27,14 @@ export default function Information() {
     setIsLoggedIn(localStorage.getItem("user") !== null);
 
     if (tripId) {
-      fetch(backendUrl + `Trips/detailed/${tripId}`)
-        .then((res) => res.json())
-        .then((data) => setHotelData(Array.isArray(data) ? data[0] : data))
+      axios
+        .get(`${backendUrl}Trips/detailed/${tripId}`)
+        .then((response) => setHotelData(Array.isArray(response.data) ? response.data[0] : response.data))
         .catch(() => setHasError(true));
     } else if (ecoTripId) {
-      fetch(backendUrl + `EcoTrip/detailed/${ecoTripId}`)
-        .then((res) => res.json())
-        .then((data) => setHotelData(Array.isArray(data) ? data[0] : data))
+      axios
+        .get(`${backendUrl}EcoTrip/detailed/${ecoTripId}`)
+        .then((response) => setHotelData(Array.isArray(response.data) ? response.data[0] : response.data))
         .catch(() => setHasError(true));
     }
   }, [tripId, ecoTripId, backendUrl]);

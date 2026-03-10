@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
+import axios from "axios";
 
 export default function Login({ onLogin }) {
   const URL = process.env.REACT_APP_BACKEND_URL;
@@ -40,54 +41,33 @@ export default function Login({ onLogin }) {
 
     setLoading(true);
     try {
-      const response = await fetch(URL + "auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const user = await axios.post(`${URL}auth/login`, { username, password });
 
-      if (response.ok) {
-        const user = await response.json();
-
-        const token = user.token || (user.tokenDto && user.tokenDto.token);
-        if (token) {
-          localStorage.setItem("token", token);
-        }
-
-        try {
-          const profileRes = await fetch(URL + "Profile/profile", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-            },
-          });
-
-          if (profileRes.ok) {
-            const profileData = await profileRes.json();
-            user.user = {
-              ...user.user,
-              profileImage: profileData.profileImage
-            };
-          }
-        } catch (profileError) {
-          console.error("Profilkép hiba:", profileError);
-        }
-
-        onLogin(user);
-        toast.success("Sikeres bejelentkezés!");
-        setTimeout(() => navigate("/"), 1500);
-      } else {
-        let errorMessage = "Hibás felhasználónév vagy jelszó!";
-        try {
-          const errorData = await response.json();
-          if (errorData.message) {
-            errorMessage = errorData.message;
-          }
-        } catch { }
-        toast.error(errorMessage);
-        setLoading(false);
+      const token = user.data.token || (user.data.tokenDto && user.data.tokenDto.token);
+      if (token) {
+        localStorage.setItem("token", token);
       }
+
+      try {
+        const profileRes = await axios.get(`${URL}Profile/profile`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+        });
+
+        if (profileRes.data) {
+          user.data.user = {
+            ...user.data.user,
+            profileImage: profileRes.data.profileImage
+          };
+        }
+      } catch (profileError) {
+        console.error("Profilkép hiba:", profileError);
+      }
+
+      onLogin(user.data);
+      toast.success("Sikeres bejelentkezés!");
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
       toast.error("Hiba a szerverrel való kapcsolatban!");
       setLoading(false);
@@ -129,112 +109,73 @@ export default function Login({ onLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch(URL + "auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fullName, username, email, password }),
-      });
+      await axios.post(`${URL}auth/register`, { fullName, username, email, password });
 
-      if (response.ok) {
+      await sendWelcomeEmail(email, fullName);
 
-        await sendWelcomeEmail(email, fullName);
+      try {
+        const loginResponse = await axios.post(`${URL}auth/login`, { username, password });
+        const user = loginResponse.data;
+
+        const token = user.token || (user.tokenDto && user.tokenDto.token);
+
+        if (token) {
+          localStorage.setItem("token", token);
+        }
 
         try {
-
-          const loginResponse = await fetch(URL + "auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
+          const profileRes = await axios.get(`${URL}Profile/profile`, {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            },
           });
 
-          if (loginResponse.ok) {
-
-            const user = await loginResponse.json();
-
-            const token = user.token || (user.tokenDto && user.tokenDto.token);
-
-            if (token) {
-              localStorage.setItem("token", token);
-            }
-
-            try {
-              const profileRes = await fetch(URL + "Profile/profile", {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`
-                },
-              });
-
-              if (profileRes.ok) {
-                const profileData = await profileRes.json();
-                user.user = {
-                  ...user.user,
-                  profileImage: profileData.profileImage
-                };
-              }
-
-            } catch (profileError) {
-              console.error("Profilkép hiba:", profileError);
-            }
-
-            onLogin(user);
-            toast.success("Sikeres regisztráció!");
-            setTimeout(() => {
-              navigate("/");
-            }, 1500);
-
-            setFullName("");
-            setUsername("");
-            setEmail("");
-            setPassword("");
-            setPassword2("");
-            setNotRobot(false);
-
+          if (profileRes.data) {
+            user.user = {
+              ...user.user,
+              profileImage: profileRes.data.profileImage
+            };
           }
 
-        } catch (loginError) {
-          console.error("Auto login hiba:", loginError);
+        } catch (profileError) {
+          console.error("Profilkép hiba:", profileError);
         }
 
-      } else {
+        onLogin(user);
+        toast.success("Sikeres regisztráció!");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
 
-        let errorMessage = "A regisztráció sikertelen!";
+        setFullName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setPassword2("");
+        setNotRobot(false);
 
-        try {
-          const text = await response.text();
-          const lower = text.toLowerCase();
-
-          if (lower.includes("email")) {
-            errorMessage = "Ez az e-mail cím már regisztrálva van!";
-          } else if (lower.includes("felhasználónév") || lower.includes("username")) {
-            errorMessage = "Ez a felhasználónév már foglalt!";
-          } else {
-            errorMessage = text;
-          }
-        } catch {
-          errorMessage = "Szerver hiba történt!";
+      } catch (loginError) {
+        console.error("Auto login hiba:", loginError);
+        let errorMessage = "Regisztráció sikeres, de bejelentkezés sikertelen!";
+        if (loginError.response && loginError.response.data && loginError.response.data.message) {
+          errorMessage = loginError.response.data.message;
         }
-
         toast.error(errorMessage);
-
       }
 
     } catch (error) {
-      toast.error("Hiba a szerverrel való kapcsolatban!");
+      setLoading(false);
+      let errorMessage = "Hiba a regisztráció során!";
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
   }; const sendWelcomeEmail = async (email, name) => {
     try {
-      await fetch(URL + "Mail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await axios.post(`${URL}Mail`, {
           to: email,
           subject: "✈️ Üdvözlünk az EcoTrip családjában!",
           body: `
@@ -398,7 +339,6 @@ export default function Login({ onLogin }) {
           </body>
           </html>
         `,
-        }),
       });
     } catch (err) {
       console.error("Email küldési hiba:", err);

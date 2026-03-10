@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BeatLoader from "react-spinners/BeatLoader";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const RatingSelect = ({ value, onChange }) => {
   const [open, setOpen] = useState(false);
@@ -113,10 +114,10 @@ export default function Reviews() {
 
   const fetchReviews = () => {
     setLoading(true);
-    fetch(URL + "Reviews")
-      .then((res) => res.json())
-      .then((data) => {
-        setVelemenyek(data);
+    axios
+      .get(`${URL}Reviews`)
+      .then((response) => {
+        setVelemenyek(response.data);
         setLoadError(false);
         setLoading(false);
       })
@@ -182,8 +183,7 @@ export default function Reviews() {
 
   const executeDelete = async (id) => {
     try {
-      const response = await fetch(URL + `Reviews/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error();
+      await axios.delete(`${URL}Reviews/${id}`);
       toast.success("A vélemény törölve.", { theme: "colored" });
       fetchReviews();
     } catch {
@@ -207,25 +207,20 @@ export default function Reviews() {
     };
 
     try {
-      const response = await fetch(
-        editId ? URL + `Reviews/${editId}` : URL + "Reviews",
-        {
-          method: editId ? "PUT" : "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(velemenyObj),
-        }
-      );
-
-      if (!response.ok) throw new Error();
+      if (editId) {
+        await axios.put(`${URL}Reviews/${editId}`, velemenyObj);
+      } else {
+        await axios.post(`${URL}Reviews`, velemenyObj);
+      }
 
       setText("");
       setRating("");
       setEditId(null);
 
-      const data = await fetch(URL + "Reviews").then((res) => res.json());
-      setVelemenyek(data);
+      const response = await axios.get(`${URL}Reviews`);
+      setVelemenyek(response.data);
 
-      const newIndex = data.findIndex(
+      const newIndex = response.data.findIndex(
         (v) =>
           v.name === velemenyObj.name &&
           v.review === velemenyObj.review &&

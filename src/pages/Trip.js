@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,15 +21,15 @@ export default function Trip() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(backendUrl + "Trips/tripcards")
-      .then((response) => response.json())
-      .then((json) => {
-        setTrips(json.result);
+    axios
+      .get(`${backendUrl}Trips/tripcards`)
+      .then((response) => {
+        setTrips(response.data.result);
         setHasError(false);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Fetch error:", err);
+        console.error("Failed to load trips:", err.message);
         setHasError(true);
         setIsLoading(false);
       });
