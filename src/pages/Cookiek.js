@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import { Link } from 'react-router-dom';
 import './Cookiek.css';
 
 export default function Cookiek() {
+  useEffect(() => {
+    document.title = "EcoTrip – Cookie-k használata";
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="cookiek-page">
       <div className="cookiek-container">
