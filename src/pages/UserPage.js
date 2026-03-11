@@ -16,27 +16,27 @@ const defaultAvatars = [
 ];
 
 export default function UserPage({ user, updateProfileImage, updateUser, onLogout }) {
-  const URL = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const [editMode, setEditMode] = useState(false);
   const [username, setUsername] = useState(() => user?.user?.username || "");
-  const [password, setPassword] = useState("");
-  const [passwordAgain, setPasswordAgain] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showPasswordAgain, setShowPasswordAgain] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [customAvatar, setCustomAvatar] = useState(null);
   const [bookings, setBookings] = useState([]);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [deletePassword, setDeletePassword] = useState("");
-  const [confirmChecked, setConfirmChecked] = useState(false);
   const [showDeletePassword, setShowDeletePassword] = useState(false);
+  const [confirmChecked, setConfirmChecked] = useState(false);
 
   const [originalData, setOriginalData] = useState({
     username: "",
@@ -55,7 +55,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       username,
       password: "",
       oldPassword: "",
-      passwordAgain: "",
+      confirmPassword: "",
       selectedAvatar: customAvatar || selectedAvatar
     });
     setEditMode(true);
@@ -66,7 +66,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       username !== originalData.username ||
       password !== "" ||
       oldPassword !== "" ||
-      passwordAgain !== "" ||
+      confirmPassword !== "" ||
       (customAvatar || selectedAvatar) !== originalData.selectedAvatar;
 
     if (!hasChanges) {
@@ -85,7 +85,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
               setUsername(originalData.username);
               setPassword("");
               setOldPassword("");
-              setPasswordAgain("");
+              setConfirmPassword("");
               setCustomAvatar(null);
               setSelectedAvatar(originalData.selectedAvatar);
               setEditMode(false);
@@ -113,7 +113,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const data = await axios.get(`${URL}Profile/profile`, {
+        const data = await axios.get(`${backendUrl}Profile/profile`, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "Cache-Control": "no-cache"
@@ -125,7 +125,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         setSelectedAvatar(currentImg);
         updateProfileImage(currentImg);
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     };
     fetchProfile();
@@ -136,7 +136,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const response = await axios.get(`${URL}Bookings/my`, {
+        const response = await axios.get(`${backendUrl}Bookings/my`, {
           headers: {
             Authorization: `Bearer ${token}`
           },
@@ -164,7 +164,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const updateUsername = async () => {
     const token = localStorage.getItem("token");
-    await axios.put(`${URL}Profile/username`, { username }, {
+    await axios.put(`${backendUrl}Profile/username`, { username }, {
       headers: { Authorization: `Bearer ${token}` }
     });
   };
@@ -172,22 +172,23 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const updatePassword = async () => {
     if (!password || !oldPassword) return;
     const token = localStorage.getItem("token");
-    await axios.put(`${URL}Profile/password`, { oldPassword, newPassword: password }, {
+    await axios.put(`${backendUrl}Profile/password`, { oldPassword, newPassword: password }, {
       headers: { Authorization: `Bearer ${token}` }
     });
   };
 
   const saveImageToBackend = async (imageUrl) => {
     const token = localStorage.getItem("token");
-    await axios.put(`${URL}Profile/image`, { imageUrl }, {
+    await axios.put(`${backendUrl}Profile/image`, { imageUrl }, {
       headers: { Authorization: `Bearer ${token}` }
     });
   };
+
   const executeDelete = async (id) => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      await axios.delete(`${URL}Bookings/${id}`, {
+      await axios.delete(`${backendUrl}Bookings/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(prev => prev.filter(b => b.id !== id));
@@ -221,7 +222,8 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       </div>,
       { autoClose: false, closeOnClick: false }
     );
-  };
+  }
+
 
 
   const executeProfileDelete = async () => {
@@ -239,7 +241,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     if (!token) return;
 
     try {
-      await axios.delete(`${URL}Profile/delete`, {
+      await axios.delete(`${backendUrl}Profile/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -257,7 +259,6 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       }, 1500);
 
     } catch (error) {
-      console.error(error);
       if (error.response && error.response.status === 401) {
         toast.error("Hibás jelszó!");
       } else {
@@ -268,7 +269,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (password && password !== passwordAgain) {
+    if (password && password !== confirmPassword) {
       toast.error("Hiba: a jelszavak nem egyeznek");
       return;
     }
@@ -282,12 +283,11 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       updateProfileImage(finalImage);
       setEditMode(false);
       setPassword("");
-      setPasswordAgain("");
+      setConfirmPassword("");
       setOldPassword("");
       setCustomAvatar(null);
       toast.success("Sikeres mentés");
     } catch (error) {
-      console.error(error);
       toast.error("Hiba a mentés során");
     }
   };
@@ -480,15 +480,15 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                     <label>Új jelszó újra</label>
                     <div className="password-wrapper">
                       <input
-                        type={showPasswordAgain ? "text" : "password"}
-                        value={passwordAgain}
-                        onChange={(e) => setPasswordAgain(e.target.value)}
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                       />
                       <span
                         className="password-eye"
-                        onClick={() => setShowPasswordAgain(!showPasswordAgain)}
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
-                        {showPasswordAgain ? <FaEyeSlash /> : <FaEye />}
+                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                       </span>
                     </div>
                   </div>

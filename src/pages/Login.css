@@ -21,47 +21,44 @@
   color: white !important;
   margin-top: 16px;
   border: none !important;
-  border-color: darkcyan !important;
   transition: all 0.3s ease !important;
 }
 
 .auth-button:hover {
   background-color: #007070 !important;
-  color: white !important;
-  transform: scale(1.05) !important;
+  color: white;
+  transform: scale(1.05);
 }
 
 .auth-button:focus {
-  background-color: darkcyan !important;
-  color: white !important;
-  box-shadow: none !important;
+  background-color: darkcyan;
+  color: white;
+  box-shadow: none ;
 }
 
 .auth-button:active {
-  background-color: #007070 !important;
-  color: white !important;
+  background-color: #007070;
+  color: white;
 }
 
 .auth-link {
-  padding: 0 !important;
+  padding: 0;
   text-decoration: underline;
-  color: #0d6efd !important;
-  background: none !important;
-  border: none !important;
+  color: #0d6efd;
+  background: none;
+  border: none;
   font-weight: 500;
 }
 
 .auth-link:hover {
-  color: #0b5ed7 !important;
-  background: none !important;
+  color: #0b5ed7;
   text-decoration: underline;
 }
 
 .auth-link:focus {
-  background: none !important;
-  box-shadow: none !important;
+  box-shadow: none;
   outline: none;
-  color: #0b5ed7 !important;
+  color: #0b5ed7;
 }
 
 .password-eye {
@@ -125,17 +122,17 @@
 
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
-display: none;
+  display: none;
 }
 
 input[type="password"]::-webkit-textfield-decoration-container {
-display: none !important;
+  display: none;
 }
 
 input[type="password"] {
-appearance: none;
--webkit-appearance: none;
--moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 @media (max-width: 992px) {

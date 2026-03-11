@@ -7,21 +7,23 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 import axios from "axios";
 
-export default function Login({ onLogin }) {
-  const URL = process.env.REACT_APP_BACKEND_URL;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-  const [isLogin, setIsLogin] = useState(true);
+export default function Login({ onLogin }) {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  const [showLoginForm, setShowLoginForm] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
-
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [notRobot, setNotRobot] = useState(false);
 
   const navigate = useNavigate();
@@ -30,6 +32,23 @@ export default function Login({ onLogin }) {
     const storedUser = localStorage.getItem("user");
     if (storedUser) navigate("/");
   }, [navigate]);
+
+  useEffect(() => {
+    document.title = showLoginForm ? "EcoTrip – Bejelentkezés" : "EcoTrip – Regisztráció";
+  }, [showLoginForm]);
+
+  const fetchProfileImage = async (userData, token) => {
+    try {
+      const res = await axios.get(`${backendUrl}Profile/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data) {
+        userData.user = { ...userData.user, profileImage: res.data.profileImage };
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,34 +60,18 @@ export default function Login({ onLogin }) {
 
     setLoading(true);
     try {
-      const user = await axios.post(`${URL}auth/login`, { username, password });
+      const res = await axios.post(`${backendUrl}auth/login`, { username, password });
+      const userData = res.data;
+      const token = userData.token || userData.tokenDto?.token;
 
-      const token = user.data.token || (user.data.tokenDto && user.data.tokenDto.token);
-      if (token) {
-        localStorage.setItem("token", token);
-      }
+      if (token) localStorage.setItem("token", token);
 
-      try {
-        const profileRes = await axios.get(`${URL}Profile/profile`, {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          },
-        });
+      await fetchProfileImage(userData, token);
 
-        if (profileRes.data) {
-          user.data.user = {
-            ...user.data.user,
-            profileImage: profileRes.data.profileImage
-          };
-        }
-      } catch (profileError) {
-        console.error("Profilkép hiba:", profileError);
-      }
-
-      onLogin(user.data);
+      onLogin(userData);
       toast.success("Sikeres bejelentkezés!");
       setTimeout(() => navigate("/"), 1500);
-    } catch (error) {
+    } catch {
       toast.error("Hiba a szerverrel való kapcsolatban!");
       setLoading(false);
     }
@@ -77,29 +80,23 @@ export default function Login({ onLogin }) {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!fullName || !username || !email || !password || !password2) {
+    if (!fullName || !username || !email || !password || !confirmPassword) {
       toast.error("Kérem, töltsön ki minden mezőt!");
       return;
     }
-
     if (!notRobot) {
       toast.error("Kérem, jelölje be, hogy nem robot!");
       return;
     }
-
-    if (password !== password2) {
+    if (password !== confirmPassword) {
       toast.error("A két jelszó nem egyezik!");
       return;
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       toast.error("Hibás e-mail formátum! (pl: ecotripmail@gmail.com)");
       return;
     }
-
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-    if (!passwordRegex.test(password)) {
+    if (!PASSWORD_REGEX.test(password)) {
       toast.error(
         "A jelszónak minimum 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy nagybetűt, egy számot és egy speciális karaktert."
       );
@@ -107,76 +104,39 @@ export default function Login({ onLogin }) {
     }
 
     setLoading(true);
-
     try {
-      await axios.post(`${URL}auth/register`, { fullName, username, email, password });
-
+      await axios.post(`${backendUrl}auth/register`, { fullName, username, email, password });
       await sendWelcomeEmail(email, fullName);
 
-      try {
-        const loginResponse = await axios.post(`${URL}auth/login`, { username, password });
-        const user = loginResponse.data;
+      const loginRes = await axios.post(`${backendUrl}auth/login`, { username, password });
+      const userData = loginRes.data;
+      const token = userData.token || userData.tokenDto?.token;
 
-        const token = user.token || (user.tokenDto && user.tokenDto.token);
+      if (token) localStorage.setItem("token", token);
 
-        if (token) {
-          localStorage.setItem("token", token);
-        }
+      await fetchProfileImage(userData, token);
 
-        try {
-          const profileRes = await axios.get(`${URL}Profile/profile`, {
-            headers: {
-              "Authorization": `Bearer ${token}`
-            },
-          });
+      onLogin(userData);
+      toast.success("Sikeres regisztráció!");
+      setTimeout(() => navigate("/"), 1500);
 
-          if (profileRes.data) {
-            user.user = {
-              ...user.user,
-              profileImage: profileRes.data.profileImage
-            };
-          }
-
-        } catch (profileError) {
-          console.error("Profilkép hiba:", profileError);
-        }
-
-        onLogin(user);
-        toast.success("Sikeres regisztráció!");
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
-
-        setFullName("");
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setPassword2("");
-        setNotRobot(false);
-
-      } catch (loginError) {
-        console.error("Auto login hiba:", loginError);
-        let errorMessage = "Regisztráció sikeres, de bejelentkezés sikertelen!";
-        if (loginError.response && loginError.response.data && loginError.response.data.message) {
-          errorMessage = loginError.response.data.message;
-        }
-        toast.error(errorMessage);
-      }
-
+      setFullName("");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setNotRobot(false);
     } catch (error) {
-      setLoading(false);
-      let errorMessage = "Hiba a regisztráció során!";
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
-      }
-      toast.error(errorMessage);
-    } finally {
+      const message = error.response?.data?.message || "Hiba a regisztráció során!";
+      toast.error(message);
       setLoading(false);
     }
-  }; const sendWelcomeEmail = async (email, name) => {
+  };
+
+  const sendWelcomeEmail = async (recipientEmail, name) => {
     try {
-      await axios.post(`${URL}Mail`, {
-          to: email,
+      await axios.post(`${backendUrl}Mail`, {
+          to: recipientEmail,
           subject: "✈️ Üdvözlünk az EcoTrip családjában!",
           body: `
           <!DOCTYPE html>
@@ -340,15 +300,10 @@ export default function Login({ onLogin }) {
           </html>
         `,
       });
-    } catch (err) {
-      console.error("Email küldési hiba:", err);
+    } catch (error) {
+      console.error(error);
     }
   };
-
-  useEffect(() => {
-    document.title =
-      isLogin ? "EcoTrip – Bejelentkezés" : "EcoTrip – Regisztráció";
-  }, [isLogin]);
 
   return (
     <>
@@ -364,10 +319,10 @@ export default function Login({ onLogin }) {
         <div className="auth-background">
           <div className="card shadow p-4 rounded-4 auth-card">
             <h2 className="text-center fw-semibold mb-4">
-              {isLogin ? "Bejelentkezés" : "Regisztráció"}
+              {showLoginForm ? "Bejelentkezés" : "Regisztráció"}
             </h2>
 
-            {isLogin ? (
+            {showLoginForm ? (
               <form onSubmit={handleLogin}>
                 <input
                   className="form-control mb-3"
@@ -437,17 +392,17 @@ export default function Login({ onLogin }) {
 
                 <div className="mb-3 position-relative">
                   <input
-                    type={showPassword2 ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     className="form-control pe-5"
                     placeholder="Jelszó ismét"
-                    value={password2}
-                    onChange={(e) => setPassword2(e.target.value)}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   <span
                     className="password-eye"
-                    onClick={() => setShowPassword2(!showPassword2)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </span>
                 </div>
 
@@ -456,7 +411,7 @@ export default function Login({ onLogin }) {
                   onClick={() => setNotRobot(!notRobot)}
                 >
                   <div className="fake-checkbox">
-                    {notRobot && <span className="checkmark"><i class="bi bi-check-lg text-primary"></i></span>}
+                    {notRobot && <span className="checkmark"><i className="bi bi-check-lg text-primary"></i></span>}
                   </div>
                   <span className="fake-text">Nem vagyok robot</span>
                   <div className="fake-logo">
@@ -472,13 +427,13 @@ export default function Login({ onLogin }) {
             )}
 
             <p className="text-center mt-3 small">
-              {isLogin ? (
+              {showLoginForm ? (
                 <>
                   Nincs fiókja?{" "}
                   <button
                     type="button"
                     className="btn btn-link auth-link"
-                    onClick={() => setIsLogin(false)}
+                    onClick={() => setShowLoginForm(false)}
                   >
                     Regisztráljon!
                   </button>
@@ -489,7 +444,7 @@ export default function Login({ onLogin }) {
                   <button
                     type="button"
                     className="btn btn-link auth-link"
-                    onClick={() => setIsLogin(true)}
+                    onClick={() => setShowLoginForm(true)}
                   >
                     Bejelentkezés
                   </button>

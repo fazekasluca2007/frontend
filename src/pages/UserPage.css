@@ -76,20 +76,14 @@
 
 .profile-card:has(.edit-layout) .left-column {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   text-align: center;
   padding-right: 50px;
   border-right: 2px solid #ccc;
   position: relative;
-}
-
-.profile-card:has(.edit-layout) .left-column::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: #ccc;
 }
 
 .profile-card:has(.edit-layout) .right-column {
@@ -101,29 +95,6 @@
   align-items: center;
   justify-content: space-between; 
   padding: 0 1rem;
-}
-
-.profile-header.edit-mode-header {
-  justify-content: center;
-}
-
-.edit-layout {
-  display: flex;
-  gap: 2rem; 
-  flex-wrap: wrap; 
-  justify-content: center; 
-  align-items: flex-start; 
-}
-
-.left-column, .right-column {
-  flex: 1 1 300px;
-  max-width: 400px; 
-}
-
-.right-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
 }
 
 .edit-right-title {
@@ -272,15 +243,6 @@
   transform: scale(1.2);
   color: #a71d2a;
 }
-.profile-card:has(.edit-layout) .left-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: flex-start; 
-  padding-right: 50px;
-  border-right: 2px solid #ccc;
-  position: relative;
-}
 
 .edit-back-top-left {
   position: absolute;   
@@ -311,7 +273,6 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
-  padding-left: 0 !important;   
 }
 .delete-check .form-check-input {
   position: static !important;  
@@ -326,23 +287,6 @@
   font-size: 0.9rem;
 }
 
-.delete-spinner-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.delete-spinner-overlay .spinner-border {
-  width: 4rem;
-  height: 4rem;
-}
 .password-wrapper {
   position: relative;
 }
@@ -422,10 +366,6 @@
     border-right: none;
     border-bottom: 2px solid #ccc;
     padding-bottom: 2rem;
-  }
-
-  .profile-card:has(.edit-layout) .left-column::after {
-    display: none;
   }
 
   .profile-header h2 {
@@ -744,10 +684,5 @@
   .password-eye {
     right: 9px;
     font-size: 1rem;
-  }
-
-  .delete-spinner-overlay .spinner-border {
-    width: 3.5rem;
-    height: 3.5rem;
   }
 }
