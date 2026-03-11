@@ -54,6 +54,7 @@
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
+  text-align: left;
 }
 
 .text-block:hover {
@@ -61,7 +62,6 @@
 }
 
 .blue {
-  /* subtle two-stop gradient for consistency */
   background: linear-gradient(135deg, #2a9db3 0%, #1f6f88 100%);
 }
 
@@ -84,7 +84,7 @@
 
 .info-card {
   position: relative;
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,250,255,0.9));
+  background: rgba(255,255,255,0.95);
   color: #1a3c57;
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   padding: 28px 22px;
@@ -133,7 +133,7 @@
 .info-card.brown::before { background: linear-gradient(90deg, #c29472, #8f6a4f); }
 
 .team-card {
-  background: #f0f6fb;
+  background: rgba(255,255,255,0.95);
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   border-radius: 30px;
   padding: 20px;

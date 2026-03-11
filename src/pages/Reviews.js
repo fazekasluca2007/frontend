@@ -152,18 +152,18 @@ export default function Reviews() {
   const confirmDelete = (id) => {
     const toastId = toast.error(
       <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné?</p>
+        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné a véleményét?</p>
         <div className="d-flex gap-2">
-          <button 
-            className="btn btn-sm px-3" 
-            style={{ fontSize: "12px", fontWeight: "bold", backgroundColor: "darkcyan", color: "white", border: "none", borderRadius: "12px" }}
+          <button
+            className="btn btn-light btn-sm px-3"
+            style={{ fontSize: "12px", fontWeight: "bold" }}
             onClick={() => { executeDelete(id); toast.dismiss(toastId); }}
           >
             Igen
           </button>
-          <button 
-            className="btn btn-sm px-3" 
-            style={{ fontSize: "12px", backgroundColor: "#e0e0e0", color: "#444", border: "none", borderRadius: "12px" }}
+          <button
+            className="btn btn-outline-light btn-sm px-3"
+            style={{ fontSize: "12px" }}
             onClick={() => toast.dismiss(toastId)}
           >
             Mégse
@@ -324,7 +324,7 @@ export default function Reviews() {
                   />
                   <RatingSelect value={rating} onChange={setRating} />
                   <div className="d-flex flex-column align-items-center gap-2">
-                    <button className="btn btn-success w-100">
+                    <button className="btn btn-success w-20">
                       {editId ? "Módosítás mentése" : "Vélemény beküldése"}
                     </button>
                     {editId && (

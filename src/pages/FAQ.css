@@ -18,7 +18,7 @@
 }
 
 .gyik-answer {
-  background-color: #f0f4f7;
+  background-color: rgba(255,255,255,0.95);
   padding: 15px;
   border-radius: 5px;
   text-align: left;
