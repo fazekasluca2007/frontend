@@ -434,6 +434,14 @@ export default function Booking({ user }) {
 
   const isCardValid = () => cardNumber.replace(/\s/g, "").length === 16;
 
+  const isExpiryValid = () => {
+    if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) return false;
+    const [month, year] = expiry.split("/");
+    const expiryDate = new Date(2000 + parseInt(year), parseInt(month), 0);
+    const today = new Date();
+    return expiryDate >= today;
+  };
+
   const handleExpiryChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2, 4);
@@ -508,11 +516,13 @@ export default function Booking({ user }) {
       newErrors.phone = `Érvényes telefonszámot adjon meg! (pl. ${getCountry().example})`;
     if (!birthDate) newErrors.birthDate = "Kérjük, adja meg születési dátumát!";
     else if (!validateAge(birthDate)) newErrors.birthDate = "Legalább 16 évesnek kell lennie a foglaláshoz!";
-    if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";
-
-    if (isCardPayment) {
+    if (!startDate || !endDate) newErrors.date = "Válassza ki a dátumtartományt!";    if (isCardPayment) {
       if (!isCardValid()) newErrors.cardNumber = "16 számjegyű kártyaszám szükséges!";
-      if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) newErrors.expiry = "Érvényes formátum: MM/ÉÉ";
+      if (!expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
+        newErrors.expiry = "Érvényes formátum: MM/ÉÉ";
+      } else if (!isExpiryValid()) {
+        newErrors.expiry = "A kártya lejárt!";
+      }
       if (!cvc.match(/^\d{3}$/)) newErrors.cvc = "3 számjegyű CVC szükséges!";
     }
 

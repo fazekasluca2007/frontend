@@ -107,7 +107,6 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     );
   }
 
-
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
@@ -121,6 +120,14 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         });
         setFullName(data.data.fullName || "");
         setEmail(data.data.email || "");
+        
+        const customImage = localStorage.getItem('customProfileImage');
+        if (customImage) {
+          setSelectedAvatar(customImage);
+          updateProfileImage(customImage);
+          return;
+        }
+        
         const currentImg = data.data.profileImage || defaultAvatars[0];
         setSelectedAvatar(currentImg);
         updateProfileImage(currentImg);
@@ -175,10 +182,15 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     await axios.put(`${backendUrl}Profile/password`, { oldPassword, newPassword: password }, {
       headers: { Authorization: `Bearer ${token}` }
     });
-  };
-
-  const saveImageToBackend = async (imageUrl) => {
+  };  const saveImageToBackend = async (imageUrl) => {
     const token = localStorage.getItem("token");
+    
+    if (imageUrl.startsWith('data:')) {
+      localStorage.setItem('customProfileImage', imageUrl);
+      return;
+    }
+    
+    localStorage.removeItem('customProfileImage');
     await axios.put(`${backendUrl}Profile/image`, { imageUrl }, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -248,13 +260,12 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         data: { password: deletePassword }
       });
 
-      toast.success("Profilja sikeresen törölve");
-
-      setTimeout(() => {
+      toast.success("Profilja sikeresen törölve");      setTimeout(() => {
         if (typeof updateUser === "function") updateUser(null);
         if (typeof onLogout === "function") onLogout();
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("customProfileImage");
         navigate("/");
       }, 1500);
 
@@ -338,8 +349,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                   src={customAvatar || selectedAvatar}
                   alt="Profilkép"
                   className="profile-avatar"
-                />
-                <div className="avatar-grid">
+                />                <div className="avatar-grid">
                   {defaultAvatars.map((avatar, index) => (
                     <img
                       key={index}
@@ -350,6 +360,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                       onClick={() => {
                         setSelectedAvatar(avatar);
                         setCustomAvatar(null);
+                        localStorage.removeItem('customProfileImage');
                       }}
                     />
                   ))}
