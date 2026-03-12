@@ -182,7 +182,6 @@
   transform: translateY(0);
 }
 
-/* Tablet nézet */
 @media (max-width: 768px) {
   .about-hero {
     height: auto;
@@ -252,7 +251,6 @@
   }
 }
 
-/* Mobil nézet */
 @media (max-width: 576px) {
   .about-hero {
     padding: 15px;

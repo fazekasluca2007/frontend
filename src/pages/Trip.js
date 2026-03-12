@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -61,7 +61,6 @@ export default function Trip() {
     document.title = "EcoTrip – Útjaink";
     window.scrollTo(0, 0);
   }, []);
-
   const getCardsPerView = useCallback(() => {
     if (window.innerWidth <= 576) return 1;
     if (window.innerWidth <= 992) return 2;
@@ -78,19 +77,18 @@ export default function Trip() {
       return { ...prev, [country]: newPos };
     });
   }, [getCardsPerView]);
+  const getCitiesForCountry = (country) => {
+    const countryData = trips.find((c) => c.country === country);
+    const cities = countryData?.hotels.map((h) => h.city) || [];
+    return [...new Set(cities)];
+  };
 
-  const availableCities = useMemo(() => {
-    if (selectedCountry) {
-      return [
-        ...new Set(
-          trips
-            .find((c) => c.country === selectedCountry)
-            ?.hotels.map((h) => h.city) || []
-        ),
-      ];
-    }
-    return [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
-  }, [selectedCountry, trips]);
+  const getAllCities = () => {
+    const allCities = trips.flatMap((c) => c.hotels.map((h) => h.city));
+    return [...new Set(allCities)];
+  };
+
+  const availableCities = selectedCountry ? getCitiesForCountry(selectedCountry) : getAllCities();
 
   const handleHotelClick = (hotel) => {
     navigate("/informaciok", {
@@ -188,15 +186,14 @@ export default function Trip() {
                       </div>
                     </div>
 
-                    <div className="slider-wrapper">
-                      <button
+                    <div className="slider-wrapper">                      <button
                         className="slider-btn left"
                         onClick={() =>
                           moveSlide(country.country, -1, filteredHotels.length)
                         }
                         disabled={pos === 0}
                       >
-                        ❮
+                        <i className="bi bi-chevron-left"></i>
                       </button>
 
                       <div className="slider-container">
@@ -214,16 +211,14 @@ export default function Trip() {
                             />
                           ))}
                         </div>
-                      </div>
-
-                      <button
+                      </div>                      <button
                         className="slider-btn right"
                         onClick={() =>
                           moveSlide(country.country, 1, filteredHotels.length)
                         }
                         disabled={pos >= maxPos}
                       >
-                        ❯
+                        <i className="bi bi-chevron-right"></i>
                       </button>
                     </div>
                   </div>

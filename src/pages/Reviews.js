@@ -189,13 +189,21 @@ export default function Reviews() {
     } catch {
       toast.error("Hiba történt a törlés során.", { theme: "colored" });
     }
-  };
-
-  const handleSubmit = async (e) => {
+  };  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!loggedUserName) {
-      toast.error("Nem sikerült azonosítani a felhasználót. Jelentkezzen be újra!");
+      toast.error("Nem sikerült azonosítani a felhasználót. Jelentkezzen be újra!", { theme: "colored" });
+      return;
+    }
+
+    if (!text.trim()) {
+      toast.error("Írja le a véleményét", { theme: "colored" });
+      return;
+    }
+
+    if (!rating) {
+      toast.error("Válasszon értékelést!", { theme: "colored" });
       return;
     }
 
@@ -312,11 +320,9 @@ export default function Reviews() {
           {loggedIn && (
             <section id="review-form" style={{ padding: "50px 0" }}>
               <div className="container">
-                <h3 className="text-center mb-4">{editId ? "Vélemény módosítása" : "Vélemény írása"}</h3>
-                <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "0 auto" }}>
+                <h3 className="text-center mb-4">{editId ? "Vélemény módosítása" : "Vélemény írása"}</h3>                <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "0 auto" }}>
                   <textarea
                     rows="3"
-                    required
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     className="form-control mb-3"

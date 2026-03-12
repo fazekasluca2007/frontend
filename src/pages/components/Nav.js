@@ -2,38 +2,46 @@ import React, { useState } from 'react';
 import './Nav.css';
 import { NavLink } from 'react-router-dom';
 
+const NAV_LINKS = [
+  { path: '/utjaink', label: 'Útjaink' },
+  { path: '/okoutjaink', label: 'Ökoútjaink' },
+  { path: '/rolunk', label: 'Rólunk' },
+  { path: '/gyik', label: 'GYIK' },
+  { path: '/velemenyek', label: 'Vélemények' },
+];
+
+const STORAGE_KEYS = {
+  token: 'token',
+  user: 'user',
+};
+
 export default function Nav({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-
-  const getName = () => {
-    if (user?.user?.username) return user.user.username;
-    if (user?.user?.fullName) return user.user.fullName;
-    if (user?.user?.email) return user.user.email;
-    return "Felhasználó";
+  const getUserName = () => {
+    const userObj = user?.user;
+    return userObj?.username || '';
   };
 
-  const displayName = getName();
+  const displayName = getUserName();
   const displayInitial = displayName.charAt(0).toUpperCase();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user"); 
+    localStorage.removeItem(STORAGE_KEYS.token);
+    localStorage.removeItem(STORAGE_KEYS.user);
     onLogout();
   };
 
- 
-  const isLoggedIn = !!user && !!localStorage.getItem("token");
-
+  const isLoggedIn = !!user && !!localStorage.getItem(STORAGE_KEYS.token);
   return (
     <nav className="navbar navbar-expand-lg position-relative">
       <div className="container-fluid d-flex justify-content-between align-items-center">
 
         <div className="d-flex align-items-center">
           <NavLink className="navbar-brand" to="/">
-            <img src="./img/ecologo.png" alt="Logo" />
+            <img src="./img/ecologo.png" alt="EcoTrip Logo" />
           </NavLink>
         </div>
 
@@ -42,18 +50,20 @@ export default function Nav({ user, onLogout }) {
           type="button"
           onClick={toggleMenu}
           aria-expanded={menuOpen}
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-       
         <div className="d-none d-lg-flex position-absolute start-50 translate-middle-x">
           <ul className="navbar-nav d-flex flex-row">
-            <li className="nav-item"><NavLink className="nav-link" to="/utjaink">Útjaink</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/okoutjaink">Ökoútjaink</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/rolunk">Rólunk</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/gyik">GYIK</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/velemenyek">Vélemények</NavLink></li>
+            {NAV_LINKS.map((link) => (
+              <li key={link.path} className="nav-item">
+                <NavLink className="nav-link" to={link.path}>
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -90,20 +100,36 @@ export default function Nav({ user, onLogout }) {
       {menuOpen && (
         <div className="mobile-menu d-lg-none text-center">
           <ul className="navbar-nav">
-            <li className="nav-item"><NavLink className="nav-link" to="/utjaink" onClick={toggleMenu}>Útjaink</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/okoutjaink" onClick={toggleMenu}>ÖkoÚtjaink</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/rolunk" onClick={toggleMenu}>Rólunk</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/gyik" onClick={toggleMenu}>GYIK</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/velemenyek" onClick={toggleMenu}>Vélemények</NavLink></li>            {!isLoggedIn ? (
+            {NAV_LINKS.map((link) => (
+              <li key={link.path} className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  to={link.path}
+                  onClick={toggleMenu}
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+
+            {!isLoggedIn ? (
               <li className="nav-item">
-                <NavLink className="nav-link" to="/bejelentkezes" onClick={toggleMenu}>
+                <NavLink
+                  className="nav-link"
+                  to="/bejelentkezes"
+                  onClick={toggleMenu}
+                >
                   Bejelentkezés
                 </NavLink>
               </li>
             ) : (
               <>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/profile" onClick={toggleMenu}>
+                  <NavLink
+                    className="nav-link"
+                    to="/profile"
+                    onClick={toggleMenu}
+                  >
                     <div className="d-flex align-items-center justify-content-center gap-2">
                       <div className="profile-pic-mobile">
                         {user?.user?.profileImage ? (
@@ -118,7 +144,10 @@ export default function Nav({ user, onLogout }) {
                 </li>
                 <li className="nav-item">
                   <button
-                    onClick={() => { handleLogout(); toggleMenu(); }}
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }}
                     className="btn nav-link w-100"
                   >
                     Kijelentkezés

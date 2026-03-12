@@ -53,7 +53,6 @@
   color: #00b3b3;
 }
 
-/* Tablet nézet */
 @media (max-width: 768px) {
   .aszf-page {
     padding: 25px;
@@ -96,7 +95,6 @@
   }
 }
 
-/* Mobil nézet */
 @media (max-width: 576px) {
   .aszf-page {
     padding: 20px;

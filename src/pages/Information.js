@@ -13,11 +13,8 @@ export default function Information() {
 
   const tripId = location.state?.trip_id;
   const ecoTripId = location.state?.ecotrip_id;
-
   const [hotelData, setHotelData] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [days, setDays] = useState(1);
-  const [guests, setGuests] = useState(1);
   const [hasError, setHasError] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -38,20 +35,9 @@ export default function Information() {
         .catch(() => setHasError(true));
     }
   }, [tripId, ecoTripId, backendUrl]);
-
   useEffect(() => {
     document.title = "EcoTrip – Információk";
   }, []);
-
-  const handleDaysChange = (e) => {
-    const value = Number(e.target.value);
-    setDays(value < 1 ? 1 : value > 10 ? 10 : value);
-  };
-
-  const handleGuestsChange = (e) => {
-    const value = Number(e.target.value);
-    setGuests(value < 1 ? 1 : value > 10 ? 10 : value);
-  };
 
   const handleBookingClick = () => {
     if (!hotelData) return;
@@ -59,10 +45,8 @@ export default function Information() {
     if (!isLoggedIn) {
       toast.error("A foglaláshoz jelentkezzen be!");
       return;
-    }
-
-    navigate("/foglalas", {
-      state: { trip_id: tripId, ecotrip_id: ecoTripId, napok: days, fo: guests },
+    }    navigate("/foglalas", {
+      state: { trip_id: tripId, ecotrip_id: ecoTripId },
     });
   };
 

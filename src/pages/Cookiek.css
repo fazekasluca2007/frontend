@@ -77,7 +77,6 @@
     box-shadow: none;
 }
 
-/* Tablet nézet */
 @media (max-width: 768px) {
     .cookiek-page {
         padding: 15px;
@@ -124,7 +123,6 @@
     }
 }
 
-/* Mobil nézet */
 @media (max-width: 576px) {
     .cookiek-page {
         padding: 10px;

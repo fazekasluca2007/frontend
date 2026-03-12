@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -65,7 +65,6 @@ export default function Ecotrips() {
     if (window.innerWidth <= 992) return 2;
     return 4;
   }, []);
-
   const moveSlide = useCallback((country, step, hotelCount) => {
     const cardsPerView = getCardsPerView();
     const maxPos = Math.max(0, hotelCount - cardsPerView);
@@ -76,13 +75,9 @@ export default function Ecotrips() {
     });
   }, [getCardsPerView]);
 
-  const availableCities = useMemo(() => {
-    if (selectedCountry) {
-      const country = trips.find((c) => c.country === selectedCountry);
-      return [...new Set(country?.hotels.map((h) => h.city) || [])];
-    }
-    return [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
-  }, [selectedCountry, trips]);
+  const availableCities = selectedCountry
+    ? [...new Set(trips.find((c) => c.country === selectedCountry)?.hotels.map((h) => h.city) || [])]
+    : [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
 
   const handleHotelClick = (hotel) => {
     if (!localStorage.getItem("user")) {
@@ -176,13 +171,12 @@ export default function Ecotrips() {
                       </div>
                     </div>
 
-                    <div className="slider-wrapper">
-                      <button
+                    <div className="slider-wrapper">                      <button
                         className="slider-btn left"
                         onClick={() => moveSlide(country.country, -1, filteredHotels.length)}
                         disabled={pos === 0}
                       >
-                        ❮
+                        <i className="bi bi-chevron-left"></i>
                       </button>
 
                       <div className="slider-container">
@@ -199,14 +193,12 @@ export default function Ecotrips() {
                             />
                           ))}
                         </div>
-                      </div>
-
-                      <button
+                      </div>                      <button
                         className="slider-btn right"
                         onClick={() => moveSlide(country.country, 1, filteredHotels.length)}
                         disabled={pos >= maxPos}
                       >
-                        ❯
+                        <i className="bi bi-chevron-right"></i>
                       </button>
                     </div>
                   </div>

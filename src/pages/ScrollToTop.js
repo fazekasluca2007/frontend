@@ -1,58 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import './ScrollToTop.css';
 
+const SHOW_BUTTON_AT = 300;
+const SCROLL_DURATION = 1000;
+const BUTTON_TEXT = 'Vissza a tetejére';
+
 export default function ScrollToTop() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+    const handleScroll = () => {
+      setShow(window.pageYOffset > SHOW_BUTTON_AT);
     };
 
-    window.addEventListener('scroll', toggleVisibility);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', toggleVisibility);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const scrollToTop = () => {
-    const scrollDuration = 1000;
-    const startPosition = window.scrollY;
-    const animationStartTime = performance.now();
 
-    const calculateEasing = (timeProgress) => {
-      return timeProgress < 0.5 
-        ? 4 * timeProgress * timeProgress * timeProgress 
-        : 1 - Math.pow(-2 * timeProgress + 2, 3) / 2;
-    };
+  const easeInOutCubic = (t) => {
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
 
-    const performScrollAnimation = (currentTime) => {
-      const elapsedTime = currentTime - animationStartTime;
-      const scrollProgress = Math.min(elapsedTime / scrollDuration, 1);
-      const easedProgress = calculateEasing(scrollProgress);
-      
-      window.scrollTo(0, startPosition * (1 - easedProgress));
-      
-      if (scrollProgress < 1) {
-        requestAnimationFrame(performScrollAnimation);
+  const handleClick = () => {
+    const startPos = window.scrollY;
+    const startTime = performance.now();
+
+    const animate = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / SCROLL_DURATION, 1);
+      const eased = easeInOutCubic(progress);
+
+      window.scrollTo(0, startPos * (1 - eased));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
       }
     };
 
-    requestAnimationFrame(performScrollAnimation);
+    requestAnimationFrame(animate);
   };
 
   return (
     <>
-      {isVisible && (
+      {show && (
         <button
-          onClick={scrollToTop}
+          onClick={handleClick}
           className="scroll-to-top-btn"
-          aria-label="Vissza a tetejére"
-          title="Vissza a tetejére"
+          aria-label={BUTTON_TEXT}
+          title={BUTTON_TEXT}
         >
           <i className="bi bi-arrow-up"></i>
         </button>

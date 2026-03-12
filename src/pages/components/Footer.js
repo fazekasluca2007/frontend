@@ -2,51 +2,81 @@ import React, { useEffect, useRef } from 'react';
 import './Footer.css';
 import { NavLink } from 'react-router-dom';
 
+const SCROLL_ANIMATION_CONFIG = {
+  threshold: 0.15,
+  staggerDelay: 0.08,
+  showClass: 'show',
+  observableClass: 'animate-on-scroll',
+};
+
+const FOOTER_LINKS = [
+  { path: '/utjaink', label: 'Útjaink' },
+  { path: '/okoutjaink', label: 'ÖkoÚtjaink' },
+  { path: '/rolunk', label: 'Rólunk' },
+  { path: '/gyik', label: 'GYIK' },
+  { path: '/velemenyek', label: 'Vélemények' },
+  { path: '/aszf', label: 'ÁSZF' },
+];
+
+const SOCIAL_LINKS = [
+  { url: 'https://facebook.com', icon: 'bi-facebook', label: 'Facebook' },
+  { url: 'https://instagram.com', icon: 'bi-instagram', label: 'Instagram' },
+  { url: 'https://twitter.com', icon: 'bi-twitter-x', label: 'Twitter' },
+];
+
+const CONTACT_INFO = [
+  { icon: 'bi-pin-map', label: 'Miskolc' },
+  { icon: 'bi-telephone', label: '+36 70 285 4560' },
+  { icon: 'bi-envelope', label: 'ecotripmail@gmail.com' },
+];
+
+const FOOTER_COPYRIGHT = '© 2026 EcoTrip - Minden jog fenntartva';
+
 export default function Footer() {
   const footerRef = useRef(null);
 
   useEffect(() => {
     if (!footerRef.current) return;
 
-    const revealNodes = footerRef.current.querySelectorAll('.animate-on-scroll');
-    const revealThreshold = 0.15;
-    const staggerStep = 0.08; // seconds between each item's delay
+    const observableElements = footerRef.current.querySelectorAll(
+      `.${SCROLL_ANIMATION_CONFIG.observableClass}`
+    );
 
-    function handleIntersections(entries) {
-      entries.forEach(item => {
-        if (item.isIntersecting) {
-          item.target.classList.add('show');
-        } else {
-          item.target.classList.remove('show');
-        }
+    const handleIntersectionChange = (entries) => {
+      entries.forEach((entry) => {
+        const action = entry.isIntersecting ? 'add' : 'remove';
+        entry.target.classList[action](SCROLL_ANIMATION_CONFIG.showClass);
       });
-    }
+    };
 
-    const intersectionObserver = new IntersectionObserver(handleIntersections, { threshold: revealThreshold });
-
-    revealNodes.forEach((node, index) => {
-      node.style.transitionDelay = `${index * staggerStep}s`;
-      intersectionObserver.observe(node);
+    const observer = new IntersectionObserver(handleIntersectionChange, {
+      threshold: SCROLL_ANIMATION_CONFIG.threshold,
     });
 
-    return () => intersectionObserver.disconnect();
-  }, []);
+    observableElements.forEach((element, index) => {
+      element.style.transitionDelay = `${index * SCROLL_ANIMATION_CONFIG.staggerDelay}s`;
+      observer.observe(element);
+    });
 
+    return () => observer.disconnect();
+  }, []);
   return (
     <footer ref={footerRef} className="footer-custom text-white">
       <div className="container py-4">
         <div className="row g-3 gy-4">
           
-       
           <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-geo-alt-fill me-2"></i>
               Kapcsolat
             </h5>
             <ul className="footer-list">
-              <li><i className="bi bi-pin-map me-2"></i>Miskolc</li>
-              <li><i className="bi bi-telephone me-2"></i>+36 70 285 4560</li>
-              <li><i className="bi bi-envelope me-2"></i>ecotripmail@gmail.com</li>
+              {CONTACT_INFO.map((info, index) => (
+                <li key={index}>
+                  <i className={`bi ${info.icon} me-2`}></i>
+                  {info.label}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -56,12 +86,14 @@ export default function Footer() {
               Oldalak
             </h5>
             <ul className="footer-list footer-links">
-              <li><NavLink to="/utjaink"><i className="bi bi-chevron-right me-1"></i>Útjaink</NavLink></li>
-              <li><NavLink to="/okoutjaink"><i className="bi bi-chevron-right me-1"></i>ÖkoÚtjaink</NavLink></li>
-              <li><NavLink to="/rolunk"><i className="bi bi-chevron-right me-1"></i>Rólunk</NavLink></li>
-              <li><NavLink to="/gyik"><i className="bi bi-chevron-right me-1"></i>GYIK</NavLink></li>
-              <li><NavLink to="/velemenyek"><i className="bi bi-chevron-right me-1"></i>Vélemények</NavLink></li>
-              <li><NavLink to="/aszf"><i className="bi bi-chevron-right me-1"></i>ÁSZF</NavLink></li>
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.path}>
+                  <NavLink to={link.path}>
+                    <i className="bi bi-chevron-right me-1"></i>
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -71,25 +103,25 @@ export default function Footer() {
               Kövess minket!
             </h5>
             <div className="social-icons-container">
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-link">
-                <i className="bi bi-facebook"></i>
-                <span>Facebook</span>
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-link">
-                <i className="bi bi-instagram"></i>
-                <span>Instagram</span>
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="social-link">
-                <i className="bi bi-twitter-x"></i>
-                <span>Twitter</span>
-              </a>
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.url}
+                  href={social.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-link"
+                >
+                  <i className={`bi ${social.icon}`}></i>
+                  <span>{social.label}</span>
+                </a>
+              ))}
             </div>
           </div>
 
         </div>
 
         <div className="footer-bottom text-center mt-4 pt-3 animate-on-scroll">
-          <small>&copy; 2026 EcoTrip - Minden jog fenntartva</small>
+          <small>{FOOTER_COPYRIGHT}</small>
         </div>
 
       </div>

@@ -274,8 +274,9 @@
   align-items: center;
   gap: 6px;
 }
-.delete-check .form-check-input {
-  position: static !important;  
+
+.delete-profile-box .delete-check .form-check-input {
+  position: static;
   margin: 0;
   width: 14px;
   height: 14px;

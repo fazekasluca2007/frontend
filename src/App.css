@@ -1,6 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f4f7fb;
+  color: #1a3c57;
+}
+
 .App {
-  text-align: center;
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif !important;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   padding-top: 90px;
 }
 
@@ -16,13 +23,23 @@
 }
 
 .App-logo {
- height: 40vmin;
+  height: 40vmin;
   pointer-events: none;
+  animation: spin 20s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .App-logo {
     animation: none;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -34,19 +51,6 @@
 }
 
 .App-link:hover {
-  color: #1a3c57;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif !important;
-  background-color: #f4f7fb;
   color: #1a3c57;
 }
 

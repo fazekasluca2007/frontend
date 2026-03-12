@@ -99,31 +99,31 @@
     color: #1a3c57;
 }
 
-.btn-success {
-  background-color: darkcyan !important;
-  border-color: darkcyan !important;
-  color: white !important;
+button.btn-success {
+  background-color: darkcyan;
+  border-color: darkcyan;
+  color: white;
   font-weight: 600;
-  transition: 0.3s ease !important;
+  transition: 0.3s ease;
 }
 
-.btn-success:hover {
+button.btn-success:hover {
   transform: scale(1.05);
-  background-color: #007070 !important;
-  border-color: #007070 !important;
-  color: white !important;
+  background-color: #007070;
+  border-color: #007070;
+  color: white;
 }
 
-.btn-success:focus {
-  background-color: darkcyan !important;
-  border-color: darkcyan !important;
-  color: white !important;
-  box-shadow: none !important;
+button.btn-success:focus {
+  background-color: darkcyan;
+  border-color: darkcyan;
+  color: white;
+  box-shadow: none;
 }
 
-.btn-success:active {
-  background-color: #007070 !important;
-  border-color: #007070 !important;
+button.btn-success:active {
+  background-color: #007070;
+  border-color: #007070;
 }
 
 .cancel-btn {

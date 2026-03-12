@@ -7,7 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 import axios from "axios";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.(hu|com)$/;
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 export default function Login({ onLogin }) {
@@ -49,7 +49,6 @@ export default function Login({ onLogin }) {
       console.error(error);
     }
   };
-
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -71,8 +70,13 @@ export default function Login({ onLogin }) {
       onLogin(userData);
       toast.success("Sikeres bejelentkezés!");
       setTimeout(() => navigate("/"), 1500);
-    } catch {
-      toast.error("Hiba a szerverrel való kapcsolatban!");
+    } catch (error) {
+      const statusCode = error.response?.status;
+      if (statusCode === 401 || statusCode === 400) {
+        toast.error("Hibás felhasználónév vagy jelszó!");
+      } else {
+        toast.error("Hiba a szerverrel való kapcsolatban!");
+      }
       setLoading(false);
     }
   };
@@ -125,10 +129,26 @@ export default function Login({ onLogin }) {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      setNotRobot(false);
-    } catch (error) {
-      const message = error.response?.data?.message || "Hiba a regisztráció során!";
-      toast.error(message);
+      setNotRobot(false);    } catch (error) {
+      const statusCode = error.response?.status;
+      const errorMessage = error.response?.data?.message || "";
+      const errorData = error.response?.data;
+
+      console.log("Registration error:", { statusCode, errorMessage, errorData });
+
+      const message = typeof errorData === "string" ? errorData : errorMessage;
+
+      if (message.includes("email") || message.includes("Email")) {
+        toast.error("Ez az e-mail cím már regisztrálva van!");
+      } else if (message.includes("username") || message.includes("Username") || message.includes("felhasználónév")) {
+        toast.error("Ez a felhasználónév már foglalt!");
+      } else if (statusCode === 409) {
+        toast.error("Ez az adat már regisztrálva van!");
+      } else if (statusCode === 400) {
+        toast.error("Hibás adatok! Kérjük, ellenőrizze az eingefüllt adatokat.");
+      } else {
+        toast.error("Hiba a regisztráció során!");
+      }
       setLoading(false);
     }
   };
@@ -152,7 +172,6 @@ export default function Login({ onLogin }) {
                 <td align="center">
                   <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); overflow: hidden; max-width: 100%;">
                     
-                    <!-- Header with Gradient -->
                     <tr>
                       <td style="background: linear-gradient(135deg, #1a3c57 0%, #2c5f8d 100%); padding: 40px 30px; text-align: center;">
                         <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -171,7 +190,7 @@ export default function Login({ onLogin }) {
                         
                         <p style="margin: 0 0 30px 0; color: #2c3e50; font-size: 16px; line-height: 1.8; text-align: center;">
                           Kedves <strong style="color: #2e7d32;">${name}</strong>!<br>
-                          Köszönjük, hogy csatlakozott az EcoTrip közösségéhez! Nálunk megtalálja a tökéletes szállást - akár öko-tudatos, akár hagyományos élményt keres!
+                          Köszönjük, hogy csatlakozott az EcoTrip közösségéhez! Nálunk megtalálja a tökéletes szállást.
                         </p>
                         
                         <h3 style="margin: 0 0 20px 0; color: #1a3c57; font-size: 22px; font-weight: 600; text-align: center;">
@@ -204,7 +223,7 @@ export default function Login({ onLogin }) {
                                       <tr>
                                         <td align="center">
                                           <a href="http://localhost:3000/utjaink" style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3);">
-                                            ✈️ Hagyományos utak
+                                            Hagyományos utak
                                           </a>
                                         </td>
                                       </tr>
@@ -237,7 +256,7 @@ export default function Login({ onLogin }) {
                                       <tr>
                                         <td align="center">
                                           <a href="http://localhost:3000/okoutjaink" style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);">
-                                            🌿 Öko utak
+                                            Öko utak
                                           </a>
                                         </td>
                                       </tr>

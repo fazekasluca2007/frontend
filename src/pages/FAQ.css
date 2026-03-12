@@ -1,5 +1,5 @@
 .gyik-question {
-  background: linear-gradient(90deg, #6daedb, #7dbf7d, #a87c5c);
+  background: linear-gradient(90deg, darkcyan, #7dbf7d, #a87c5c);
   color: #fff;
   padding: 15px;
   border-radius: 5px;
@@ -82,7 +82,6 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Tablet nézet */
 @media (max-width: 768px) {
   .gyik-question {
     padding: 12px;
@@ -119,7 +118,6 @@
   }
 }
 
-/* Mobil nézet */
 @media (max-width: 576px) {
   .gyik-question {
     padding: 10px;

@@ -16,27 +16,27 @@
   background: #f0f6fb;
 }
 
-.auth-button {
-  background-color: darkcyan !important;
-  color: white !important;
+.auth-card .auth-button {
+  background-color: darkcyan;
+  color: white;
   margin-top: 16px;
-  border: none !important;
-  transition: all 0.3s ease !important;
+  border: none;
+  transition: all 0.3s ease;
 }
 
-.auth-button:hover {
-  background-color: #007070 !important;
+.auth-card .auth-button:hover {
+  background-color: #007070;
   color: white;
   transform: scale(1.05);
 }
 
-.auth-button:focus {
+.auth-card .auth-button:focus {
   background-color: darkcyan;
   color: white;
-  box-shadow: none ;
+  box-shadow: none;
 }
 
-.auth-button:active {
+.auth-card .auth-button:active {
   background-color: #007070;
   color: white;
 }

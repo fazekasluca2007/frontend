@@ -29,6 +29,7 @@
     transform: translateY(0);
   }
 }
+
 .scroll-to-top-btn:hover {
   background-color: #8b6a4f;
   transform: translateY(-5px) scale(1.05);
