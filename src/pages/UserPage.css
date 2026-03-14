@@ -306,6 +306,173 @@
   z-index: 2;
 }
 
+.booking-delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 31, 40, 0.32);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+  padding: 16px;
+}
+
+.booking-delete-modal {
+  width: 100%;
+  max-width: 560px;
+  background: #f0f6fb;
+  border-radius: 20px;
+  padding: 1.1rem 1.25rem;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  border: 1px solid rgba(26, 60, 87, 0.08);
+  border-top: 5px solid darkcyan;
+}
+
+.booking-delete-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 0.45rem;
+}
+
+.booking-delete-modal h4 {
+  margin: 0;
+  color: #1a3c57;
+  font-size: 1.2rem;
+}
+
+.booking-delete-modal-close {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  color: #1a3c57;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.booking-delete-modal-close:hover {
+  background: #ffffff;
+  transform: scale(1.05);
+}
+
+.booking-delete-modal-text {
+  margin: 0 0 0.45rem;
+  color: #48606c;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.booking-delete-modal-warning {
+  margin: 0 0 0.65rem;
+  color: #7a2f39;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  font-style: italic;
+}
+
+.booking-delete-check {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.7rem;
+}
+
+.booking-delete-check .form-check-label {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #1a3c57;
+}
+
+.booking-delete-check .form-check-input {
+  position: static;
+  margin: 0;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.booking-delete-modal-field label {
+  color: #1a3c57;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.booking-delete-modal-input {
+  width: 100%;
+  padding: 0.6rem;
+  background: #ffffff;
+  border: 1px solid rgba(26, 60, 87, 0.12);
+  border-radius: 10px;
+  box-shadow: none;
+  color: #333;
+}
+
+.booking-delete-modal-input:focus {
+  outline: none;
+  border-color: darkcyan;
+  box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.12);
+}
+
+.booking-delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 0.8rem;
+}
+
+.booking-delete-btn {
+  min-width: 132px;
+  border-radius: 10px;
+  font-weight: 700;
+  padding: 0.62rem 0.95rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.booking-delete-btn:hover {
+  transform: scale(1.03);
+}
+
+.booking-delete-btn--secondary {
+  background: #ffffff;
+  color: #1a3c57;
+  border: 1px solid rgba(26, 60, 87, 0.18);
+}
+
+.booking-delete-btn--secondary:hover {
+  background: #f4f8fa;
+  color: #12344a;
+}
+
+.booking-delete-modal-actions .booking-delete-btn--danger {
+  background: #dc3545;
+  border: 1px solid #dc3545;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.booking-delete-modal-actions .booking-delete-btn--danger:hover {
+  background: #bb2d3b;
+  border-color: #bb2d3b;
+  color: #ffffff;
+}
+
+.booking-delete-modal-actions .booking-delete-btn--danger:focus,
+.booking-delete-modal-actions .booking-delete-btn--danger:active {
+  background: #bb2d3b;
+  border-color: #bb2d3b;
+  color: #ffffff;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2);
+}
+
 @media(max-width:992px) {
   .profile-card {
     max-width: 500px;
@@ -555,6 +722,32 @@
     right: 10px;
     font-size: 1.1rem;
   }
+
+  .booking-delete-modal {
+    max-width: 460px;
+    padding: 1rem;
+  }
+
+  .booking-delete-modal h4 {
+    font-size: 1.15rem;
+  }
+
+  .booking-delete-modal-text {
+    font-size: 0.9rem;
+  }
+
+  .booking-delete-modal-warning,
+  .booking-delete-check .form-check-label {
+    font-size: 0.88rem;
+  }
+
+  .booking-delete-modal-actions {
+    flex-direction: column;
+  }
+
+  .booking-delete-modal-actions .btn {
+    width: 100%;
+  }
 }
 
 @media (max-width: 400px) {
@@ -685,5 +878,19 @@
   .password-eye {
     right: 9px;
     font-size: 1rem;
+  }
+
+  .booking-delete-modal {
+    max-width: 94vw;
+    padding: 0.85rem;
+  }
+
+  .booking-delete-modal h4 {
+    font-size: 1.05rem;
+  }
+
+  .booking-delete-modal-close {
+    width: 32px;
+    height: 32px;
   }
 }

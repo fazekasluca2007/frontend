@@ -37,6 +37,11 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const [deletePassword, setDeletePassword] = useState("");
   const [showDeletePassword, setShowDeletePassword] = useState(false);
   const [confirmChecked, setConfirmChecked] = useState(false);
+  const [pendingBookingDeletionId, setPendingBookingDeletionId] = useState(null);
+  const [bookingDeletionPassword, setBookingDeletionPassword] = useState("");
+  const [isBookingDeletionPasswordVisible, setIsBookingDeletionPasswordVisible] = useState(false);
+  const [isBookingDeletionInProgress, setIsBookingDeletionInProgress] = useState(false);
+  const [isBookingDeletionConfirmed, setIsBookingDeletionConfirmed] = useState(false);
 
   const [originalData, setOriginalData] = useState({
     username: "",
@@ -196,45 +201,161 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     });
   };
 
-  const executeDelete = async (id) => {
+  const formatBookingDate = (dateValue) => {
+    if (!dateValue) return "-";
+    return new Date(dateValue).toLocaleDateString("hu-HU");
+  };
+
+  const sendBookingDeletionEmail = async (deletedBooking) => {
+    if (!email) return;
+
+    const hotelName = deletedBooking?.hotelName || deletedBooking?.HotelName || "EcoTrip foglalás";
+    const startDate = formatBookingDate(deletedBooking?.startDate || deletedBooking?.StartDate);
+    const endDate = formatBookingDate(deletedBooking?.endDate || deletedBooking?.EndDate);
+
+    await axios.post(`${backendUrl}Mail`, {
+      to: email,
+      subject: "Foglalás törlése - EcoTrip",
+      body: `
+      <!DOCTYPE html>
+      <html lang="hu">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Foglalás törlése</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f6fb;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f0f6fb; padding: 40px 20px;">
+          <tr>
+            <td align="center">
+              <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); overflow: hidden; max-width: 100%;">
+                <tr>
+                  <td style="background: linear-gradient(135deg, #1a3c57 0%, #2c5f8d 100%); padding: 34px 30px; text-align: center;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 30px; font-weight: 700;">EcoTrip</h1>
+                    <p style="margin: 10px 0 0 0; color: #e8f5e9; font-size: 16px;">Foglalás törlése</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 36px 40px;">
+                    <h2 style="margin: 0 0 16px 0; color: #1a3c57; font-size: 26px; font-weight: 600; text-align: center;">
+                      Foglalása sikeresen törölve lett
+                    </h2>
+                    <p style="margin: 0 0 24px 0; color: #2c3e50; font-size: 16px; line-height: 1.75; text-align: center;">
+                      Kedves <strong style="color: #2e7d32;">${fullName || username}</strong>!<br>
+                      A következő foglalását sikeresen töröltük rendszerünkből.
+                    </p>
+                    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; border-radius: 12px; border-left: 4px solid #2e7d32; margin: 0 0 24px 0;">
+                      <tr>
+                        <td style="padding: 22px 24px;">
+                          <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 18px; font-weight: 600;">Törölt foglalás adatai</p>
+                          <p style="margin: 0 0 8px 0; color: #2c3e50; font-size: 14px;"><strong>Szállás:</strong> ${hotelName}</p>
+                          <p style="margin: 0 0 8px 0; color: #2c3e50; font-size: 14px;"><strong>Érkezés:</strong> ${startDate}</p>
+                          <p style="margin: 0; color: #2c3e50; font-size: 14px;"><strong>Távozás:</strong> ${endDate}</p>
+                        </td>
+                      </tr>
+                    </table>
+                     <tr>
+                      <td style="padding: 30px 40px; text-align: center; background-color: #fafafa;">
+                        <p style="margin: 0; color: #6c757d; font-size: 14px; line-height: 1.7; text-align: center; font-style: italic;">
+                      Ha ez nem szándékos művelet volt, kérjük vegye fel velünk a kapcsolatot.
+                    </p>
+                        <p style="margin: 0 0 25px 0; color: #6c757d; font-size: 14px;">
+                          <a href="mailto:ecotripmail@gmail.com" style="color: #2e7d32; text-decoration: none; font-weight: 500;">ecotripmail@gmail.com</a>
+                        </p>
+                        <p style="margin: 0 0 25px 0; color: #6c757d; font-size: 14px;">
+                          <a href="http://localhost:3000" style="color: #2e7d32; text-decoration: none; font-weight: 500;">Vedezze fel a további ajánlatainkat!</a>
+                        </p>
+
+                        <p style="margin: 0; color: #95a5a6; font-size: 13px; line-height: 1.8;">
+                          © 2026 EcoTrip. Minden jog fenntartva.<br>
+                          Utazzon velünk, válasszon felelősen!
+                        </p>
+                      </td>
+                    </tr>
+                    
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+      `,
+    });
+  };
+
+  const closeBookingDeletionModal = () => {
+    setPendingBookingDeletionId(null);
+    setBookingDeletionPassword("");
+    setIsBookingDeletionPasswordVisible(false);
+    setIsBookingDeletionInProgress(false);
+    setIsBookingDeletionConfirmed(false);
+  };
+
+  const deleteBooking = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
+
+    if (!pendingBookingDeletionId) return;
+    if (!isBookingDeletionConfirmed) {
+      toast.error("Kérem, jelölje be, hogy biztosan törölni szeretné a foglalását!");
+      return;
+    }
+    if (!bookingDeletionPassword.trim()) {
+      toast.error("Kérem, adja meg a jelenlegi jelszavát!");
+      return;
+    }
+
+    setIsBookingDeletionInProgress(true);
+
+    const currentUsername = user?.user?.username || username;
+    if (!currentUsername) {
+      toast.error("Nem sikerült azonosítani a felhasználót.");
+      setIsBookingDeletionInProgress(false);
+      return;
+    }
+
+    const deletedBooking = bookings.find((booking) => booking.id === pendingBookingDeletionId) || null;
+
     try {
-      await axios.delete(`${backendUrl}Bookings/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      await axios.post(`${backendUrl}auth/login`, {
+        username: currentUsername,
+        password: bookingDeletionPassword,
       });
-      setBookings(prev => prev.filter(b => b.id !== id));
+
+      await axios.delete(`${backendUrl}Bookings/${pendingBookingDeletionId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { password: bookingDeletionPassword }
+      });
+
+      if (deletedBooking) {
+        try {
+          await sendBookingDeletionEmail(deletedBooking);
+        } catch (mailError) {
+          console.error("Booking deletion email error:", mailError);
+        }
+      }
+
+      setBookings((prev) => prev.filter((booking) => booking.id !== pendingBookingDeletionId));
       toast.success("Foglalás törölve");
+      closeBookingDeletionModal();
     } catch (error) {
-      console.error(error);
+      if (error.response?.status === 401 || error.response?.status === 400) {
+        toast.error("Hibás jelszó!");
+      } else {
+        toast.error("Hiba történt a foglalás törlése során.");
+      }
+      setIsBookingDeletionInProgress(false);
     }
   };
 
-
-  const confirmDelete = (id) => {
-    const toastId = toast.error(
-      <div>
-        <p className="mb-2" style={{ fontSize: "14px" }}>Biztosan törölni szeretné a foglalását?</p>
-        <div className="d-flex gap-2">
-          <button
-            className="btn btn-light btn-sm px-3"
-            style={{ fontSize: "12px", fontWeight: "bold" }}
-            onClick={() => { executeDelete(id); toast.dismiss(toastId); }}
-          >
-            Igen
-          </button>
-          <button
-            className="btn btn-outline-light btn-sm px-3"
-            style={{ fontSize: "12px" }}
-            onClick={() => toast.dismiss(toastId)}
-          >
-            Mégse
-          </button>
-        </div>
-      </div>,
-      { autoClose: false, closeOnClick: false }
-    );
-  }
+  const openBookingDeletionModal = (bookingId) => {
+    setPendingBookingDeletionId(bookingId);
+    setBookingDeletionPassword("");
+    setIsBookingDeletionPasswordVisible(false);
+    setIsBookingDeletionConfirmed(false);
+  };
 
 
 
@@ -305,6 +426,78 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   return (
     <div className="profile-container">
+      {pendingBookingDeletionId && (
+        <div className="booking-delete-modal-overlay" onClick={closeBookingDeletionModal}>
+          <div className="booking-delete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="booking-delete-modal-header">
+              <h4>Foglalás törlése</h4>
+              <button
+                type="button"
+                className="booking-delete-modal-close"
+                onClick={closeBookingDeletionModal}
+                aria-label="Bezárás"
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <p className="booking-delete-modal-text">
+              A törléshez adja meg a jelenlegi jelszavát.
+            </p>
+            <p className="booking-delete-modal-warning">
+              Ez a művelet nem vonható vissza. Biztosan törölni akarja foglalását?
+            </p>
+            <div className="booking-delete-check">
+              <label className="form-check-label" htmlFor="confirmBookingDelete">
+                Igen, biztos.
+              </label>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="confirmBookingDelete"
+                checked={isBookingDeletionConfirmed}
+                onChange={(e) => setIsBookingDeletionConfirmed(e.target.checked)}
+              />
+            </div>
+            <div className="field mt-2 booking-delete-modal-field">
+              <label>Jelenlegi jelszó</label>
+              <div className="password-wrapper">
+                <input
+                  className="booking-delete-modal-input"
+                  type={isBookingDeletionPasswordVisible ? "text" : "password"}
+                  value={bookingDeletionPassword}
+                  onChange={(e) => setBookingDeletionPassword(e.target.value)}
+                  placeholder="Jelenlegi jelszó"
+                />
+                <span
+                  className="password-eye"
+                  onClick={() => setIsBookingDeletionPasswordVisible(!isBookingDeletionPasswordVisible)}
+                >
+                  {isBookingDeletionPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+            </div>
+            <div className="booking-delete-modal-actions">
+              <button
+                type="button"
+                className="btn booking-delete-btn booking-delete-btn--secondary"
+                onClick={closeBookingDeletionModal}
+                disabled={isBookingDeletionInProgress}
+              >
+                Mégse
+              </button>
+              <button
+                type="button"
+                className="btn booking-delete-btn booking-delete-btn--danger"
+                onClick={deleteBooking}
+                disabled={isBookingDeletionInProgress}
+              >
+                {isBookingDeletionInProgress ? "Törlés folyamatban..." : "Foglalás törlése"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="profile-card" style={{ position: "relative" }}>
         {editMode && (
           <button
@@ -540,7 +733,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
                       <span
                         className="delete-icon"
-                        onClick={() => confirmDelete(booking.id)}
+                        onClick={() => openBookingDeletionModal(booking.id)}
                         title="Foglalás törlése"
                       >
                         <i className="bi bi-trash"></i>
