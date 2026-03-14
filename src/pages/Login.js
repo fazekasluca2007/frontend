@@ -175,7 +175,7 @@ export default function Login({ onLogin }) {
                     <tr>
                       <td style="background: linear-gradient(135deg, #1a3c57 0%, #2c5f8d 100%); padding: 40px 30px; text-align: center;">
                         <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                          ✈️ EcoTrip 
+                           EcoTrip 
                         </h1>
                         <p style="margin: 10px 0 0 0; color: #e8f5e9; font-size: 16px; font-weight: 400;">
                           Üdvözöljük az EcoTrip közösségében!
@@ -194,7 +194,7 @@ export default function Login({ onLogin }) {
                         </p>
                         
                         <h3 style="margin: 0 0 20px 0; color: #1a3c57; font-size: 22px; font-weight: 600; text-align: center;">
-                          Fedezze fel ajánlatainkat! 🌍
+                          Fedezze fel ajánlatainkat!
                         </h3>
                     
                         <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
@@ -205,19 +205,19 @@ export default function Login({ onLogin }) {
                                 <tr>
                                   <td>
                                     <h3 style="margin: 0 0 15px 0; color: #1a3c57; font-size: 18px; font-weight: 600; text-align: center;">
-                                      ✈️ Útjaink
+                                       Útjaink
                                     </h3>
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #1565c0;">🏨</strong> Minőségi szállodák
+                                      <strong style="color: #1565c0;">•</strong> Minőségi szállodák
                                     </p>
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #1565c0;">🌍</strong> Világszerte elérhető
+                                      <strong style="color: #1565c0;">•</strong> Világszerte elérhető
                                     </p>
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #1565c0;">⭐</strong> Kipróbált helyszínek
+                                      <strong style="color: #1565c0;">•</strong> Kipróbált helyszínek
                                     </p>
                                     <p style="margin: 0 0 20px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #1565c0;">💰</strong> Kedvező árak
+                                      <strong style="color: #1565c0;">•</strong> Kedvező árak
                                     </p>
                                     <table width="100%" cellpadding="0" cellspacing="0">
                                       <tr>
@@ -238,19 +238,19 @@ export default function Login({ onLogin }) {
                                 <tr>
                                   <td>
                                     <h3 style="margin: 0 0 15px 0; color: #1a3c57; font-size: 18px; font-weight: 600; text-align: center;">
-                                      🌿 ÖkoÚtjaink
+                                       Ökoútjaink
                                     </h3>
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #2e7d32;">♻️</strong> Fenntartható szállások
+                                      <strong style="color: #2e7d32;">•</strong> Fenntartható szállások
                                     </p>
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #2e7d32;">🌱</strong> Öko-minősített helyek
+                                      <strong style="color: #2e7d32;">•</strong> Öko-minősített helyek
                                     </p>
                                     <p style="margin: 0 0 12px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #2e7d32;">💚</strong> Környezetbarát
+                                      <strong style="color: #2e7d32;">•</strong> Környezetbarát
                                     </p>
                                     <p style="margin: 0 0 20px 0; color: #1a3c57; font-size: 14px; line-height: 1.6;">
-                                      <strong style="color: #2e7d32;">🌍</strong> Zöld turizmus
+                                      <strong style="color: #2e7d32;">•</strong> Zöld turizmus
                                     </p>
                                     <table width="100%" cellpadding="0" cellspacing="0">
                                       <tr>
@@ -270,7 +270,7 @@ export default function Login({ onLogin }) {
                         
                         <p style="margin: 25px 0 0 0; color: #6c757d; font-size: 14px; line-height: 1.8; text-align: center; font-style: italic;">
                           Kezdje el az utazást velünk, és találja meg az álmai szállását!<br>
-                          Jó pihenést és kellemes utazást kívánunk! ✨
+                          Jó pihenést és kellemes utazást kívánunk!
                         </p>
                       </td>
                     </tr>
@@ -287,26 +287,12 @@ export default function Login({ onLogin }) {
                           Kérdése van? Írjon nekünk!
                         </p>
                         <p style="margin: 0 0 25px 0; color: #6c757d; font-size: 14px;">
-                          📧 <a href="mailto:ecotripmail@gmail.com" style="color: #2e7d32; text-decoration: none; font-weight: 500;">ecotripmail@gmail.com</a>
+                           <a href="mailto:ecotripmail@gmail.com" style="color: #2e7d32; text-decoration: none; font-weight: 500;">ecotripmail@gmail.com</a>
                         </p>
-                        
-                        <table cellpadding="0" cellspacing="0" style="margin: 0 auto 25px;">
-                          <tr>
-                            <td style="padding: 0 10px;">
-                              <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: #1a3c57; border-radius: 50%; text-align: center; line-height: 40px; color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">f</a>
-                            </td>
-                            <td style="padding: 0 10px;">
-                              <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: #1a3c57; border-radius: 50%; text-align: center; line-height: 40px; color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">𝕏</a>
-                            </td>
-                            <td style="padding: 0 10px;">
-                              <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: #1a3c57; border-radius: 50%; text-align: center; line-height: 40px; color: #ffffff; text-decoration: none; font-size: 18px; font-weight: bold;">in</a>
-                            </td>
-                          </tr>
-                        </table>
                         
                         <p style="margin: 0; color: #95a5a6; font-size: 13px; line-height: 1.8;">
                           © 2026 EcoTrip. Minden jog fenntartva.<br>
-                          <span style="color: #1565c0;">✈️</span> Utazzon velünk! <span style="color: #7bc96f;">🌍</span> Válasszon felelősen!
+                          <span style="color: #1565c0;">✈️</span> Utazzon velünk! <span style="color: #7bc96f;"></span> Válasszon felelősen!
                         </p>
                       </td>
                     </tr>

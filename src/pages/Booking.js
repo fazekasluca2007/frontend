@@ -154,30 +154,18 @@ export default function Booking({ user }) {
                     <tr>
                       <td style="background: linear-gradient(135deg, ${isEcoTrip ? '#2e7d32 0%, #43a047 100%' : '#1a3c57 0%, #2c5f8d 100%'}); padding: 40px 30px; text-align: center;">
                         <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                          ${isEcoTrip ? '🌿' : '✈️'} EcoTrip
+                          EcoTrip
                         </h1>
                         <p style="margin: 10px 0 0 0; color: #e8f5e9; font-size: 16px; font-weight: 400;">
                           Foglalás visszaigazolás
                         </p>
                       </td>
                     </tr>
-                    
-                    <tr>
-                      <td style="padding: 40px 30px 20px; text-align: center;">
-                        <table width="80" cellpadding="0" cellspacing="0" style="margin: 0 auto; background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%); border-radius: 50%; box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3);">
-                          <tr>
-                            <td style="padding: 20px; text-align: center; font-size: 40px; line-height: 40px;">
-                              ✓
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
                   
                     <tr>
                       <td style="padding: 0 40px 30px;">
                         <h2 style="margin: 0 0 20px 0; color: #1a3c57; font-size: 28px; font-weight: 600; text-align: center;">
-                          Sikeres foglalás! 🎉
+                          Sikeres foglalás!🎉
                         </h2>
                         
                         <p style="margin: 0 0 30px 0; color: #2c3e50; font-size: 16px; line-height: 1.8; text-align: center;">
@@ -189,7 +177,7 @@ export default function Booking({ user }) {
                           <tr>
                             <td style="padding: 25px;">
                               <h3 style="margin: 0 0 20px 0; color: #1a3c57; font-size: 20px; font-weight: 600;">
-                                📋 Foglalás részletei
+                                Foglalás részletei
                               </h3>
                               
                               <table width="100%" cellpadding="0" cellspacing="0">
@@ -219,7 +207,7 @@ export default function Booking({ user }) {
                                     <strong>Érkezés:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    📅 ${formatDateLocal(startDate)}
+                                    ${formatDateLocal(startDate)}
                                   </td>
                                 </tr>
                                 <tr>
@@ -227,7 +215,7 @@ export default function Booking({ user }) {
                                     <strong>Távozás:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    📅 ${formatDateLocal(endDate)}
+                                    ${formatDateLocal(endDate)}
                                   </td>
                                 </tr>
                                 <tr>
@@ -235,7 +223,7 @@ export default function Booking({ user }) {
                                     <strong>Éjszakák száma:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    🌙 ${nights} éjszaka
+                                    ${nights} éjszaka
                                   </td>
                                 </tr>
                                 <tr>
@@ -243,7 +231,7 @@ export default function Booking({ user }) {
                                     <strong>Vendégek száma:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    👥 ${guests} fő
+                                    ${guests} fő
                                   </td>
                                 </tr>
                                 <tr>
@@ -256,7 +244,7 @@ export default function Booking({ user }) {
                                     <strong>Fizetési mód:</strong>
                                   </td>
                                   <td style="padding: 8px 0; color: #1a3c57; font-size: 14px; font-weight: 600;">
-                                    💳 ${PAYMENT_LABELS[paymentMethod]}
+                                    ${PAYMENT_LABELS[paymentMethod]}
                                   </td>
                                 </tr>
                                 ${depositPaid > 0 ? `
@@ -287,7 +275,7 @@ export default function Booking({ user }) {
                           <tr>
                             <td>
                               <p style="margin: 0; color: #2e7d32; font-size: 15px; font-weight: 600; line-height: 1.6;">
-                                🌿 Köszönjük, hogy öko-tudatos szállást választott!<br>
+                                Köszönjük, hogy öko-tudatos szállást választott!<br>
                                 <span style="font-size: 13px; font-weight: 400;">Ezzel Ön is hozzájárul a fenntartható turizmushoz.</span>
                               </p>
                             </td>
@@ -300,7 +288,7 @@ export default function Booking({ user }) {
                           <tr>
                             <td>
                               <p style="margin: 0 0 10px 0; color: #856404; font-size: 15px; font-weight: 600;">
-                                💰 Készpénzes fizetés
+                                Készpénzes fizetés
                               </p>
                               <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.6;">
                                 A teljes összeget (${totalWithCashFee.toLocaleString('hu-HU')} Ft) a helyszínen kell kifizetni. A kezelési díj (${cashFee.toLocaleString('hu-HU')} Ft) már benne foglaltatik.
@@ -315,7 +303,7 @@ export default function Booking({ user }) {
                           <tr>
                             <td>
                               <p style="margin: 0 0 10px 0; color: #055160; font-size: 15px; font-weight: 600;">
-                                ℹ️ Fizetési információ
+                                Fizetési információ
                               </p>
                               <p style="margin: 0; color: #055160; font-size: 14px; line-height: 1.6;">
                                 Az előleg (${depositPaid.toLocaleString('hu-HU')} Ft) bankkártyával kifizetve. A fennmaradó ${(totalPrice - depositPaid).toLocaleString('hu-HU')} Ft-ot a helyszínen kell rendezni.
@@ -327,7 +315,7 @@ export default function Booking({ user }) {
                         
                         <p style="margin: 25px 0 0 0; color: #6c757d; font-size: 14px; line-height: 1.8; text-align: center; font-style: italic;">
                           Kérdés esetén keresse ügyfélszolgálatunkat!<br>
-                          Jó pihenést és kellemes utazást kívánunk! ✨
+                          Jó pihenést és kellemes utazást kívánunk!
                         </p>
                       </td>
                     </tr>
@@ -345,27 +333,11 @@ export default function Booking({ user }) {
                           Kérdése van? Írjon nekünk!
                         </p>
                         <p style="margin: 0 0 25px 0; color: #6c757d; font-size: 14px;">
-                          📧 <a href="mailto:ecotripmail@gmail.com" style="color: #2e7d32; text-decoration: none; font-weight: 500;">ecotripmail@gmail.com</a>
+                          <a href="mailto:ecotripmail@gmail.com" style="color: #2e7d32; text-decoration: none; font-weight: 500;">ecotripmail@gmail.com</a>
                         </p>
-                        
-                  
-                        <table cellpadding="0" cellspacing="0" style="margin: 0 auto 25px;">
-                          <tr>
-                            <td style="padding: 0 10px;">
-                              <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: #1a3c57; border-radius: 50%; text-align: center; line-height: 40px; color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">f</a>
-                            </td>
-                            <td style="padding: 0 10px;">
-                              <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: #1a3c57; border-radius: 50%; text-align: center; line-height: 40px; color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">𝕏</a>
-                            </td>
-                            <td style="padding: 0 10px;">
-                              <a href="#" style="display: inline-block; width: 40px; height: 40px; background-color: #1a3c57; border-radius: 50%; text-align: center; line-height: 40px; color: #ffffff; text-decoration: none; font-size: 18px; font-weight: bold;">in</a>
-                            </td>
-                          </tr>
-                        </table>
-                        
                         <p style="margin: 0; color: #95a5a6; font-size: 13px; line-height: 1.8;">
                           © 2026 EcoTrip. Minden jog fenntartva.<br>
-                          <span style="color: #1565c0;">✈️</span> Utazzon velünk! <span style="color: #7bc96f;">🌍</span> Válasszon felelősen!
+                          Utazzon velünk, válasszon felelősen!
                         </p>
                       </td>
                     </tr>
