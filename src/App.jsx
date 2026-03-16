@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Nav from './pages/components/Nav';
-import Footer from './pages/components/Footer';
-import ScrollToTop from './pages/ScrollToTop';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Trip from './pages/Trip';
-import Ecotrips from './pages/Ecotrips';
-import About from './pages/About';
-import FAQ from './pages/FAQ';
-import Reviews from './pages/Reviews';
-import Information from './pages/Information';
-import Booking from './pages/Booking';
-import UserPage from './pages/UserPage';
-import Aszf from './pages/Aszf';
-import Ecoinfo from './pages/Ecoinfo';
-import Cookiek from './pages/Cookiek';
+import Nav from './pages/components/Nav.jsx';
+import Footer from './pages/components/Footer.jsx';
+import ScrollToTop from './pages/ScrollToTop.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import Trip from './pages/Trip.jsx';
+import Ecotrips from './pages/Ecotrips.jsx';
+import About from './pages/About.jsx';
+import FAQ from './pages/FAQ.jsx';
+import Reviews from './pages/Reviews.jsx';
+import Information from './pages/Information.jsx';
+import Booking from './pages/Booking.jsx';
+import UserPage from './pages/UserPage.jsx';
+import Aszf from './pages/Aszf.jsx';
+import Ecoinfo from './pages/Ecoinfo.jsx';
+import Cookiek from './pages/Cookiek.jsx';
 
 const STORAGE_KEYS = {
   user: 'user',

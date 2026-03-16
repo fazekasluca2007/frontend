@@ -5,8 +5,8 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Trip.css";
-import Trip_card from "./components/Trip_card";
-import CustomSelect from "./components/CustomSelect";
+import Trip_card from "./components/Trip_card.jsx";
+import CustomSelect from "./components/CustomSelect.jsx";
 
 export default function Trip() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
