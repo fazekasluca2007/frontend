@@ -6,25 +6,30 @@
   color: #2c3e50;
 }
 
+/* Főcím stílusa */
 .ecoinfo-page h1 {
   color: #1a3c57;
   font-weight: bold;
 }
 
+/* Szekció közti távolság */
 .ecoinfo-section {
   margin-bottom: 35px;
 }
 
+/* Szekció címe: szín és margó */
 .ecoinfo-section h3 {
   color: darkcyan;
   margin-bottom: 15px;
 }
 
+/* Szekció szöveg: olvashatóság */
 .ecoinfo-section p {
   font-size: 16px;
   line-height: 1.7;
 }
 
+/* Vissza gomb */
 .ecoinfo-back-button {
   display: inline-flex;
   align-items: center;
@@ -40,14 +45,17 @@
   transition: color 0.3s ease;
 }
 
+
 .ecoinfo-back-button i {
   font-size: 16px;
 }
+
 
 .ecoinfo-back-button:hover {
   color: #00b3b3;
 }
 
+ /* Reszponzívitás beállítások */
 @media (max-width: 768px) {
   .ecoinfo-page {
     padding: 25px;
@@ -85,6 +93,7 @@
   }
 }
 
+/* Reszponzív: kis képernyők */
 @media (max-width: 576px) {
   .ecoinfo-page {
     padding: 20px;

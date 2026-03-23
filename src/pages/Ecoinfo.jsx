@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Ecoinfo.css";
 
+{/* Tömb a tartalmi szekciókhoz */}
 const SECTIONS = [
   {
     title: "1. Miért válasszon ökoszállást?",
@@ -40,9 +41,12 @@ const SECTIONS = [
   },
 ];
 
+
 export default function Ecoinfo() {
+  {/* Navigáció */}
   const navigate = useNavigate();
 
+ {/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     document.title = "EcoTrip – Miért ökoszállás?";
     window.scrollTo(0, 0);
@@ -54,8 +58,10 @@ export default function Ecoinfo() {
         <i className="bi bi-arrow-left"></i> Vissza
       </button>
 
+ 
       <h1 className="mb-4 text-center">Miért válasszon ökoszállást?</h1>
 
+  {/* Sections tömb alapján megjelenő szekciók */}
       {SECTIONS.map((section) => (
         <section key={section.title} className="ecoinfo-section">
           <h3>{section.title}</h3>

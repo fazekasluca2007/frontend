@@ -5,8 +5,12 @@ import Home from "./Home";
 import { vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 
+
+
+{/* Axios helyettesítése a teszthez */}
 vi.mock("axios");
 
+{/* IntersectionObserver helyettesítése (görgetés/animáció teszthez) */}
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
@@ -17,6 +21,7 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve() {}
 };
 
+/* Leaflet helyettesítése */
 vi.mock("leaflet", () => ({
   default: {
     map: vi.fn(() => ({
@@ -40,6 +45,7 @@ vi.mock("leaflet", () => ({
 
 vi.mock("leaflet/dist/leaflet.css");
 
+/* Teszteset: a carousel elemek időzített váltakozása */
 test("a carousel elemek váltakoznak a megfelelő intervallumban", () => {
   vi.useFakeTimers();
 

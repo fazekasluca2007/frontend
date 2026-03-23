@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import "./About.css";
 
+
 export default function About() {
 
+  {/* Oldal böngészőcímének beállítása és tetejére ugrás */}
   useEffect(() => {
     document.title = "EcoTrip – Rólunk";
     window.scrollTo(0, 0);
   }, []);
 
+  {/* Animációk */}
   useEffect(() => {
     const elements = document.querySelectorAll(".animate-on-scroll");
     const observer = new IntersectionObserver(
@@ -25,6 +28,7 @@ export default function About() {
     return () => observer.disconnect();
   }, []);
 
+  {/* Kártyák adatai megjelenítése */}
   const cards = [
     {
       title: "Fenntartható utazás",
@@ -43,6 +47,7 @@ export default function About() {
     },
   ];
 
+  {/* Csapattagok adatai megjelenítése */}
   const team = [
     {
       name: "Fazekas Luca",
@@ -63,6 +68,7 @@ export default function About() {
 
   return (
     <div>
+  {/* Hero rész megjelenítése */}
       <section className="about-hero text-center">
         <video autoPlay loop muted playsInline className="hero-video-bg">
           <source src="//fzks.hu/video/erdo.mp4" type="video/mp4" />
@@ -73,6 +79,7 @@ export default function About() {
         </div>
       </section>
 
+  {/* Kártyák megjelenítése */}
       <section className="container my-5">
         <h2 className="text-center mb-5 text-gradient animate-on-scroll">Kik vagyunk?</h2>
         <div className="row gy-4 justify-content-center animate-on-scroll">
@@ -87,18 +94,19 @@ export default function About() {
         </div>
       </section>
 
+  {/* Oldal színei magyarázata rész */}
       <section className="values-section py-5">
         <div className="container">
           <div className="row align-items-center gy-4 justify-content-center">
             <div className="col-md-6 text-center">
               <div className="text-block blue animate-on-scroll">
-                🌊 A kék a víz színe, amely az élet forrását és a tisztaság érzetét hordozza.
+                 <i class="bi bi-tsunami"></i>  A kék a víz színe, amely az élet forrását és a tisztaság érzetét hordozza.
               </div>
               <div className="text-block green animate-on-scroll">
-                🍃 A zöld a környezetet és a természet élő világát jelképezi.
+                <i class="bi bi-leaf"></i>  A zöld a környezetet és a természet élő világát jelképezi.
               </div>
               <div className="text-block brown animate-on-scroll">
-                ⛰️ A barna a föld színe, amely a szilárd alapokat és a természetességet idézi.
+                <i class="bi bi-tree"></i>  A barna a föld színe, amely a szilárd alapokat és a természetességet idézi.
               </div>
             </div>
             <div className="col-md-3 text-center animate-on-scroll">
@@ -108,6 +116,7 @@ export default function About() {
         </div>
       </section>
 
+  {/* Csapattagok képei megjelenítése,szövegekkel */}
       <section className="container py-5">
         <h2 className="text-center mb-5 text-gradient animate-on-scroll">Ismerje meg a csapatunkat</h2>
         <div className="row gy-4 justify-content-center">

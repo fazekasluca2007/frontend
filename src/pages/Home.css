@@ -34,6 +34,7 @@
 }
 
 .hero-overlay {
+  /* Középre helyezett fehér overlay a hős képen */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -52,6 +53,7 @@
   text-align: center;
 }
 
+/* Érték-kártyák */
 .values-section {
   display: flex;
   justify-content: center;
@@ -76,6 +78,7 @@
   color: darkcyan;
 }
 
+  /* Rövid felhívás*/
 .login-prompt {
   display: flex;
   align-items: center;
@@ -130,6 +133,7 @@
   position: relative;
 }
 
+  /* Kis infó doboz a térkép alján (görgess Shift+görgő) */
 .map-scroll-info {
   color: #000;
   background: rgba(255, 255, 255, 0.9);
@@ -143,7 +147,7 @@
   z-index: 10;
   white-space: nowrap;
 }
-
+ /* Popup gomb: tovább a szállás oldalra */
 .eco-popup-btn {
   display: inline-block;
   margin-top: 8px;
@@ -170,7 +174,7 @@
 .eco-popup-btn--eco:hover {
   background-color: #1f4d36;
 }
-
+/* Csillagok sor */
 .review-stars {
   display: flex;
   align-items: center;
@@ -183,6 +187,7 @@
   font-size: 14px;
 }
 
+ /* Felugró Cookie választás */
 .cookie-banner {
   position: fixed;
   bottom: 20px;
@@ -200,6 +205,7 @@
   }
 }
 
+/* Cookie sáv tartalma: szöveg és választó gombok */
 .cookie-content {
   background: rgba(26, 60, 87, 0.92);
   backdrop-filter: blur(14px);
@@ -281,7 +287,7 @@
 .cookie-btn.secondary:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
+/* Animáció */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(40px);
@@ -293,6 +299,7 @@
   transform: translateY(0);
 }
 
+/* Reszponzívitás beállítások */
 @media (max-width: 992px) {
   .hero-overlay {
     width: 380px;
@@ -344,6 +351,7 @@
     height: 26px;
   }
 }
+
 
 @media (max-width: 768px) {
   .cookie-banner {

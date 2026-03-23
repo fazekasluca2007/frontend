@@ -10,6 +10,7 @@ import { hu } from "date-fns/locale";
 import "./Booking.css";
 import axios from "axios";
 
+{/* Tömb a telefonválasztóhoz */}
 const COUNTRY_CODES = [
   { name: "Magyarország", code: "+36", format: [2, 3, 4], example: "70 123 4567" },
   { name: "Ausztria", code: "+43", format: [3, 3, 3], example: "664 123 456" },
@@ -41,6 +42,7 @@ const COUNTRY_CODES = [
   { name: "Egyesült Királyság", code: "+44", format: [4, 3, 3], example: "7911 123 456" },
 ];
 
+{/* Fizetési opciók megjelenítése  */}
 const PAYMENT_LABELS = {
   "bankkártya": "Bankkártya",
   "szép kártya": "SZÉP kártya",
@@ -49,12 +51,14 @@ const PAYMENT_LABELS = {
 
 const CASH_FEE_PERCENT = 0.08;
 
+{/* Fizetési opciók kiválasztása */}
 const PAYMENT_OPTIONS = [
   { value: "bankkártya", label: "Bankkártya" },
   { value: "szép kártya", label: "SZÉP kártya" },
   { value: "készpénz", label: "Készpénz" },
 ];
 
+{/* Telefonszám választómező  országkód, helyi szám alapján */}
 function PhoneCodeSelect({ options, value, onChange }) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -94,9 +98,12 @@ function PhoneCodeSelect({ options, value, onChange }) {
   );
 }
 
+{/* Foglalási részletek */}
 export default function Booking({ user }) {
+
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -104,26 +111,31 @@ export default function Booking({ user }) {
   const ecoTripId = location.state?.ecotrip_id;
   const isEcoTrip = !!ecoTripId;
 
+  {/* Állapotok: betöltött szállás, hibajelzés és űrlap beküldés állapota */}
   const [hotel, setHotel] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  {/* Foglalás részletek: vendégek száma, éjszakák, kezdő és végdátum */}
   const [guests, setGuests] = useState(location.state?.fo ?? 1);
   const [nights, setNights] = useState(location.state?.napok ?? 1);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  {/* Űrlap mezők: személyes adatok */}
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [countryCode, setCountryCode] = useState("+36");
   const [localPhone, setLocalPhone] = useState("");
   const [birthDate, setBirthDate] = useState("");
 
+  {/* Fizetési mezők */}
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("bankkártya");
 
+  {/* Hibák objektuma: mezővalidációhoz és hibaüzenetek megjelenítéséhez */}
   const [errors, setErrors] = useState({});
 
   const formatDateLocal = (date) => {
@@ -133,6 +145,9 @@ export default function Booking({ user }) {
     return `${year}-${month}-${day}`;
   };
 
+
+  {/* Visszaigazoló e-mail összeállítása és küldése */}
+  
   const sendBookingEmail = async () => {
     try {
       await axios.post(`${backendUrl}Mail`, {
@@ -354,9 +369,11 @@ export default function Booking({ user }) {
       console.error("Email küldési hiba:", err);
     }
   };
-
+  {/* Visszaadja a kiválasztott ország objektumát */}
+ 
   const getCountry = () =>
     COUNTRY_CODES.find((c) => c.code === countryCode) || COUNTRY_CODES[0];
+
 
   const formatPhone = (digits, formatGroups) => {
     let result = "";
@@ -371,6 +388,7 @@ export default function Booking({ user }) {
     return result;
   };
 
+  {/* Feldolgozza és formázza a helyi telefonszámot */}
   const handleLocalPhoneChange = (e) => {
     const country = getCountry();
     const maxDigits = country.format.reduce((a, b) => a + b, 0);
@@ -378,6 +396,7 @@ export default function Booking({ user }) {
     setLocalPhone(formatPhone(digits, country.format));
   };
 
+  {/* Ellenőrzi, hogy a beírt helyi számjegyek száma megegyezik-e az adott ország elvárt hosszával. */}
   const isPhoneValid = () => {
     const country = getCountry();
     const required = country.format.reduce((a, b) => a + b, 0);
@@ -385,6 +404,7 @@ export default function Booking({ user }) {
     return digits.length === required;
   };
 
+  {/* Életkor ellenőrzés */}
   const validateAge = (dateString) => {
     if (!dateString) return false;
     const today = new Date();
@@ -397,6 +417,7 @@ export default function Booking({ user }) {
     return age >= 16;
   };
 
+  /* Kártya mezők formázása és egyszerű validálása */
   const formatCardNumber = (value) => {
     const digits = value.replace(/\D/g, "").slice(0, 16);
     return digits.replace(/(.{4})/g, "$1 ").trim();
@@ -426,6 +447,7 @@ export default function Booking({ user }) {
     setCvc(value);
   };
 
+  {/* Dátumválasztó kezelése */}
   const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
@@ -442,10 +464,12 @@ export default function Booking({ user }) {
     }
   };
 
+ {/* Oldal böngészőcímének beállítása és tetejére ugrás */}
   useEffect(() => {
     document.title = "EcoTrip – Foglalás";
   }, []);
 
+  {/* Adatbetöltés a backendről */}
   useEffect(() => {
     const endpoint = tripId
       ? `Trips/detailed/${tripId}`
@@ -459,6 +483,7 @@ export default function Booking({ user }) {
       .catch(() => setHasError(true));
   }, [tripId, ecoTripId]);
 
+  {/* Ha a felhasználó be van jelentkezve, előtölti a név és email mezőket */}
   useEffect(() => {
     if (user && user.user) {
       setFullName(user.user.fullName || "");
@@ -466,9 +491,11 @@ export default function Booking({ user }) {
     }
   }, [user]);
 
+  {/* Egyszerű betöltés/hiba */}
   if (hasError) return <p>Hiba történt az adatok betöltésekor.</p>;
   if (!hotel) return <p>Adatok betöltése...</p>;
 
+  {/* Fizetési feltételek és összegek */}
   const isCardPayment = paymentMethod === "bankkártya" || paymentMethod === "szép kártya";
 
   const totalPrice = hotel.price * nights * guests;
@@ -478,6 +505,7 @@ export default function Booking({ user }) {
   const depositPaid = isCardPayment ? deposit : 0;
   const finalAmount = paymentMethod === "készpénz" ? totalWithCashFee : totalPrice;
 
+  {/* Űrlap validálása és beküldése*/}
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -544,6 +572,7 @@ export default function Booking({ user }) {
 
       <div className="bk-book">
 
+       
         <div className={`bk-left ${isEcoTrip ? "bk-left--eco" : "bk-left--trip"}`}>
           <div className="bk-left-inner">
             <div className="bk-badge">{isEcoTrip ? <><i className="bi bi-leaf-fill text-light"></i> Öko-utazás</> : <><i className="bi bi-airplane-fill text-light"></i> Utazás</>}</div>
@@ -552,6 +581,7 @@ export default function Booking({ user }) {
 
             <div className="bk-divider" />
 
+            {/* Dátumválasztó szekció */}
             <div className="bk-section-label"><i className="bi bi-calendar3 text-light"></i> Utazás dátuma</div>
             <div className="bk-datepicker-wrap">
               <DatePicker
@@ -575,6 +605,7 @@ export default function Booking({ user }) {
               <span className="bk-nights-label">éjszaka</span>
             </div>
 
+            {/* Vendégek száma megadása */}
             <div className="bk-section-label"><i className="bi bi-people-fill text-light"></i> Vendégek száma</div>
             <div className="bk-fo-row">
               <button type="button" className="bk-fo-btn" onClick={() => setGuests(prev => (prev > 1 ? prev - 1 : 1))}>−</button>
@@ -592,6 +623,7 @@ export default function Booking({ user }) {
               <span>Vendégek × Éjszakák</span>
               <span className="bk-price-val">{guests} × {nights}</span>
             </div>
+            {/* Összesített végösszeg */}
             <div className="bk-total-box">
               <span className="bk-total-label">Végösszeg</span>
               <span className="bk-total-amount">
@@ -603,12 +635,15 @@ export default function Booking({ user }) {
           </div>
         </div>
 
-        <div className="bk-right">
+  {/* Személyes adatok, telefonszám, születési dátum, fizetés */}
+  <div className="bk-right">
           <div className="bk-right-inner">
+           
             <h2 className="bk-form-title">Foglalási adatok</h2>
 
             <form onSubmit={handleSubmit}>
 
+              {/* Név, email, telefon, születési dátum */}
               <div className="bk-section-title">
                 <span className="bk-section-icon"><i className="bi bi-person-fill text-dark"></i></span> Személyes adatok
               </div>
@@ -684,6 +719,7 @@ export default function Booking({ user }) {
                 {errors.birthDate && <div className="bk-field-error">{errors.birthDate}</div>}
               </div>
 
+              {/* Fizetési mód választó*/}
               <div className="bk-section-title bk-section-title--payment">
                 Fizetési mód
               </div>
@@ -706,6 +742,7 @@ export default function Booking({ user }) {
                 ))}
               </div>
 
+              {/* Kártya mezők: csak kártyás fizetés esetén jelennek meg */}
               {isCardPayment && (
                 <div className="bk-card-fields">
                   <div className="bk-field bk-field--full">
@@ -747,6 +784,7 @@ export default function Booking({ user }) {
                 </div>
               )}
 
+              {/* Tájékoztató dobozok: előleg vagy készpénz információk megjelenítése */}
               {isCardPayment && (
                 <div className="bk-alert bk-alert--info">
                   A foglalás véglegesítéséhez <strong>50% előleg</strong> szükséges.<br />
@@ -761,13 +799,14 @@ export default function Booking({ user }) {
                 </div>
               )}
 
+              {/* Beküldés*/}
               {isSubmitting ? (
                 <div className="bk-loader">
                   <DotLoader color="#7dbf7d" size={52} />
                 </div>
               ) : (
                 <button type="submit" className="bk-submit-btn">
-                  Foglalás megerősítése →
+                  Foglalás megerősítése <i className="bi bi-arrow-right"></i>
                 </button>
               )}
             </form>

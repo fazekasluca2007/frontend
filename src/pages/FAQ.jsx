@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './FAQ.css';
 
+
 export default function FAQ() {
+  {/* Aktuálisan megnyitott kérdés indexe */}
   const [openIndex, setOpenIndex] = useState(null);
 
+  {/* GYIK tömb */}
   const faqs = [
     {
       question: "Milyen környezetbarát lehetőségeket kínál az EcoTrip az utazások során?",
@@ -27,6 +30,7 @@ export default function FAQ() {
     }
   ];
 
+ {/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     document.title = "EcoTrip – Gyakori kérdések";
     window.scrollTo(0, 0);
@@ -35,6 +39,7 @@ export default function FAQ() {
   return (
     <div>
       <div className="container my-5">
+        {/* GYIK lista: minden kérdés kattintható, a válasz megjelenik lenyitáskor */}
         {faqs.map((faq, index) => (
           <div key={index}>
             <div className="gyik-question p-3 mb-2" onClick={() => setOpenIndex(openIndex === index ? null : index)}>
@@ -48,7 +53,8 @@ export default function FAQ() {
         ))}
       </div>
 
-      <div className="container eco-tips mb-5">
+
+  <div className="container eco-tips mb-5">
         <h3 className="eco-tips-title">
           <i className="bi bi-globe-americas text-success"></i> Utazzon környezettudatosan – tippek, amikkel tehet a bolygóért
         </h3>

@@ -7,6 +7,8 @@
   padding: 48px 16px 64px;
 }
 
+
+ /* Foglalási kártya konténer */
 .bk-book {
   display: flex;
   width: 100%;
@@ -45,11 +47,12 @@
   overflow-y: auto;
 }
 
+
 .bk-badge {
   display: inline-block;
   background: rgba(255,255,255,0.15);
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 13px;
   font-weight: 600;
   padding: 4px 12px;
   border-radius: 4px;
@@ -60,7 +63,7 @@
 
 .bk-city {
   color: #fff;
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 700;
   margin: 0 0 4px;
   line-height: 1.2;
@@ -68,7 +71,7 @@
 
 .bk-hotel {
   color: rgba(255,255,255,0.75);
-  font-size: 1rem;
+  font-size: 16px;
   margin: 0 0 20px;
   font-style: italic;
 }
@@ -80,10 +83,12 @@
 }
 
 .bk-section-label {
+
+/*űrlapmezők (inputok) */
   color: rgba(255,255,255,0.65);
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   margin-bottom: 10px;
   margin-top: 6px;
@@ -154,16 +159,16 @@
   gap: 6px;
   margin: 10px 0 18px;
 }
-.bk-nights-icon { font-size: 1.1rem; }
+.bk-nights-icon { font-size: 18px; }
 .bk-nights-num {
   color: #fff;
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 800;
   line-height: 1;
 }
 .bk-nights-label {
   color: rgba(255,255,255,0.7);
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 .bk-fo-row {
@@ -178,7 +183,7 @@
   border: 2px solid rgba(255,255,255,0.5);
   background: transparent;
   color: #fff;
-  font-size: 1.4rem;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
@@ -192,7 +197,7 @@
 }
 .bk-fo-val {
   color: #fff;
-  font-size: 1.15rem;
+  font-size: 18px;
   font-weight: 700;
   min-width: 56px;
   text-align: center;
@@ -202,7 +207,7 @@
   display: flex;
   justify-content: space-between;
   color: rgba(255,255,255,0.75);
-  font-size: 0.88rem;
+  font-size: 14px;
   padding: 5px 0;
 }
 .bk-price-val {
@@ -222,18 +227,18 @@
 }
 .bk-total-label {
   color: rgba(255,255,255,0.85);
-  font-size: 0.95rem;
+  font-size: 15px;
   font-weight: 600;
 }
 .bk-total-amount {
   color: #7bc96f;
-  font-size: 1.4rem;
+  font-size: 22px;
   font-weight: 700;
 }
 
 .bk-disclaimer {
   color: rgba(255,255,255,0.45);
-  font-size: 0.72rem;
+  font-size: 12px;
   margin-top: 16px;
   font-style: italic;
   line-height: 1.5;
@@ -251,7 +256,7 @@
 }
 
 .bk-form-title {
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 700;
   color: #1a3c57;
   margin: 0 0 24px;
@@ -262,34 +267,38 @@
 .bk-section-title {
   display: flex;
   align-items: center;
+
+
   gap: 8px;
-  font-size: 0.9rem;
+  font-size: 14px;
   font-weight: 700;
   color: #1a3c57;
   margin-bottom: 14px;
+
+
   border-bottom: 1px solid rgba(26,60,87,0.1);
   padding-bottom: 8px;
 }
-.bk-section-icon { font-size: 1rem; }
+.bk-section-icon { font-size: 16px; }
 
-.bk-field {
+.bk-field { 
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
 }
 
 .bk-label {
-  font-size: 0.82rem;
+  font-size: 13px;
   font-weight: 600;
   color: #4a5568;
   margin-bottom: 6px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.3px;
 }
 
 .bk-input {
   width: 100%;
   padding: 9px 12px;
-  font-size: 0.95rem;
+  font-size: 15px;
   border: 1px solid #bfcad4;
   border-radius: 8px;
   background: #fff;
@@ -313,6 +322,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
 }
+/* Születési dátum  megjelenés */
 .bk-birth-datepicker-wrap .react-datepicker__header {
   background: darkcyan;
   border-bottom: 1px solid #007070;
@@ -378,6 +388,8 @@
 }
 .bk-phone-row .bk-input { flex: 1; }
 
+
+
 .bk-phone-select-wrapper {
   position: relative;
   flex: 0 0 auto;
@@ -389,7 +401,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 9px 10px;
-  font-size: 0.85rem;
+  font-size: 14px;
   border: 1px solid #bfcad4;
   border-radius: 8px;
   background: #fff;
@@ -402,7 +414,7 @@
   border-color: darkcyan;
 }
 .bk-phone-select-arrow {
-  font-size: 0.8rem;
+  font-size: 13px;
   margin-left: 6px;
   color: #888;
 }
@@ -424,7 +436,7 @@
 }
 .bk-phone-select-option {
   padding: 9px 14px;
-  font-size: 0.85rem;
+  font-size: 14px;
   color: #2c3e50;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -440,12 +452,13 @@
 }
 
 .bk-field-error {
-  font-size: 0.8rem;
+  font-size: 13px;
   color: #c0392b;
   margin-top: 4px;
 }
 
 .bk-payment-options {
+  /* Fizetési opciók(választható) */
   display: flex;
   gap: 8px;
   margin-bottom: 18px;
@@ -476,7 +489,7 @@
   background: #eef3f8;
 }
 .bk-pay-label {
-  font-size: 0.8rem;
+  font-size: 13px;
   font-weight: 600;
   color: #2c3e50;
   text-align: center;
@@ -484,6 +497,7 @@
 .bk-payment-card--active .bk-pay-label { color: #1a3c57; }
 
 .bk-card-fields {
+  /* Kártya beviteli mezők (szám, lejárat, cvc) */
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -491,9 +505,10 @@
 }
 
 .bk-alert {
+  /* Tájékoztató és figyelmeztető dobozok */
   border-radius: 6px;
   padding: 11px 14px;
-  font-size: 0.87rem;
+  font-size: 14px;
   line-height: 1.6;
   margin-bottom: 16px;
 }
@@ -515,7 +530,7 @@
   margin-top: 8px;
   background-color: darkcyan;
   color: #fff;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   border: none;
   border-radius: 12px;
@@ -528,6 +543,7 @@
   transform: scale(1.05);
 }
 
+  /* Reszponzívitás beállítások */
 @media (max-width: 900px) {
   .bk-book {
     flex-direction: column;
@@ -542,8 +558,8 @@
   .bk-page { padding: 20px 8px 40px; }
   .bk-left-inner { padding: 24px 18px; }
   .bk-right-inner { padding: 20px 16px; }
-  .bk-city { font-size: 1.6rem; }
-  .bk-form-title { font-size: 1.25rem; }
+  .bk-city { font-size: 26px; }
+  .bk-form-title { font-size: 20px; }
   .bk-payment-options { gap: 6px; }
-  .bk-submit-btn { font-size: 0.95rem; padding: 12px; }
+  .bk-submit-btn { font-size: 15px; padding: 12px; }
 }

@@ -2,6 +2,7 @@
     padding: 50px 0;
 }
 
+    /* Bejelentkezésre ösztönző szöveg */
 .login-prompt, 
 .login-prompt span {
     font-family: inherit;
@@ -12,7 +13,7 @@
     text-transform: none;
     letter-spacing: normal;
 }
-
+/* Bejelentkezés gomb  */
 .login-btn-circle {
     background-color: darkcyan;
     border: none;
@@ -33,6 +34,7 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
+  /* Vélemény kártyák */
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -54,6 +56,7 @@
     animation: fadeSlideUp 0.6s ease forwards;
 }
 
+/* Animáció*/
 @keyframes fadeSlideUp {
     from {
         opacity: 0;
@@ -76,7 +79,7 @@
     transform: translateY(-4px);
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }
-
+ /* Csillagok konténer */
 .review-stars {
     margin-bottom: 10px;
 }
@@ -100,11 +103,11 @@
 }
 
 button.btn-success {
-  background-color: darkcyan;
-  border-color: darkcyan;
-  color: white;
-  font-weight: 600;
-  transition: 0.3s ease;
+    background-color: darkcyan;
+    border-color: darkcyan;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s ease;
 }
 
 button.btn-success:hover {
@@ -126,6 +129,7 @@ button.btn-success:active {
   border-color: #007070;
 }
 
+ /* Mégse gomb a szerkesztésnél */
 .cancel-btn {
     background-color: #e0e0e0;
     color: #444;
@@ -191,6 +195,7 @@ button.btn-success:active {
     cursor: not-allowed;
 }
 
+/* Reszponzívitás beállítások */
 @media (max-width: 768px) {
     .reviews-section {
         padding: 40px 15px;
@@ -261,6 +266,7 @@ button.btn-success:active {
         padding: 7px 18px;
     }
 }
+
 
 @media (max-width: 576px) {
     .reviews-section {
@@ -356,6 +362,8 @@ button.btn-success:active {
     width: 100%;
 }
 
+/* Értékelés választó: konténer és megjelenítés */
+
 .rating-select-display {
     padding: 14px 16px;
     border-radius: 8px;
@@ -385,6 +393,7 @@ button.btn-success:active {
 }
 
 .rating-select-options {
+    /* Dropdown panel: opciók listája, görgethető és árnyékolt */
     position: absolute;
     top: calc(100% + 4px);
     left: 0;

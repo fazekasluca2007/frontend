@@ -6,12 +6,15 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
+{/* Konstansok: backend URL, carousel képek és térkép beállítások */}
+
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 const CAROUSEL_IMAGES = ['gorog', 'spanyol', 'ausztria', 'magyar', 'dubai', 'egyipt', 'olasz', 'francia'];
 const CAROUSEL_INTERVAL = 4000;
 const MAP_CENTER = [47.5, 19.04];
 const MAP_ZOOM = 5;
 
+{/*Leaflet ikonok  */}
 const MARKER_ICONS = {
   default: L.icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -27,6 +30,7 @@ const MARKER_ICONS = {
   })
 };
 
+{/* Süti beolvasása*/}
 const getCookieChoice = () => {
   const cookie = document.cookie
     .split('; ')
@@ -34,12 +38,14 @@ const getCookieChoice = () => {
   return cookie ? cookie.split('=')[1] : null;
 };
 
+{/* Süti mentése 1 évre */}
 const setCookieChoice = (value) => {
   const expires = new Date();
   expires.setFullYear(expires.getFullYear() + 1);
   document.cookie = `cookieChoice=${value}; expires=${expires.toUTCString()}; path=/`;
 };
 
+{/* Popup tartalom*/}
 const createPopupContent = (hotel, type) => `
   <div style="min-width:220px">
     <h6>${hotel.hotelName}</h6>
@@ -60,16 +66,19 @@ const createPopupContent = (hotel, type) => `
 `;
 
 export default function Home() {
+
   const navigate = useNavigate();
   const carouselRef = useRef(null);
   const [cookieChoice, setCookieState] = useState(getCookieChoice());
 
   const isLoggedIn = localStorage.getItem('user') !== null;
 
+{/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     document.title = 'EcoTrip';
   }, []);
 
+  {/* Carousel beállítása */}
   useEffect(() => {
     if (!carouselRef.current) return;
 
@@ -87,6 +96,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  {/* Animációk */}
   useEffect(() => {
     const elements = document.querySelectorAll('.animate-on-scroll');
     const observer = new IntersectionObserver(
@@ -105,6 +115,7 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  {/* Térkép inicializálás */}
   useEffect(() => {
     const map = L.map('map', { scrollWheelZoom: false }).setView(MAP_CENTER, MAP_ZOOM);
     let shiftPressed = false;
@@ -124,7 +135,8 @@ export default function Home() {
       }
     };
 
-    const handlePopupOpen = (e) => {
+
+  const handlePopupOpen = (e) => {
       const button = e.popup._contentNode.querySelector('.eco-popup-btn');
       if (button) {
         button.addEventListener('click', () => {
@@ -136,7 +148,8 @@ export default function Home() {
       }
     };
 
-    const infoControl = L.control({ position: 'bottomleft' });
+
+  const infoControl = L.control({ position: 'bottomleft' });
     infoControl.onAdd = () => {
       const div = L.DomUtil.create('div', 'map-scroll-info');
       div.innerHTML = 'A térkép görgetéséhez tartsa lenyomva a <b>Shift</b> billentyűt és használja a görgőt.';
@@ -154,7 +167,7 @@ export default function Home() {
     map.getContainer().addEventListener('wheel', handleWheel);
     map.on('popupopen', handlePopupOpen);
 
-    const fetchMarkers = async (endpoint, icon, type) => {
+  const fetchMarkers = async (endpoint, icon, type) => {
       try {
         const { data } = await axios.get(`${API_URL}${endpoint}`);
         if (!data || !Array.isArray(data)) return;
@@ -177,7 +190,7 @@ export default function Home() {
     fetchMarkers('TripsMap/Sima', MARKER_ICONS.default, 'sima');
     fetchMarkers('TripsMap/Eco', MARKER_ICONS.eco, 'eco');
 
-    setTimeout(() => map.invalidateSize(), 200);
+  setTimeout(() => map.invalidateSize(), 200);
 
     return () => {
       map.remove();
@@ -187,6 +200,7 @@ export default function Home() {
     };
   }, [navigate]);
 
+  {/* Süti mentés */}
   const handleCookieChoice = (value) => {
     setCookieChoice(value);
     setCookieState(value);
@@ -194,7 +208,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="position-relative text-center">
+  <div className="position-relative text-center">
         <div id="heroCarousel" className="carousel slide carousel-fade" ref={carouselRef}>
           <div className="carousel-inner">
             {CAROUSEL_IMAGES.map((img, index) => (
@@ -224,7 +238,8 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="values-section py-5 text-center animate-on-scroll">
+  {/* Értékeink */}
+  <section className="values-section py-5 text-center animate-on-scroll">
         <div className="container">
           <h2 className="mb-5">Értékeink</h2>
           <div className="row gy-4 justify-content-center">
@@ -264,7 +279,8 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="login-prompt animate-on-scroll">
+  {/* Felhívás */}
+  <div className="login-prompt animate-on-scroll">
         <span>
           Szeretne többet megtudni, hogy miért ajánljuk az ökoszállásokat? 
           Látogasson el erre az oldalra, hogy mindent megtudhasson!
@@ -274,11 +290,13 @@ export default function Home() {
         </Link>
       </div>
 
-      <section className="container my-5 text-center animate-on-scroll">
+  {/* Térkép */}
+  <section className="container my-5 text-center animate-on-scroll">
         <h3 className="mb-3">Hol járhat velünk?</h3>
         <div id="map"></div>
       </section>
 
+  {/* Cookie sáv */}
       {!cookieChoice && (
         <div className="cookie-banner">
           <div className="cookie-content">

@@ -1,3 +1,4 @@
+/* Oldal háttér és középre igazítás */
 .cookiek-page {
     min-height: 100vh;
     display: flex;
@@ -24,6 +25,7 @@
 }
 
 .cookiek-container {
+   
     width: 100%;
     max-width: 960px;
     background: #ffffff;
@@ -39,7 +41,7 @@
     text-align: center;
     margin-bottom: 25px;
 }
-
+/* Egyes tartalmi szekciók távolsága */
 .cookiek-section {
     margin-bottom: 30px;
 }
@@ -49,6 +51,7 @@
     margin-bottom: 15px;
 }
 
+/* Szöveg és listák alap betűmérete és sorköz */
 .cookiek-section p,
 .cookiek-section li {
     font-size: 15px;
@@ -75,8 +78,8 @@
     background-color: #00b3b3;
     transform: none;
     box-shadow: none;
-}
-
+} 
+/* Reszponzívitás beállítások */
 @media (max-width: 768px) {
     .cookiek-page {
         padding: 15px;
@@ -124,6 +127,7 @@
 }
 
 @media (max-width: 576px) {
+  
     .cookiek-page {
         padding: 10px;
         padding-top: 20px;

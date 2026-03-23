@@ -1,3 +1,4 @@
+  /* Kérdés sor stílus beállítása */
 .gyik-question {
   background: linear-gradient(90deg, darkcyan, #7dbf7d, #a87c5c);
   color: #fff;
@@ -12,6 +13,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/*Eltolás és árnyék*/
 .gyik-question:hover {
   transform: translateX(8px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -26,6 +28,7 @@
   animation: slideDown 0.3s ease;
 }
 
+/* Kiemelt fehér panel barna szegéllyel */
 .eco-tips {
   background: #ffffff;
   border-left: 6px solid #a87c5c;
@@ -34,18 +37,21 @@
 }
 
 .eco-tips-title {
+
   font-size: 26px;
   color: #2c3e50;
   margin-bottom: 10px;
 }
 
 .eco-tips-intro {
+
   font-size: 15px;
   color: #5d6d7e;
   max-width: 720px;
   margin-bottom: 25px;
 }
 
+/* Tippek listája */
 .eco-tips-list {
   display: flex;
   flex-direction: column;
@@ -53,6 +59,7 @@
 }
 
 .eco-tips-item {
+
   display: flex;
   gap: 12px;
   align-items: flex-start;
@@ -78,10 +85,12 @@
 }
 
 @keyframes slideDown {
+  /* Animáció a válaszok megjelenítéséhez */
   0% { opacity: 0; transform: translateY(-10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
+/* Reszponzívitás beállítások */
 @media (max-width: 768px) {
   .gyik-question {
     padding: 12px;
@@ -119,6 +128,7 @@
 }
 
 @media (max-width: 576px) {
+  /* Kis képernyők: még tömörebb beállítások */
   .gyik-question {
     padding: 10px;
     font-size: 13px;

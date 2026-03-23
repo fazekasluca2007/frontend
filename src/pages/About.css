@@ -1,3 +1,4 @@
+/* Hero rész beállítása*/
 .about-hero {
   height: 100vh;
   display: flex;
@@ -41,282 +42,303 @@
   margin-bottom: 16px;
 }
 
+
 .hero-content p {
-  font-style: italic;
-  font-size: 19px;
-  color: #1a3c57;
-}
-
-.text-block {
-  margin-bottom: 15px;
-  padding: 18px;
-  color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s;
-  text-align: left;
-}
-
-.text-block:hover {
-  transform: translateY(-5px);
-}
-
-.blue {
-  background: linear-gradient(135deg, #2a9db3 0%, #1f6f88 100%);
-}
-
-.green {
-  background: linear-gradient(135deg, #8fd196 0%, #4b9a4a 100%);
-}
-
-.brown {
-  background: linear-gradient(135deg, #d4a98a 0%, #8f6a4f 100%);
-}
-
-#foldgomb {
-  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
-  transition: transform 0.2s;
-}
-
-#foldgomb:hover {
-  transform: scale(1.1);
-}
-
-.info-card {
-  position: relative;
-  background: rgba(255,255,255,0.95);
-  color: #1a3c57;
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-  padding: 28px 22px;
-  border-radius: 18px;
-  border: 1px solid rgba(26,60,87,0.06);
-  text-align: center;
-  box-shadow: 0 8px 18px rgba(10, 30, 60, 0.05);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-  overflow: hidden;
-}
-
-.info-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 6px;
-  width: 72px;
-  border-bottom-right-radius: 10px;
-  background: var(--accent, linear-gradient(90deg, #7dbf7d, #5aa06a));
-}
-
-.info-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(10, 30, 60, 0.08);
-}
-
-.info-card h5 {
-  color: #123241;
-  margin-bottom: 10px;
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  font-size: 18px;
-}
-
-.info-card p {
-  font-size: 15.5px;
-  line-height: 1.6;
-  color: rgba(26,60,87,0.9);
-  margin: 0; 
-}
-
-.info-card.blue::before { background: linear-gradient(90deg, #2a9db3, #1f6f88); }
-.info-card.green::before { background: linear-gradient(90deg, #7dbf7d, #4b9a4a); }
-.info-card.brown::before { background: linear-gradient(90deg, #c29472, #8f6a4f); }
-
-.team-card {
-  background: rgba(255,255,255,0.95);
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-  border-radius: 30px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.team-card:hover {
-  transform: scale(1.05);
-}
-
-.team-card img {
-  width: 155px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.team-card p {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-.team-card:hover p {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.animate-on-scroll.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (max-width: 768px) {
-  .about-hero {
-    height: auto;
-    min-height: 100vh;
-    padding: 20px;
-  }
-
-  .hero-content {
-    width: 300px;
-    padding: 26px;
-  }
-
-  .hero-content h1 {
-    font-size: 26px;
-    margin-bottom: 14px;
-  }
-
   .hero-content p {
-    font-size: 17px;
+    font-style: italic;
+    font-size: 19px;
+    color: #1a3c57;
   }
 
+  /* Szöveges blokkok a színekhez */
   .text-block {
-    padding: 16px;
+    margin-bottom: 15px;
+    padding: 18px;
+    color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    text-align: left;
   }
+
+  .text-block:hover {
+    transform: translateY(-5px);
+  }
+
+  .blue {
+    background: linear-gradient(135deg, #2a9db3 0%, #1f6f88 100%);
+  }
+
+  .green {
+    background: linear-gradient(135deg, #8fd196 0%, #4b9a4a 100%);
+  }
+
+  .brown {
+    background: linear-gradient(135deg, #d4a98a 0%, #8f6a4f 100%);
+  }
+
+  /* Föld gomb */
 
   #foldgomb {
-    width: 100%;
-    max-width: 450px;
-    height: auto;
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
+    transition: transform 0.2s;
   }
 
+
+  #foldgomb:hover {
+    transform: scale(1.1);
+  }
+
+  /* Kártyák stílusa,elhelyezésének beállítása */
   .info-card {
-    padding: 22px 18px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1a3c57;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    padding: 28px 22px;
+    border-radius: 18px;
+    border: 1px solid rgba(26, 60, 87, 0.06);
+    text-align: center;
+    box-shadow: 0 8px 18px rgba(10, 30, 60, 0.05);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    overflow: hidden;
   }
 
   .info-card::before {
-    width: 56px;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    width: 72px;
+    border-bottom-right-radius: 10px;
+    background: var(--accent, linear-gradient(90deg, #7dbf7d, #5aa06a));
+  }
+
+  .info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(10, 30, 60, 0.08);
   }
 
   .info-card h5 {
-    font-size: 16px;
-  }
-
-  .info-card p {
-    font-size: 15px;
-  }
-
-  .team-card {
-    padding: 18px;
-  }
-
-  .team-card img {
-    width: 130px;
-  }
-
-  .team-card h5 {
-    font-size: 16px;
-  }
-
-  .team-card p {
-    font-size: 14px;
-  }
-
-  section h2,
-  section h3 {
-    font-size: 22px;
-  }
-}
-
-@media (max-width: 576px) {
-  .about-hero {
-    padding: 15px;
-  }
-
-  .hero-content {
-    width: 220px;
-    padding: 18px;
-  }
-
-  .hero-content h1 {
-    font-size: 20px;
+    color: #123241;
     margin-bottom: 10px;
-  }
-
-  .hero-content p {
-    font-size: 14px;
-  }
-
-  .text-block {
-    padding: 12px;
-    margin-bottom: 10px;
-  }
-
-  #foldgomb {
-    max-width: 350px;
-  }
-
-  .info-card {
-    padding: 18px 14px;
-  }
-
-  .info-card::before {
-    width: 48px;
-  }
-
-  .info-card h5 {
-    font-size: 14px;
-  }
-
-  .info-card p {
-    font-size: 13px;
-  }
-
-  .team-card {
-    padding: 14px;
-  }
-
-  .team-card img {
-    width: 100px;
-  }
-
-  .team-card h5 {
-    font-size: 14px;
-  }
-
-  .team-card p {
-    font-size: 13px;
-  }
-
-  section h2,
-  section h3 {
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.2px;
     font-size: 18px;
   }
 
-  section p {
-    font-size: 13px;
+  .info-card p {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgba(26, 60, 87, 0.9);
+    margin: 0;
+  }
+
+  .info-card.blue::before {
+    background: linear-gradient(90deg, #2a9db3, #1f6f88);
+  }
+
+  .info-card.green::before {
+    background: linear-gradient(90deg, #7dbf7d, #4b9a4a);
+  }
+
+  .info-card.brown::before {
+    background: linear-gradient(90deg, #c29472, #8f6a4f);
+  }
+
+  /* Csapat kártyák stílusa,elhelyezésének beállítása */
+
+  .team-card {
+    background: rgba(255, 255, 255, 0.95);
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .team-card:hover {
+    transform: scale(1.05);
+  }
+
+  .team-card img {
+    width: 155px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  .team-card p {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .team-card:hover p {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+ /* Animációk */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-on-scroll.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Reszponzívitás beállítások */
+  @media (max-width: 768px) {
+    .about-hero {
+      height: auto;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .hero-content {
+      width: 300px;
+      padding: 26px;
+    }
+
+    .hero-content h1 {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+
+    .hero-content p {
+      font-size: 17px;
+    }
+
+    .text-block {
+      padding: 16px;
+    }
+
+    #foldgomb {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+    }
+
+    .info-card {
+      padding: 22px 18px;
+    }
+
+    .info-card::before {
+      width: 56px;
+    }
+
+    .info-card h5 {
+      font-size: 16px;
+    }
+
+    .info-card p {
+      font-size: 15px;
+    }
+
+    .team-card {
+      padding: 18px;
+    }
+
+    .team-card img {
+      width: 130px;
+    }
+
+    .team-card h5 {
+      font-size: 16px;
+    }
+
+    .team-card p {
+      font-size: 14px;
+    }
+
+    section h2,
+    section h3 {
+      font-size: 22px;
+    }
+  }
+
+
+  @media (max-width: 576px) {
+    .about-hero {
+      padding: 15px;
+    }
+
+    .hero-content {
+      width: 220px;
+      padding: 18px;
+    }
+
+    .hero-content h1 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .hero-content p {
+      font-size: 14px;
+    }
+
+    .text-block {
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    #foldgomb {
+      max-width: 350px;
+    }
+
+    .info-card {
+      padding: 18px 14px;
+    }
+
+    .info-card::before {
+      width: 48px;
+    }
+
+    .info-card h5 {
+      font-size: 14px;
+    }
+
+    .info-card p {
+      font-size: 13px;
+    }
+
+    .team-card {
+      padding: 14px;
+    }
+
+    .team-card img {
+      width: 100px;
+    }
+
+    .team-card h5 {
+      font-size: 14px;
+    }
+
+    .team-card p {
+      font-size: 13px;
+    }
+
+    section h2,
+    section h3 {
+      font-size: 18px;
+    }
+
+    section p {
+      font-size: 13px;
+    }
   }
 }

@@ -2,11 +2,15 @@ import React, { useEffect } from "react";
 import { Link } from 'react-router-dom';
 import './Cookiek.css';
 
+
 export default function Cookiek() {
+
+ {/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     document.title = "EcoTrip – Cookie-k használata";
     window.scrollTo(0, 0);
   }, []);
+
   return (
     <div className="cookiek-page">
       <div className="cookiek-container">
@@ -17,6 +21,7 @@ export default function Cookiek() {
           <h1>Cookie-k használata</h1>
         </div>
 
+       
         <div className="cookiek-section">
           <h3>Miért használunk cookie-kat?</h3>
           <p>Az EcoTrip weboldal sütiket (cookie-kat) használ a weboldal működésének biztosítására és a felhasználói élmény javítására. A sütik segítenek például:</p>
@@ -27,6 +32,7 @@ export default function Cookiek() {
           </ul>
         </div>
 
+      
         <div className="cookiek-section">
           <h3>Milyen típusú cookie-kat használunk?</h3>
           <ul>
@@ -36,6 +42,7 @@ export default function Cookiek() {
           </ul>
         </div>
 
+      
         <div className="cookiek-section">
           <h3>Hogyan kezelheted a cookie-kat?</h3>
           <p>A felhasználó dönthet, hogy csak a szükséges sütiket engedélyezi, vagy mindet elfogadja. A cookie-beállításokat bármikor módosíthatod a böngésződ beállításain keresztül. Fontos tudni, hogy bizonyos funkciók, például a személyre szabott ajánlatok, nem fognak megfelelően működni, ha csak a szükséges cookie-kat engedélyezed.</p>

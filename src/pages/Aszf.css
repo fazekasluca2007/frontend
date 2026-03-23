@@ -1,3 +1,4 @@
+/* Oldalkeret */
 .aszf-page {
   background: #ffffff;
   border-radius: 15px;
@@ -30,6 +31,7 @@
   padding-left: 20px;
 }
 
+/* Vissza gomb */
 .aszf-back-button {
   display: inline-flex;
   align-items: center;
@@ -52,7 +54,7 @@
 .aszf-back-button:hover {
   color: #00b3b3;
 }
-
+  /* Reszponzívitás beállítások */
 @media (max-width: 768px) {
   .aszf-page {
     padding: 25px;
@@ -94,6 +96,7 @@
     font-size: 15px;
   }
 }
+
 
 @media (max-width: 576px) {
   .aszf-page {

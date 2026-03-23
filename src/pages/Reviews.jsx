@@ -7,10 +7,14 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+
+
+{/* Értékelés választó */}
 const RatingSelect = ({ value, onChange }) => {
   const [open, setOpen] = useState(false);
   const wrapperRef = React.useRef(null);
 
+  {/* Dropdown bezárása külső kattintásra */}
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -24,6 +28,7 @@ const RatingSelect = ({ value, onChange }) => {
     };
   }, []);
 
+  {/* Elérhető értékelési opciók */}
   const ratings = [
     { val: "1", stars: 1, text: "Csalódás" },
     { val: "2", stars: 2, text: "Lehetne jobb" },
@@ -31,7 +36,8 @@ const RatingSelect = ({ value, onChange }) => {
     { val: "4", stars: 4, text: "Nagyon tetszett" },
     { val: "5", stars: 5, text: "Fantasztikus élmény" },
   ];
-  
+
+  {/* Csillag ikon */}
   const StarIcon = () => (
     <i 
       className="bi bi-star-fill" 
@@ -90,8 +96,10 @@ const RatingSelect = ({ value, onChange }) => {
 };
 
 export default function Reviews() {
+  {/* Vélemények listázása, beküldése és törlése */}
   const URL = process.env.REACT_APP_BACKEND_URL;
 
+  {/* Komponens állapotok  */}
   const [velemenyek, setVelemenyek] = useState([]);
   const [page, setPage] = useState(1);
   const [text, setText] = useState("");
@@ -112,6 +120,7 @@ export default function Reviews() {
       "Felhasználó"
     : "Felhasználó";
 
+  {/* Vélemények lekérése az API-ról */}
   const fetchReviews = () => {
     setLoading(true);
     axios
@@ -127,6 +136,7 @@ export default function Reviews() {
       });
   };
 
+ {/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     fetchReviews();
     document.title = "EcoTrip – Vélemények";
@@ -136,11 +146,13 @@ export default function Reviews() {
   const oldalakSzama = Math.ceil(velemenyek.length / perPage);
   const aktualisOldal = velemenyek.slice((page - 1) * perPage, page * perPage);
 
+ 
   const renderStars = (db) =>
     Array.from({ length: db }).map((_, i) => (
       <i key={i} className="bi bi-star-fill review-star"></i>
     ));
 
+  {/* Űrlap feltöltése */}
   const handleEdit = (v) => {
     setEditId(v.id);
     setText(v.review);
@@ -149,6 +161,7 @@ export default function Reviews() {
     if (formElement) formElement.scrollIntoView({ behavior: "smooth" });
   };
 
+  {/* Megerősítő toast törlés előtt */}
   const confirmDelete = (id) => {
     const toastId = toast.error(
       <div>
@@ -181,6 +194,7 @@ export default function Reviews() {
     );
   };
 
+  {/* Vélemény törlése az API-n */}
   const executeDelete = async (id) => {
     try {
       await axios.delete(`${URL}Reviews/${id}`);
@@ -189,7 +203,10 @@ export default function Reviews() {
     } catch {
       toast.error("Hiba történt a törlés során.", { theme: "colored" });
     }
-  };  const handleSubmit = async (e) => {
+  };
+
+  {/* Vélemény mentése  */}
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!loggedUserName) {
@@ -253,14 +270,16 @@ export default function Reviews() {
   return (
     <>
       <ToastContainer />
+      {/* Betöltés vagy hiba esetén megjelenő blokk */}
       {(loading || loadError) && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
       )}
 
+      {/* Hibaüzenet, ha az adatok nem töltődnek be */}
       {loadError && (
-        <p className="error text-center my-4">Hiba az adatok lekérése során.</p>
+        <p className="error text-center my-4">Hiba az adatok lekérése során. Kérjük, próbálja újra később.</p>
       )}
 
       {!loading && !loadError && (
@@ -287,6 +306,7 @@ export default function Reviews() {
                 </div>
               )}
 
+              {/* Vélemény kártyák */}
               <div className="reviews-grid">
                 {aktualisOldal.map((v) => (
                   <div key={v.id} className="review-card">
@@ -305,6 +325,7 @@ export default function Reviews() {
                 ))}
               </div>
 
+              {/* Lapozó gombok */}
               <div className="pagination-container">
                 <button onClick={() => setPage(page - 1)} disabled={page === 1} className="pagination-btn">
                   <FaChevronLeft />
@@ -318,6 +339,7 @@ export default function Reviews() {
           </section>
 
           {loggedIn && (
+            /* Beküldő űrlap (csak bejelentkezett felhasználóknak) */
             <section id="review-form" style={{ padding: "50px 0" }}>
               <div className="container">
                 <h3 className="text-center mb-4">{editId ? "Vélemény módosítása" : "Vélemény írása"}</h3>                <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "0 auto" }}>

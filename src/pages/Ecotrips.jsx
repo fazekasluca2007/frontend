@@ -9,9 +9,11 @@ import Trip_card from "./components/Trip_card.jsx";
 import CustomSelect from "./components/CustomSelect.jsx";
 
 export default function Ecotrips() {
+  {/* Backend és navigáció */}
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
 
+  {/* Állapotok: utak, kiválasztott ország/város, slider , betöltés/hiba */}
   const [trips, setTrips] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
@@ -19,11 +21,13 @@ export default function Ecotrips() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
+  {/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     document.title = "EcoTrip – Ökoútjaink";
     window.scrollTo(0, 0);
   }, []);
 
+  {/* Ecotrips adatok lekérése a backendről */}
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -40,6 +44,7 @@ export default function Ecotrips() {
       });
   }, [backendUrl]);
 
+  {/* Ha város változik, automatikusan beállítja a hozzá tartozó országot */}
   useEffect(() => {
     if (!selectedCity) return;
     const matchingCountry = trips.find((c) =>
@@ -50,6 +55,7 @@ export default function Ecotrips() {
     }
   }, [selectedCity, trips]);
 
+  {/* Slider pozíciók beállítása a kiválasztott ország/város szerint */}
   useEffect(() => {
     if (selectedCountry) {
       setSliderPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
@@ -60,11 +66,14 @@ export default function Ecotrips() {
     }
   }, [selectedCountry, selectedCity, trips]);
 
+ 
   const getCardsPerView = useCallback(() => {
     if (window.innerWidth <= 576) return 1;
     if (window.innerWidth <= 992) return 2;
     return 4;
   }, []);
+
+  {/* Lépteti a megjelenített kártyák pozícióját */}
   const moveSlide = useCallback((country, step, hotelCount) => {
     const cardsPerView = getCardsPerView();
     const maxPos = Math.max(0, hotelCount - cardsPerView);
@@ -75,10 +84,12 @@ export default function Ecotrips() {
     });
   }, [getCardsPerView]);
 
+  {/* Elérhető városok megjelenítése a kiválasztott országtól függően */}
   const availableCities = selectedCountry
     ? [...new Set(trips.find((c) => c.country === selectedCountry)?.hotels.map((h) => h.city) || [])]
     : [...new Set(trips.flatMap((c) => c.hotels.map((h) => h.city)))];
 
+  {/* Foglalás indítása: ellenőrzi a bejelentkezést, majd navigál */}
   const handleHotelClick = (hotel) => {
     if (!localStorage.getItem("user")) {
       toast.info("A foglaláshoz kérem jelentkezzen be!", {
@@ -94,12 +105,14 @@ export default function Ecotrips() {
     <>
       <ToastContainer theme="colored" position="top-right" />
 
+      {/* Betöltés jelzése */}
       {isLoading && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
       )}
 
+      {/* Hibaüzenet megjelenítése, ha a lekérés meghiúsul */}
       {hasError && (
         <p className="error text-center my-4">
           Hiba az adatok lekérése során. Kérjük, próbálja újra később.
@@ -108,6 +121,7 @@ export default function Ecotrips() {
 
       {!hasError && !isLoading && (
         <>
+          {/* Szűrő: ország és város választó */}
           <div className="eco-filter container my-4">
             <div className="eco-filter-inner">
               <h2 className="eco-filter-title">Válassza ki az úticélját!</h2>
@@ -143,6 +157,7 @@ export default function Ecotrips() {
             </div>
           </div>
 
+          {/* Országok és szállások listázása */}
           <div className="eco-container container my-5">
             {trips
               .filter((c) => (selectedCountry ? c.country === selectedCountry : true))
@@ -171,7 +186,9 @@ export default function Ecotrips() {
                       </div>
                     </div>
 
-                    <div className="slider-wrapper">                      <button
+                    <div className="slider-wrapper">
+            
+                      <button
                         className="slider-btn left"
                         onClick={() => moveSlide(country.country, -1, filteredHotels.length)}
                         disabled={pos === 0}
