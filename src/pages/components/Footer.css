@@ -1,16 +1,16 @@
+/* Footer alapstílusa*/
 .footer-custom {
-  background: linear-gradient(
-    135deg,
-    #0f2f44 0%,
-    #1a3c57 50%,
-    #2f6d5f 100%
-  );
+  background: linear-gradient(135deg,
+      #0f2f44 0%,
+      #1a3c57 50%,
+      #2f6d5f 100%);
   color: rgba(255, 255, 255, 0.9);
   border-top: 3px solid #7bc96f;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   padding: 0.5rem 0 1rem;
 }
 
+/* Animáció*/
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(18px);
@@ -22,6 +22,7 @@
   transform: translateY(0);
 }
 
+/* Footer szekciók formázása */
 .footer-section {
   margin-bottom: 2rem;
   padding: 1.5rem 0.5rem;
@@ -33,6 +34,7 @@
   transform: translateY(-2px);
 }
 
+/* Footer fejléc */
 .footer-heading {
   font-size: 1.1rem;
   font-weight: 700;
@@ -49,6 +51,7 @@
   font-size: 1.2rem;
 }
 
+/* Listák beállítása */
 .footer-list {
   list-style: none;
   padding: 0;
@@ -100,6 +103,7 @@
   transform: translateX(3px);
 }
 
+/* Közösségi média ikonok */
 .social-icons-container {
   display: flex;
   flex-direction: column;
@@ -107,6 +111,7 @@
   gap: 0.75rem;
 }
 
+/* Közösségi média linkek */
 .social-link {
   display: flex;
   align-items: center;
@@ -139,6 +144,7 @@
   box-shadow: 0 4px 12px rgba(123, 201, 111, 0.4);
 }
 
+/* Copyright */
 .footer-bottom {
   font-size: 0.85rem;
   opacity: 0.8;
@@ -146,6 +152,7 @@
   padding-top: 0.5rem;
 }
 
+/* Reszponzivitás beállítások */
 @media (min-width: 768px) {
   .footer-custom {
     padding: 1.5rem 0 1rem;

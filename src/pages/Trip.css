@@ -1,3 +1,4 @@
+/* Ország bannerek*/
 .country-banner {
   background: linear-gradient(135deg, #2b5a87 0%, darkcyan 100%);
   color: #fff;
@@ -22,13 +23,14 @@
   }
 }
 
+/* Slider és Hotel kártyák */
 .slider-container {
   overflow: hidden;
 }
 
 .slider-track {
   display: flex;
-  gap: 1.2rem;
+  gap: 19px;
   padding: 0 10px;
   align-items: stretch;
   transition: transform 0.4s ease;
@@ -42,12 +44,16 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  flex: 0 0 calc(25% - 1rem);
-  max-width: calc(25% - 1rem);
+  flex: 0 0 calc(25% - 16px);
+  max-width: calc(25% - 16px);
   transition: 0.3s all;
 }
-.hotel-card:hover { transform: scale(1.02); }
 
+.hotel-card:hover {
+  transform: scale(1.02);
+}
+
+/* Szállásképek és kártyák*/
 .szallaskepek {
   width: 100%;
   height: 400px;
@@ -69,7 +75,7 @@
   border-color: darkcyan;
   border: none;
   color: #fff;
-  font-size: 1rem;
+  font-size: 16px;
   padding: 10px 0;
   border-radius: 12px;
   transition: 0.3s ease;
@@ -88,6 +94,7 @@
   box-shadow: none;
 }
 
+/* Értékelések és zászlók */
 .review-stars {
   margin-bottom: 10px;
   display: flex;
@@ -105,6 +112,7 @@
   height: 45px;
 }
 
+/* Slider */
 .slider-btn {
   position: absolute;
   top: 50%;
@@ -112,7 +120,7 @@
   border: none;
   background: none;
   color: #1a3c57;
-  font-size: 2rem;
+  font-size: 32px;
   cursor: pointer;
   z-index: 10;
   padding: 0;
@@ -126,6 +134,7 @@
   right: -20px;
 }
 
+/* Szűrő panel */
 .trip-filter {
   display: flex;
   justify-content: center;
@@ -147,7 +156,7 @@
 .filter-title {
   width: 100%;
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 26px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 10px;
@@ -160,7 +169,7 @@
 }
 
 .filter-field label {
-  font-size: 0.95rem;
+  font-size: 15px;
   font-weight: 600;
   margin-bottom: 6px;
   color: #fff;
@@ -199,7 +208,7 @@
 }
 
 .custom-select-display .arrow i {
-  font-size: 1.2rem;
+  font-size: 19px;
 }
 
 .custom-select-options {
@@ -234,15 +243,15 @@
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  font-size: 1.3rem;
+  font-size: 21px;
   opacity: 0.8;
 }
 
-
+/* Reszponzivitás beállítások */
 @media (max-width: 992px) {
   .hotel-card {
-    flex: 0 0 calc(50% - 1rem);
-    max-width: calc(50% - 1rem);
+    flex: 0 0 calc(50% - 16px);
+    max-width: calc(50% - 16px);
   }
 
   .trip-filter-inner {
@@ -251,11 +260,11 @@
   }
 
   .filter-title {
-    font-size: 1.4rem;
+    font-size: 22px;
   }
 
   .slider-btn {
-    font-size: 1.5rem;
+    font-size: 24px;
   }
 
   .slider-btn.left {
@@ -275,7 +284,7 @@
   }
 
   .filter-title {
-    font-size: 1.2rem;
+    font-size: 19px;
     margin-bottom: 5px;
   }
 
@@ -284,17 +293,17 @@
   }
 
   .filter-field label {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .custom-select-display {
     padding: 10px 12px;
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .custom-select-option {
     padding: 10px 12px;
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .country-banner {
@@ -308,12 +317,12 @@
   }
 
   .country-banner h3 {
-    font-size: 1.3rem;
+    font-size: 21px;
     margin-bottom: 5px;
   }
 
   .country-banner p {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .zaszlokep {
@@ -322,7 +331,7 @@
   }
 
   .slider-btn {
-    font-size: 1.8rem;
+    font-size: 29px;
     width: 40px;
     height: 40px;
     display: flex;
@@ -365,30 +374,30 @@
   }
 
   .filter-title {
-    font-size: 1.1rem;
+    font-size: 18px;
   }
 
   .filter-icon {
-    font-size: 1.1rem;
+    font-size: 18px;
     left: 10px;
   }
 
   .custom-select-display {
     padding: 10px 12px;
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .custom-select-option {
     padding: 10px;
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .country-banner h3 {
-    font-size: 1.1rem;
+    font-size: 18px;
   }
 
   .country-banner p {
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .zaszlokep {
@@ -397,7 +406,7 @@
   }
 
   .slider-btn {
-    font-size: 1.5rem;
+    font-size: 24px;
     width: 35px;
     height: 35px;
   }
@@ -411,7 +420,7 @@
   }
 
   .slider-track {
-    gap: 0.8rem;
+    gap: 13px;
     padding: 0 5px;
   }
 
@@ -435,7 +444,7 @@
 
 @media (max-width: 400px) {
   .filter-title {
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .trip-filter-inner {
@@ -447,11 +456,11 @@
   }
 
   .country-banner h3 {
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .slider-btn {
-    font-size: 1.3rem;
+    font-size: 21px;
     width: 30px;
     height: 30px;
   }

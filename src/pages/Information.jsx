@@ -6,11 +6,12 @@ import "./Information.css";
 import axios from "axios";
 
 export default function Information() {
+  {/* Backend URL és navigáció */ }
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
   const location = useLocation();
   const navigate = useNavigate();
 
+  {/* Változók */ }
   const tripId = location.state?.trip_id;
   const ecoTripId = location.state?.ecotrip_id;
   const [hotelData, setHotelData] = useState(null);
@@ -18,8 +19,10 @@ export default function Information() {
   const [hasError, setHasError] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  {/* Képek listája */ }
   const images = hotelData ? [hotelData.main_image, ...(hotelData.gallery_images || [])] : [];
 
+  {/* Szálloda adatainak lekérése API-ból, bejelentkezési státusz ellenőrzése */ }
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("user") !== null);
 
@@ -35,21 +38,25 @@ export default function Information() {
         .catch(() => setHasError(true));
     }
   }, [tripId, ecoTripId, backendUrl]);
+
+  {/* Oldal böngészőcímének beállítása */ }
   useEffect(() => {
     document.title = "EcoTrip – Információk";
   }, []);
 
+  {/* Foglalás kezelése */ }
   const handleBookingClick = () => {
     if (!hotelData) return;
 
     if (!isLoggedIn) {
       toast.error("A foglaláshoz jelentkezzen be!");
       return;
-    }    navigate("/foglalas", {
+    } navigate("/foglalas", {
       state: { trip_id: tripId, ecotrip_id: ecoTripId },
     });
   };
 
+  {/* Szöveg feldolgozása  */ }
   const capitalizeFirst = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
   const getDestination = (route) => {
@@ -62,9 +69,11 @@ export default function Information() {
     return parts.slice(0, -1).map(capitalizeFirst).join(" ");
   };
 
+  {/* Betöltés és hibaüzenetek */}
   if (hasError) return <p>Hiba történt az adatok betöltésekor.</p>;
   if (!hotelData) return <p>Adatok betöltése...</p>;
 
+  {/* Szálloda információ és képgaléria */ }
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />

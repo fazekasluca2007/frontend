@@ -7,12 +7,15 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 import axios from "axios";
 
+{/* Email és jelszó ellenőrzés */ }
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.(hu|com)$/;
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 export default function Login({ onLogin }) {
+  {/* Backend */ }
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  {/* Form megjelenítés, betöltési státusz, adatok és jelszó láthatóság */ }
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +31,7 @@ export default function Login({ onLogin }) {
 
   const navigate = useNavigate();
 
+  {/* Felhasználó állapotának ellenőrzése és oldal címének beállítása */ }
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) navigate("/");
@@ -37,6 +41,7 @@ export default function Login({ onLogin }) {
     document.title = showLoginForm ? "EcoTrip – Bejelentkezés" : "EcoTrip – Regisztráció";
   }, [showLoginForm]);
 
+  {/* Profilkép lekérése az API-ból */ }
   const fetchProfileImage = async (userData, token) => {
     try {
       const res = await axios.get(`${backendUrl}Profile/profile`, {
@@ -49,6 +54,8 @@ export default function Login({ onLogin }) {
       console.error(error);
     }
   };
+
+  {/* Bejelentkezés kezelése */ }
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -81,6 +88,7 @@ export default function Login({ onLogin }) {
     }
   };
 
+  {/* Regisztráció kezelése */ }
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -129,7 +137,8 @@ export default function Login({ onLogin }) {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      setNotRobot(false);    } catch (error) {
+      setNotRobot(false);
+    } catch (error) {
       const statusCode = error.response?.status;
       const errorMessage = error.response?.data?.message || "";
       const errorData = error.response?.data;
@@ -153,12 +162,13 @@ export default function Login({ onLogin }) {
     }
   };
 
+  {/* E-mail küldés */ }
   const sendWelcomeEmail = async (recipientEmail, name) => {
     try {
       await axios.post(`${backendUrl}Mail`, {
-          to: recipientEmail,
-          subject: "✈️ Üdvözlünk az EcoTrip családjában!",
-          body: `
+        to: recipientEmail,
+        subject: "✈️ Üdvözlünk az EcoTrip családjában!",
+        body: `
           <!DOCTYPE html>
           <html lang="hu">
           <head>
@@ -310,10 +320,12 @@ export default function Login({ onLogin }) {
     }
   };
 
+  {/* Bejelentkezés és regisztráció */ }
   return (
     <>
       <ToastContainer theme="colored" />
 
+      {/* Betöltés */}
       {loading && (
         <div className="auth-background d-flex justify-content-center align-items-center">
           <DotLoader color="#7dbf7d" size={70} />

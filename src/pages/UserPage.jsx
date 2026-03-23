@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
+{/* Alapértelmezett profilképek */ }
 const defaultAvatars = [
   "https://img.freepik.com/free-vector/flat-style-woman-avatar_90220-2876.jpg",
   "https://img.freepik.com/free-vector/woman-with-long-brown-hair-pink-shirt_90220-2940.jpg",
@@ -16,11 +17,12 @@ const defaultAvatars = [
 ];
 
 export default function UserPage({ user, updateProfileImage, updateUser, onLogout }) {
+  {/* Backend és navigáció */ }
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
   const location = useLocation();
   const navigate = useNavigate();
 
+  {/* Profil szerkesztés és adatok */ }
   const [editMode, setEditMode] = useState(false);
   const [username, setUsername] = useState(() => user?.user?.username || "");
   const [fullName, setFullName] = useState("");
@@ -28,21 +30,28 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [customAvatar, setCustomAvatar] = useState(null);
   const [bookings, setBookings] = useState([]);
+
+  {/* Jelszóváltoztatás */ }
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  {/* Profil törlése */ }
   const [deletePassword, setDeletePassword] = useState("");
   const [showDeletePassword, setShowDeletePassword] = useState(false);
   const [confirmChecked, setConfirmChecked] = useState(false);
+
+  {/* Foglalás törlése */ }
   const [pendingBookingDeletionId, setPendingBookingDeletionId] = useState(null);
   const [bookingDeletionPassword, setBookingDeletionPassword] = useState("");
   const [isBookingDeletionPasswordVisible, setIsBookingDeletionPasswordVisible] = useState(false);
   const [isBookingDeletionInProgress, setIsBookingDeletionInProgress] = useState(false);
   const [isBookingDeletionConfirmed, setIsBookingDeletionConfirmed] = useState(false);
 
+  {/* Eredeti adatok mentése szerkesztés előtt */ }
   const [originalData, setOriginalData] = useState({
     username: "",
     password: "",
@@ -51,10 +60,12 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     selectedAvatar: ""
   });
 
+  {/* Oldal böngészőcímének beállítása */ }
   useEffect(() => {
     document.title = "EcoTrip – Profil";
   }, []);
 
+  {/* Szerkesztés mód elindítása, adatok mentése */ }
   function startEditMode() {
     setOriginalData({
       username,
@@ -66,6 +77,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     setEditMode(true);
   }
 
+  {/* Szerkesztés elvetése */ }
   function handleBackFromEdit() {
     const hasChanges =
       username !== originalData.username ||
@@ -117,6 +129,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
+        {/* Profil adatok letöltése a szerverről */ }
         const data = await axios.get(`${backendUrl}Profile/profile`, {
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -125,14 +138,15 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         });
         setFullName(data.data.fullName || "");
         setEmail(data.data.email || "");
-        
+
+        {/* Profilkép */ }
         const customImage = localStorage.getItem('customProfileImage');
         if (customImage) {
           setSelectedAvatar(customImage);
           updateProfileImage(customImage);
           return;
         }
-        
+
         const currentImg = data.data.profileImage || defaultAvatars[0];
         setSelectedAvatar(currentImg);
         updateProfileImage(currentImg);
@@ -143,6 +157,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     fetchProfile();
   }, [location.key]);
 
+  {/* Foglalások betöltése */ }
   useEffect(() => {
     const fetchBookings = async () => {
       const token = localStorage.getItem("token");
@@ -164,6 +179,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      {/* Profilkép feltöltése */ }
       const reader = new FileReader();
       reader.onload = (event) => {
         const dataUrl = event.target.result;
@@ -174,6 +190,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     }
   };
 
+  {/* Felhasználónév frissítése */ }
   const updateUsername = async () => {
     const token = localStorage.getItem("token");
     await axios.put(`${backendUrl}Profile/username`, { username }, {
@@ -181,26 +198,31 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     });
   };
 
+  {/* Jelszó frissítése */ }
   const updatePassword = async () => {
     if (!password || !oldPassword) return;
     const token = localStorage.getItem("token");
     await axios.put(`${backendUrl}Profile/password`, { oldPassword, newPassword: password }, {
       headers: { Authorization: `Bearer ${token}` }
     });
-  };  const saveImageToBackend = async (imageUrl) => {
+  };
+
+  {/* Profilkép mentése */ }
+  const saveImageToBackend = async (imageUrl) => {
     const token = localStorage.getItem("token");
-    
+
     if (imageUrl.startsWith('data:')) {
       localStorage.setItem('customProfileImage', imageUrl);
       return;
     }
-    
+
     localStorage.removeItem('customProfileImage');
     await axios.put(`${backendUrl}Profile/image`, { imageUrl }, {
       headers: { Authorization: `Bearer ${token}` }
     });
   };
 
+  {/* Dátum formázás foglalásokhoz */ }
   const formatBookingDate = (dateValue) => {
     if (!dateValue) return "-";
     return new Date(dateValue).toLocaleDateString("hu-HU");
@@ -209,6 +231,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
   const sendBookingDeletionEmail = async (deletedBooking) => {
     if (!email) return;
 
+    {/* Foglalás törlése e-mail értesítés */ }
     const hotelName = deletedBooking?.hotelName || deletedBooking?.HotelName || "EcoTrip foglalás";
     const startDate = formatBookingDate(deletedBooking?.startDate || deletedBooking?.StartDate);
     const endDate = formatBookingDate(deletedBooking?.endDate || deletedBooking?.EndDate);
@@ -285,6 +308,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     });
   };
 
+  {/* Foglalás törlési modal bezárása */ }
   const closeBookingDeletionModal = () => {
     setPendingBookingDeletionId(null);
     setBookingDeletionPassword("");
@@ -293,6 +317,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     setIsBookingDeletionConfirmed(false);
   };
 
+  {/* Foglalás törlése jelszó ellenőrzéssel */ }
   const deleteBooking = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -350,6 +375,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
     }
   };
 
+  {/* Foglalás törlési modal megnyitása */ }
   const openBookingDeletionModal = (bookingId) => {
     setPendingBookingDeletionId(bookingId);
     setBookingDeletionPassword("");
@@ -359,6 +385,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
 
 
+  {/* Profil törlése */ }
   const executeProfileDelete = async () => {
     if (!confirmChecked) {
       toast.error("Kérem, jelölje be, hogy biztosan törölni szeretné fiókját!");
@@ -381,7 +408,9 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         data: { password: deletePassword }
       });
 
-      toast.success("Profilja sikeresen törölve");      setTimeout(() => {
+      toast.success("Profilja sikeresen törölve");
+      {/* Kijelentkezés és kezdőlapra irányítás */ }
+      setTimeout(() => {
         if (typeof updateUser === "function") updateUser(null);
         if (typeof onLogout === "function") onLogout();
         localStorage.removeItem("token");
@@ -401,11 +430,13 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   const handleSave = async (e) => {
     e.preventDefault();
+    {/* Jelszavak egyezésének ellenőrzése */ }
     if (password && password !== confirmPassword) {
       toast.error("Hiba: a jelszavak nem egyeznek");
       return;
     }
     try {
+      {/* Adatok mentése */ }
       await updateUsername();
       if (password) await updatePassword();
       const finalImage = customAvatar || selectedAvatar;
@@ -426,6 +457,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
   return (
     <div className="profile-container">
+      {/* Foglalás törlési modal */}
       {pendingBookingDeletionId && (
         <div className="booking-delete-modal-overlay" onClick={closeBookingDeletionModal}>
           <div className="booking-delete-modal" onClick={(e) => e.stopPropagation()}>
@@ -498,11 +530,12 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
         </div>
       )}
 
+      {/* Profil kártya */}
       <div className="profile-card" style={{ position: "relative" }}>
         {editMode && (
           <button
             className="edit-back-top-left"
-            onClick={handleBackFromEdit} 
+            onClick={handleBackFromEdit}
             title="Vissza a profilhoz"
           >
             <i className="bi bi-arrow-left"></i> Vissza
@@ -511,12 +544,13 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
         <ToastContainer theme="colored" position="top-right" autoClose={3000} />
 
+        {/* Profil fejléc*/}
         {!editMode && (
           <div className="profile-header">
             <h2>Profil adatok</h2>
             <span
               className="edit-icon"
-              onClick={startEditMode} 
+              onClick={startEditMode}
               title="Profil módosítása"
             >
               <i className="bi bi-pencil"></i>
@@ -524,6 +558,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
           </div>
         )}
 
+        {/* Profilkép*/}
         {!editMode && (
           <div className="view-avatar-wrapper">
             <img
@@ -536,13 +571,16 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
 
         <form onSubmit={handleSave}>
           <div className={editMode ? "edit-layout" : ""}>
+            {/* Szerkesztési rész */}
             {editMode && (
               <div className="left-column">
                 <img
                   src={customAvatar || selectedAvatar}
                   alt="Profilkép"
                   className="profile-avatar"
-                />                <div className="avatar-grid">
+                />
+                {/* Profilkép választás */}
+                <div className="avatar-grid">
                   {defaultAvatars.map((avatar, index) => (
                     <img
                       key={index}
@@ -558,6 +596,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                     />
                   ))}
                 </div>
+                {/* Saját kép feltöltése */}
                 <label className="upload-label">
                   Saját kép feltöltése
                   <input
@@ -566,6 +605,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                     onChange={handleImageUpload}
                   />
                 </label>
+                {/* Profil törlése */}
                 <div className="delete-profile-box">
                   <h5 className="delete-title mt-3">Profil törlése</h5>
                   <p>
@@ -618,6 +658,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                 <h3 className="edit-right-title">Profil adatok módosítása</h3>
               )}
 
+              {/* Teljes név */}
               <div className="field">
                 <label>Teljes név</label>
                 <input
@@ -627,6 +668,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                   className="readonly-input"
                 />
               </div>
+              {/* Felhasználónév */}
               <div className="field">
                 <label>Felhasználónév</label>
                 <input
@@ -636,6 +678,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
+              {/* Email */}
               <div className="field">
                 <label>Email</label>
                 <input
@@ -646,6 +689,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
                 />
               </div>
 
+              {/* Jelszóváltoztatás */}
               {editMode && (
                 <>
                   <div className="field">
@@ -707,6 +751,7 @@ export default function UserPage({ user, updateProfileImage, updateUser, onLogou
             </div>
           </div>
         </form>
+        {/* Foglalások */}
         {!editMode && (
           <div className="bookings">
             <h3>Foglalásaim</h3>

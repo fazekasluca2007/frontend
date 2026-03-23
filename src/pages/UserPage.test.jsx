@@ -7,12 +7,14 @@ import { MemoryRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import userEvent from "@testing-library/user-event";
 
+{/* Modulok szimulálása a teszteléshez */ }
 vi.mock("axios");
 vi.mock("react-toastify", () => ({
   ToastContainer: () => <div />,
   toast: { error: vi.fn(), success: vi.fn() },
 }));
 
+{/* Teszt adatok */ }
 const mockUser = {
   user: {
     id: 1,
@@ -25,34 +27,42 @@ const mockUser = {
 };
 
 test("hibás jelszóval nem lehet profilt törölni", async () => {
+
+  {/* API hiba beállítása */ }
   axios.delete = vi.fn().mockRejectedValue({ response: { status: 401 } });
+
+  {/* Teszt token tárolása */ }
   localStorage.setItem("token", "test-token");
 
+  {/* Függvények nyomon követése */ }
   const mockOnLogout = vi.fn();
   const mockUpdateUser = vi.fn();
 
+  {/* UserPage komponens megjelenítése a tesztben */ }
   render(
     <MemoryRouter>
       <UserPage user={mockUser} onLogout={mockOnLogout} updateUser={mockUpdateUser} />
     </MemoryRouter>
   );
 
+  {/* Profil törlésének szimulálása */ }
   fireEvent.click(screen.getByTitle("Profil módosítása"));
-
   const passwordInput = document.querySelector(".delete-profile-box input[type='password']");
   await userEvent.type(passwordInput, "wrongpassword123");
-
   fireEvent.click(document.querySelector("#confirmDelete"));
   fireEvent.click(screen.getByRole("button", { name: /profil végleges törlése|törlés/i }));
 
+  {/* Hibaüzenet ellenőrzése */ }
   await waitFor(() => {
     expect(toast.error).toHaveBeenCalledWith("Hibás jelszó!");
   });
 
+  {/* API hívás ellenőrzése */ }
   expect(axios.delete).toHaveBeenCalledWith(
     `${process.env.REACT_APP_BACKEND_URL}Profile/delete`,
     { headers: { Authorization: "Bearer test-token" }, data: { password: "wrongpassword123" } }
   );
 
+  {/* Kijelentkezés ellenőrzése */ }
   expect(mockOnLogout).not.toHaveBeenCalled();
 });

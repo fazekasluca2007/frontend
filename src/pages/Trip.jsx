@@ -9,9 +9,11 @@ import Trip_card from "./components/Trip_card.jsx";
 import CustomSelect from "./components/CustomSelect.jsx";
 
 export default function Trip() {
+  {/* Backend és navigáció */ }
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
 
+  {/* Szűrés, megjelenítés és betöltési státusz */ }
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [trips, setTrips] = useState([]);
@@ -19,6 +21,7 @@ export default function Trip() {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  {/* Utazási adatok lekérése a backendről */ }
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -35,6 +38,7 @@ export default function Trip() {
       });
   }, [backendUrl]);
 
+  {/* Város választása */ }
   useEffect(() => {
     if (selectedCity) {
       const countryForCity = trips.find((c) =>
@@ -47,6 +51,7 @@ export default function Trip() {
     }
   }, [selectedCity, trips, selectedCountry]);
 
+  {/* Slider pozícióinak kezelése */ }
   useEffect(() => {
     if (selectedCountry) {
       setSliderPositions((prev) => ({ ...prev, [selectedCountry]: 0 }));
@@ -57,16 +62,19 @@ export default function Trip() {
     }
   }, [selectedCountry, selectedCity, trips]);
 
+  {/* Oldal böngészőcímének beállítása és tetejére ugrás */ }
   useEffect(() => {
     document.title = "EcoTrip – Útjaink";
     window.scrollTo(0, 0);
   }, []);
+  {/* Kártya mennyiségének meghatározása */ }
   const getCardsPerView = useCallback(() => {
     if (window.innerWidth <= 576) return 1;
     if (window.innerWidth <= 992) return 2;
     return 4;
   }, []);
 
+  {/* Slider mozgatása */ }
   const moveSlide = useCallback((country, step, hotelsLength) => {
     const cardsPerView = getCardsPerView();
     const maxPos = Math.max(0, hotelsLength - cardsPerView);
@@ -77,19 +85,23 @@ export default function Trip() {
       return { ...prev, [country]: newPos };
     });
   }, [getCardsPerView]);
+  {/* Adott ország városainak lekérése */ }
   const getCitiesForCountry = (country) => {
     const countryData = trips.find((c) => c.country === country);
     const cities = countryData?.hotels.map((h) => h.city) || [];
     return [...new Set(cities)];
   };
 
+  {/* Összes város lekérése */ }
   const getAllCities = () => {
     const allCities = trips.flatMap((c) => c.hotels.map((h) => h.city));
     return [...new Set(allCities)];
   };
 
+  {/* Elérhető városok szűrés alapján */ }
   const availableCities = selectedCountry ? getCitiesForCountry(selectedCountry) : getAllCities();
 
+  {/* Navigálás az információk oldalra */ }
   const handleHotelClick = (hotel) => {
     navigate("/informaciok", {
       state: { trip_id: hotel.id },
@@ -100,12 +112,14 @@ export default function Trip() {
     <>
       <ToastContainer theme="colored" />
 
+      {/* Betöltés */}
       {(isLoading || hasError) && (
         <div className="d-flex justify-content-center my-5">
           <BeatLoader color="#a87c5c" size={15} />
         </div>
       )}
 
+      {/* Hiba üzenet */}
       {hasError && (
         <p className="error text-center my-4">
           Hiba az adatok lekérése során. Kérjük, próbálja újra később.
@@ -114,10 +128,12 @@ export default function Trip() {
 
       {!hasError && !isLoading && (
         <>
+          {/* Szűrőpanel */}
           <div className="trip-filter container my-4">
             <div className="trip-filter-inner">
               <h2 className="filter-title">Válassza ki az úticélját!</h2>
 
+              {/* Ország szűrő */}
               <div className="filter-field">
                 <label>Ország</label>
                 <div className="filter-input-wrapper">
@@ -137,6 +153,7 @@ export default function Trip() {
                 </div>
               </div>
 
+              {/* Város szűrő */}
               <div className="filter-field">
                 <label>Város</label>
                 <div className="filter-input-wrapper">
@@ -155,6 +172,7 @@ export default function Trip() {
             </div>
           </div>
 
+          {/* Utazási kártyák */}
           <div className="container my-5">
             {trips
               .filter((country) =>
@@ -174,6 +192,7 @@ export default function Trip() {
 
                 return (
                   <div key={country.country} className="my-5">
+                    {/* Ország fejléce */}
                     <div className="country-banner d-flex align-items-center mb-4">
                       <img
                         src={`/${country.flag}`}
@@ -186,7 +205,9 @@ export default function Trip() {
                       </div>
                     </div>
 
-                    <div className="slider-wrapper">                      <button
+                    {/* Slider */}
+                    <div className="slider-wrapper">
+                      <button
                         className="slider-btn left"
                         onClick={() =>
                           moveSlide(country.country, -1, filteredHotels.length)
@@ -203,6 +224,7 @@ export default function Trip() {
                             transform: `translateX(${movePercent}%)`,
                           }}
                         >
+                          {/* Utazási kártyák */}
                           {filteredHotels.map((hotel) => (
                             <Trip_card
                               key={hotel.id}
@@ -211,7 +233,9 @@ export default function Trip() {
                             />
                           ))}
                         </div>
-                      </div>                      <button
+                      </div>
+
+                      <button
                         className="slider-btn right"
                         onClick={() =>
                           moveSlide(country.country, 1, filteredHotels.length)

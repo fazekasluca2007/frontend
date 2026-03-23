@@ -17,28 +17,33 @@ import Aszf from './pages/Aszf.jsx';
 import Ecoinfo from './pages/Ecoinfo.jsx';
 import Cookiek from './pages/Cookiek.jsx';
 
+{/* localStorage kulcsok */ }
 const STORAGE_KEYS = {
   user: 'user',
   token: 'token',
 };
 
 function App() {
+  {/* Bejelentkezési adatok helyreállítása */ }
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem(STORAGE_KEYS.user);
     return stored ? JSON.parse(stored) : null;
   });
 
+  {/* Bejelentkezés kezelése */ }
   const handleLogin = (userData) => {
     localStorage.setItem(STORAGE_KEYS.user, JSON.stringify(userData));
     setUser(userData);
   };
 
+  {/* Kijelentkezés kezelése */ }
   const handleLogout = () => {
     localStorage.removeItem(STORAGE_KEYS.user);
     localStorage.removeItem(STORAGE_KEYS.token);
     setUser(null);
   };
 
+  {/* Profilkép frissítése */ }
   const handleProfileImageUpdate = (newImage) => {
     setUser((prev) => {
       if (!prev) return prev;
@@ -56,6 +61,7 @@ function App() {
     });
   };
 
+  {/* Felhasználói adatok frissítése */ }
   const handleUserUpdate = (newUserData) => {
     setUser(newUserData);
 
@@ -66,11 +72,14 @@ function App() {
       localStorage.removeItem(STORAGE_KEYS.token);
     }
   };
+
   return (
     <BrowserRouter>
+      {/*Navbar*/}
       <Nav user={user} onLogout={handleLogout} />
 
       <div className="App">
+        {/* Oldalak és útvonalak */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/bejelentkezes" element={<Login onLogin={handleLogin} />} />
@@ -98,6 +107,7 @@ function App() {
         </Routes>
       </div>
 
+      {/* Oldal tetejére görgetés, lábléc */}
       <ScrollToTop />
       <Footer />
     </BrowserRouter>
@@ -105,5 +115,3 @@ function App() {
 }
 
 export default App;
-
-

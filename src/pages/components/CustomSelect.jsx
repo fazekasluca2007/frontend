@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+{/* Ikonok a típusok szerint */ }
 const ICON_MAP = {
   country: <i className="bi bi-globe-americas text-dark me-2"></i>,
   city: <i className="bi bi-buildings text-dark me-2"></i>,
 };
 
+{/* Egyedi select komponens lenyíló listával */ }
 const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
 
+  {/* Kívülre kattintáskor becsukja a lenyíló listát */ }
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -16,17 +19,18 @@ const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
       }
     };
 
+    {/* Kívülre kattintás figyelése */ }
     document.addEventListener('mousedown', handleClickOutside);
-    
+
+    {/* Eseményfigyelő eltávolítása */ }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
+  {/* Segédfüggvények */ }
   const getIcon = () => ICON_MAP[type] || null;
-
   const toggleDropdown = () => setIsOpen((prev) => !prev);
-
   const handleOptionClick = (option) => {
     onChange(option);
     setIsOpen(false);
@@ -34,6 +38,7 @@ const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
 
   return (
     <div className="custom-select-wrapper" ref={containerRef}>
+      {/* Megjelenítendő mező */}
       <div className="custom-select-display" onClick={toggleDropdown}>
         {!value && getIcon()}
         {value || placeholder}
@@ -46,6 +51,7 @@ const CustomSelect = ({ options, value, onChange, placeholder, type }) => {
         </span>
       </div>
 
+      {/* Lenyíló lista */}
       {isOpen && (
         <ul className="custom-select-options">
           {options.map((option) => (

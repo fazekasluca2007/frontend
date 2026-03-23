@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Nav.css';
 import { NavLink } from 'react-router-dom';
 
+{/* Navigáció menü linkek */ }
 const NAV_LINKS = [
   { path: '/utjaink', label: 'Útjaink' },
   { path: '/okoutjaink', label: 'Ökoútjaink' },
@@ -10,41 +11,44 @@ const NAV_LINKS = [
   { path: '/velemenyek', label: 'Vélemények' },
 ];
 
+{/* LocalStorage kulcsok */ }
 const STORAGE_KEYS = {
   token: 'token',
   user: 'user',
 };
 
 export default function Nav({ user, onLogout }) {
+  {/* Mobil menü állapota és vezérlése */ }
   const [menuOpen, setMenuOpen] = useState(false);
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
+  {/* Felhasználónév kinyerése a user objektumból */ }
   const getUserName = () => {
     const userObj = user?.user;
     return userObj?.username || '';
   };
 
-  const displayName = getUserName();
-  const displayInitial = displayName.charAt(0).toUpperCase();
-
+  {/* Kijelentkezés, token és user törlése */ }
   const handleLogout = () => {
     localStorage.removeItem(STORAGE_KEYS.token);
     localStorage.removeItem(STORAGE_KEYS.user);
     onLogout();
   };
 
+  {/* Bejelentkezési státusz ellenőrzése */ }
   const isLoggedIn = !!user && !!localStorage.getItem(STORAGE_KEYS.token);
   return (
     <nav className="navbar navbar-expand-lg position-relative">
       <div className="container-fluid d-flex justify-content-between align-items-center">
 
+        {/* Logo */}
         <div className="d-flex align-items-center">
           <NavLink className="navbar-brand" to="/">
             <img src="./img/ecologo.png" alt="EcoTrip Logo" />
           </NavLink>
         </div>
 
+        {/* Mobil menü gomb */}
         <button
           className="navbar-toggler d-lg-none border-0"
           type="button"
@@ -55,6 +59,7 @@ export default function Nav({ user, onLogout }) {
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* Navigáció menü */}
         <div className="d-none d-lg-flex position-absolute start-50 translate-middle-x">
           <ul className="navbar-nav d-flex flex-row">
             {NAV_LINKS.map((link) => (
@@ -67,6 +72,7 @@ export default function Nav({ user, onLogout }) {
           </ul>
         </div>
 
+        {/* Bejelentkezés / profil */}
         <ul className="navbar-nav d-none d-lg-flex align-items-center">
           {!isLoggedIn ? (
             <li className="nav-item">
@@ -81,11 +87,11 @@ export default function Nav({ user, onLogout }) {
                   {user?.user?.profileImage ? (
                     <img src={user.user.profileImage} alt="Profilkép" />
                   ) : (
-                    <span>{displayInitial}</span>
+                    <span>{user?.user?.username?.charAt(0).toUpperCase()}</span>
                   )}
                 </div>
               </NavLink>
-              <span className="username ms-2">{displayName}</span>
+              <span className="username ms-2">{getUserName()}</span>
               <button
                 onClick={handleLogout}
                 className="btn btn-sm ms-2 logoutbtn"
@@ -97,6 +103,7 @@ export default function Nav({ user, onLogout }) {
         </ul>
       </div>
 
+      {/* Mobil menü */}
       {menuOpen && (
         <div className="mobile-menu d-lg-none text-center">
           <ul className="navbar-nav">
@@ -135,10 +142,10 @@ export default function Nav({ user, onLogout }) {
                         {user?.user?.profileImage ? (
                           <img src={user.user.profileImage} alt="Profilkép" />
                         ) : (
-                          <span>{displayInitial}</span>
+                          <span>{user?.user?.username?.charAt(0).toUpperCase()}</span>
                         )}
                       </div>
-                      <span>{displayName}</span>
+                      <span>{getUserName()}</span>
                     </div>
                   </NavLink>
                 </li>

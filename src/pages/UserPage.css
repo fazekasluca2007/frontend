@@ -1,11 +1,12 @@
+/* Profil oldal */
 .profile-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding-top: 20px;   
-  padding-bottom: 20px; 
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   background-image: url("/public/img/profilebg.jpg");
   background-size: cover;
@@ -13,9 +14,10 @@
   background-repeat: no-repeat;
 }
 
+/* Profil kártya */
 .profile-card {
   background: #f0f6fb;
-  padding: 2rem;
+  padding: 32px;
   border-radius: 20px;
   width: 100%;
   max-width: 420px;
@@ -24,33 +26,37 @@
   transition: all 0.4s ease;
 }
 
+/* Profil fejléc nézet módban */
 .profile-card:not(:has(.edit-layout)) .profile-header {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
 .profile-card:not(:has(.edit-layout)) .profile-header h2 {
   margin: 0;
+  font-size: 24px;
 }
 
 .profile-card:not(:has(.edit-layout)) .profile-header .edit-icon {
   position: static;
 }
 
+/* Szerkesztés mód */
 .profile-card:has(.edit-layout) {
   max-width: 900px;
-  padding: 3rem;
+  padding: 48px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18),
-              inset 0 0 60px rgba(0, 0, 0, 0.03);
+    inset 0 0 60px rgba(0, 0, 0, 0.03);
 }
 
 .profile-card:has(.edit-layout) .profile-header {
   margin-bottom: 50px;
 }
 
+/* Profilkép választás */
 .profile-card:has(.edit-layout) .avatar-option {
   border: 2px solid #0a6d6d;
   border-radius: 50%;
@@ -74,6 +80,7 @@
   align-items: stretch;
 }
 
+/* Szerkesztési mód bal oszlop */
 .profile-card:has(.edit-layout) .left-column {
   flex: 1;
   display: flex;
@@ -86,30 +93,33 @@
   position: relative;
 }
 
+/* Szerkesztési mód jobb oszlop */
 .profile-card:has(.edit-layout) .right-column {
   flex: 1.3;
 }
 
+/* Profil fejléc */
 .profile-header {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
-  padding: 0 1rem;
+  justify-content: space-between;
+  padding: 0 16px;
 }
 
+/* Szerkesztés mód cím */
 .edit-right-title {
-  text-align: left; 
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+  text-align: left;
+  font-size: 24px;
+  margin-bottom: 24px;
 }
 
+/* Szerkesztés ikon */
 .edit-icon {
   cursor: pointer;
 }
 
 .edit-icon i {
-  font-size: 1.2rem;
+  font-size: 19px;
   color: darkcyan;
   transition: 0.2s;
 }
@@ -119,24 +129,27 @@
   color: #0a6d6d;
 }
 
+/* Profilkép */
 .profile-avatar {
   width: 130px;
   height: 130px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 0.6rem;
+  margin-bottom: 10px;
   border: 4px solid darkcyan;
 }
 
+/* Profilkép választása */
 .avatar-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
+/* Profilkép opciók */
 .avatar-option {
-  width: 60px; 
+  width: 60px;
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
@@ -150,9 +163,10 @@
   opacity: 1;
 }
 
+/* Kép feltöltés gomb */
 .upload-label {
   display: inline-block;
-  margin-bottom: 1.2rem;
+  margin-bottom: 19px;
   color: darkcyan;
   cursor: pointer;
 }
@@ -161,27 +175,28 @@
   display: none;
 }
 
+/* Adat mezők */
 .field {
   text-align: left;
-  margin-bottom: 0.4rem; 
+  margin-bottom: 6px;
 }
 
 .field label {
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 
 .profile-card form input {
   width: 100%;
-  padding: 0.6rem;
+  padding: 10px;
   border-radius: 10px;
   border: 1px solid #ccc;
 }
 
 .profile-card:has(.edit-layout) input:disabled {
-  background-color: #fff;    
-  color: #555;                 
-  border: 1px solid #ccc;       
-  cursor: not-allowed;          
+  background-color: #fff;
+  color: #555;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
   opacity: 1;
 }
 
@@ -189,11 +204,12 @@
   margin-bottom: 15px;
 }
 
+/* Adatok megjelenítése */
 .profile-card:not(:has(.edit-layout)) .right-column .field {
   background: #fff;
-  padding: 0.6rem;
+  padding: 10px;
   border-radius: 10px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -205,8 +221,9 @@
   color: #333;
 }
 
+/* Foglalások */
 .bookings {
-  margin-top: 2rem;
+  margin-top: 32px;
   text-align: left;
 }
 
@@ -217,9 +234,9 @@
 
 .bookings li {
   background: #fff;
-  padding: 0.6rem;
+  padding: 10px;
   border-radius: 10px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-between;
@@ -232,6 +249,7 @@
   width: 100%;
 }
 
+/* Foglalás törlése */
 .delete-icon {
   cursor: pointer;
   color: #dc3545;
@@ -244,26 +262,28 @@
   color: #a71d2a;
 }
 
+/* Vissza gomb */
 .edit-back-top-left {
-  position: absolute;   
+  position: absolute;
   top: 8px;
   left: 8px;
   background: transparent;
   border: none;
   color: darkcyan;
-  font-size: 1rem;      
+  font-size: 16px;
   cursor: pointer;
   padding: 4px 6px;
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 4px;             
+  gap: 4px;
 }
 
 .edit-back-top-left:hover {
   color: teal;
 }
 
+/* Profil törlés */
 .delete-profile-box p {
   font-style: italic;
 }
@@ -285,9 +305,10 @@
 
 .delete-check .form-check-label {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 14px;
 }
 
+/* Jelszó mező szem ikon */
 .password-wrapper {
   position: relative;
 }
@@ -306,6 +327,7 @@
   z-index: 2;
 }
 
+/* Foglalás törlési modal */
 .booking-delete-modal-overlay {
   position: fixed;
   inset: 0;
@@ -322,7 +344,7 @@
   max-width: 560px;
   background: #f0f6fb;
   border-radius: 20px;
-  padding: 1.1rem 1.25rem;
+  padding: 18px 20px;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
   text-align: left;
   border: 1px solid rgba(26, 60, 87, 0.08);
@@ -334,13 +356,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 0.45rem;
+  margin-bottom: 7px;
 }
 
 .booking-delete-modal h4 {
   margin: 0;
   color: #1a3c57;
-  font-size: 1.2rem;
+  font-size: 19px;
 }
 
 .booking-delete-modal-close {
@@ -363,16 +385,16 @@
 }
 
 .booking-delete-modal-text {
-  margin: 0 0 0.45rem;
+  margin: 0 0 7px;
   color: #48606c;
-  font-size: 0.9rem;
+  font-size: 14px;
   line-height: 1.45;
 }
 
 .booking-delete-modal-warning {
-  margin: 0 0 0.65rem;
+  margin: 0 0 10px;
   color: #7a2f39;
-  font-size: 0.88rem;
+  font-size: 14px;
   line-height: 1.45;
   font-style: italic;
 }
@@ -382,12 +404,12 @@
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
-  margin-bottom: 0.7rem;
+  margin-bottom: 11px;
 }
 
 .booking-delete-check .form-check-label {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 15px;
   color: #1a3c57;
 }
 
@@ -399,114 +421,7 @@
   cursor: pointer;
 }
 
-.booking-delete-modal-field label {
-  color: #1a3c57;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-
-.booking-delete-modal-input {
-  width: 100%;
-  padding: 0.6rem;
-  background: #ffffff;
-  border: 1px solid rgba(26, 60, 87, 0.12);
-  border-radius: 10px;
-  box-shadow: none;
-  color: #333;
-}
-
-.booking-delete-modal-input:focus {
-  outline: none;
-  border-color: darkcyan;
-  box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.12);
-}
-
-.booking-delete-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 0.8rem;
-}
-
-.booking-delete-btn {
-  min-width: 132px;
-  border-radius: 10px;
-  font-weight: 700;
-  padding: 0.62rem 0.95rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.booking-delete-btn:hover {
-  transform: scale(1.03);
-}
-
-.booking-delete-btn--secondary {
-  background: #ffffff;
-  color: #1a3c57;
-  border: 1px solid rgba(26, 60, 87, 0.18);
-}
-
-.booking-delete-btn--secondary:hover {
-  background: #f4f8fa;
-  color: #12344a;
-}
-
-.booking-delete-modal-actions .booking-delete-btn--danger {
-  background: #dc3545;
-  border: 1px solid #dc3545;
-  color: #ffffff;
-  box-shadow: none;
-}
-
-.booking-delete-modal-actions .booking-delete-btn--danger:hover {
-  background: #bb2d3b;
-  border-color: #bb2d3b;
-  color: #ffffff;
-}
-
-.booking-delete-modal-actions .booking-delete-btn--danger:focus,
-.booking-delete-modal-actions .booking-delete-btn--danger:active {
-  background: #bb2d3b;
-  border-color: #bb2d3b;
-  color: #ffffff;
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2);
-}
-
-@media(max-width:992px) {
-  .profile-card {
-    max-width: 500px;
-    padding: 1.8rem;
-  }
-
-  .profile-card:has(.edit-layout) {
-    max-width: 650px;
-    padding: 2.5rem;
-  }
-
-  .profile-card:has(.edit-layout) .edit-layout {
-    gap: 50px;
-  }
-
-  .profile-card:has(.edit-layout) .left-column {
-    padding-right: 40px;
-  }
-
-  .profile-avatar {
-    width: 120px;
-    height: 120px;
-  }
-
-  .avatar-option {
-    width: 58px;
-    height: 58px;
-  }
-
-  .edit-right-title {
-    font-size: 1.4rem;
-  }
-}
-
+/* Reszponzivitás beállítások */
 @media(max-width:768px) {
   .profile-container {
     padding: 15px;
@@ -515,33 +430,33 @@
 
   .profile-card {
     max-width: 100%;
-    padding: 1.5rem;
+    padding: 24px;
     border-radius: 18px;
   }
 
   .profile-card:has(.edit-layout) {
     max-width: 100%;
-    padding: 2rem;
+    padding: 32px;
   }
 
   .edit-layout {
     flex-direction: column;
-    gap: 2rem;
+    gap: 32px;
   }
 
   .profile-card:has(.edit-layout) .left-column {
     padding-right: 0;
     border-right: none;
     border-bottom: 2px solid #ccc;
-    padding-bottom: 2rem;
+    padding-bottom: 32px;
   }
 
   .profile-header h2 {
-    font-size: 1.3rem;
+    font-size: 21px;
   }
 
   .edit-icon i {
-    font-size: 1.15rem;
+    font-size: 18px;
   }
 
   .profile-avatar {
@@ -559,27 +474,27 @@
   }
 
   .edit-right-title {
-    font-size: 1.3rem;
-    margin-bottom: 1.2rem;
+    font-size: 21px;
+    margin-bottom: 19px;
   }
 
   .field label {
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .profile-card form input {
-    padding: 0.65rem;
-    font-size: 0.95rem;
+    padding: 10px;
+    font-size: 15px;
   }
 
   .bookings h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.7rem;
+    font-size: 18px;
+    margin-bottom: 11px;
   }
 
   .bookings li {
-    padding: 0.65rem;
-    font-size: 0.9rem;
+    padding: 10px;
+    font-size: 14px;
   }
 
   .delete-icon {
@@ -587,42 +502,42 @@
   }
 
   .edit-back-top-left {
-    font-size: 0.95rem;
+    font-size: 15px;
   }
 }
 
 @media(max-width:576px) {
   .profile-container {
-    align-items: flex-start;
+    align-items: center;
     padding: 12px;
   }
 
   .profile-card {
-    padding: 1.2rem;
+    padding: 19px;
     border-radius: 16px;
     max-width: 100%;
   }
 
   .profile-card:has(.edit-layout) {
-    padding: 1.5rem;
+    padding: 24px;
   }
 
   .profile-header {
-    padding: 0 0.5rem;
+    padding: 0 8px;
   }
 
   .profile-header h2 {
-    font-size: 1.15rem;
+    font-size: 18px;
   }
 
   .edit-icon i {
-    font-size: 1.1rem;
+    font-size: 18px;
   }
 
   .profile-avatar {
     width: 105px;
     height: 105px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 13px;
     border-width: 3px;
   }
 
@@ -637,55 +552,55 @@
   }
 
   .upload-label {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    font-size: 14px;
+    margin-bottom: 16px;
   }
 
   .edit-right-title {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+    font-size: 19px;
+    margin-bottom: 16px;
   }
 
   .field {
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
   }
 
   .field label {
-    font-size: 0.8rem;
+    font-size: 13px;
   }
 
   .profile-card form input {
-    padding: 0.6rem;
-    font-size: 0.9rem;
+    padding: 10px;
+    font-size: 14px;
     border-radius: 8px;
   }
 
   .btn.btn-primary,
   .btn.btn-danger {
     width: 100%;
-    font-size: 0.95rem;
-    padding: 0.65rem;
+    font-size: 15px;
+    padding: 10px;
   }
 
   .bookings {
-    margin-top: 1.5rem;
+    margin-top: 24px;
   }
 
   .bookings h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.6rem;
+    font-size: 17px;
+    margin-bottom: 10px;
   }
 
   .bookings li {
     flex-direction: column;
     gap: 5px;
-    font-size: 0.85rem;
-    padding: 0.6rem;
+    font-size: 14px;
+    padding: 10px;
   }
 
   .bookings li span {
     color: #555;
-    font-size: 0.8rem;
+    font-size: 13px;
   }
 
   .booking-content {
@@ -700,11 +615,11 @@
   }
 
   .delete-profile-box {
-    padding: 1rem;
+    padding: 16px;
   }
 
   .delete-check .form-check-label {
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .delete-check .form-check-input {
@@ -713,32 +628,32 @@
   }
 
   .edit-back-top-left {
-    font-size: 0.9rem;
+    font-size: 14px;
     top: 6px;
     left: 6px;
   }
 
   .password-eye {
     right: 10px;
-    font-size: 1.1rem;
+    font-size: 18px;
   }
 
   .booking-delete-modal {
     max-width: 460px;
-    padding: 1rem;
+    padding: 16px;
   }
 
   .booking-delete-modal h4 {
-    font-size: 1.15rem;
+    font-size: 18px;
   }
 
   .booking-delete-modal-text {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .booking-delete-modal-warning,
   .booking-delete-check .form-check-label {
-    font-size: 0.88rem;
+    font-size: 14px;
   }
 
   .booking-delete-modal-actions {
@@ -750,147 +665,243 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .profile-container {
     padding: 10px;
+    min-height: 85vh;
   }
 
   .profile-card {
-    padding: 1rem;
+    padding: 16px;
     border-radius: 14px;
+    max-width: 100%;
   }
 
   .profile-card:has(.edit-layout) {
-    padding: 1.2rem;
+    padding: 20px;
+    max-width: 100%;
   }
 
   .profile-header {
-    padding: 0 0.3rem;
+    padding: 0 6px;
+    gap: 8px;
   }
 
   .profile-header h2 {
-    font-size: 1.05rem;
+    font-size: 16px;
   }
 
   .edit-icon i {
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .profile-avatar {
-    width: 95px;
-    height: 95px;
-    margin-bottom: 0.7rem;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 10px;
     border-width: 3px;
   }
 
   .avatar-grid {
+    grid-template-columns: repeat(3, 1fr);
     gap: 5px;
+    margin-bottom: 12px;
   }
 
   .avatar-option {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
 
   .upload-label {
-    font-size: 0.85rem;
-    margin-bottom: 0.9rem;
+    font-size: 13px;
+    margin-bottom: 14px;
   }
 
   .edit-right-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.9rem;
+    font-size: 17px;
+    margin-bottom: 14px;
   }
 
   .field {
-    margin-bottom: 0.4rem;
+    margin-bottom: 7px;
   }
 
   .field label {
-    font-size: 0.75rem;
-    margin-bottom: 0.2rem;
+    font-size: 12px;
   }
 
   .profile-card form input {
-    padding: 0.55rem;
-    font-size: 0.85rem;
-    border-radius: 7px;
+    padding: 8px;
+    font-size: 13px;
+    border-radius: 6px;
   }
 
   .btn.btn-primary,
   .btn.btn-danger {
     width: 100%;
-    font-size: 0.9rem;
-    padding: 0.6rem;
+    font-size: 14px;
+    padding: 8px;
   }
 
   .bookings {
-    margin-top: 1.3rem;
+    margin-top: 20px;
   }
 
   .bookings h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 
   .bookings li {
-    font-size: 0.8rem;
-    padding: 0.55rem;
-    gap: 4px;
+    padding: 8px;
+    font-size: 13px;
+    gap: 5px;
   }
 
   .bookings li span {
-    font-size: 0.75rem;
+    font-size: 12px;
   }
 
   .delete-icon {
     font-size: 15px;
   }
 
-  .delete-profile-box {
-    padding: 0.9rem;
-  }
-
-  .delete-profile-box h5 {
-    font-size: 1rem;
-  }
-
-  .delete-profile-box p {
-    font-size: 0.85rem;
-  }
-
-  .delete-check .form-check-label {
-    font-size: 0.8rem;
-  }
-
-  .delete-check .form-check-input {
-    width: 12px;
-    height: 12px;
-  }
-
   .edit-back-top-left {
-    font-size: 0.85rem;
+    font-size: 13px;
     top: 5px;
     left: 5px;
-    padding: 3px 5px;
   }
 
   .password-eye {
-    right: 9px;
-    font-size: 1rem;
+    right: 8px;
+    font-size: 16px;
   }
 
   .booking-delete-modal {
-    max-width: 94vw;
-    padding: 0.85rem;
+    max-width: 420px;
+    padding: 14px;
   }
 
   .booking-delete-modal h4 {
-    font-size: 1.05rem;
+    font-size: 16px;
   }
 
-  .booking-delete-modal-close {
-    width: 32px;
-    height: 32px;
+  .booking-delete-modal-text,
+  .booking-delete-modal-warning {
+    font-size: 13px;
+  }
+
+  .delete-profile-box {
+    padding: 12px;
+  }
+
+  .delete-check .form-check-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .profile-container {
+    padding: 8px;
+    min-height: 80vh;
+  }
+
+  .profile-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .profile-card:has(.edit-layout) {
+    padding: 16px;
+  }
+
+  .profile-header h2 {
+    font-size: 15px;
+  }
+
+  .edit-icon i {
+    font-size: 15px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 8px;
+  }
+
+  .avatar-grid {
+    gap: 4px;
+  }
+
+  .avatar-option {
+    width: 44px;
+    height: 44px;
+  }
+
+  .upload-label {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  .edit-right-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .field {
+    margin-bottom: 6px;
+  }
+
+  .field label {
+    font-size: 11px;
+  }
+
+  .profile-card form input {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .btn.btn-primary,
+  .btn.btn-danger {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .bookings h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .bookings li {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .delete-icon {
+    font-size: 14px;
+  }
+
+  .edit-back-top-left {
+    font-size: 12px;
+  }
+
+  .password-eye {
+    right: 6px;
+    font-size: 15px;
+  }
+
+  .booking-delete-modal {
+    max-width: 360px;
+    padding: 12px;
+  }
+
+  .booking-delete-modal h4 {
+    font-size: 15px;
+  }
+
+  .booking-delete-modal-text,
+  .booking-delete-modal-warning {
+    font-size: 12px;
   }
 }

@@ -1,8 +1,13 @@
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Globális stílusok */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f4f7fb;
+  color: #1a3c57;
 }
 
+/* Carousel stílus */
 #heroCarousel .carousel-item {
   display: block;
   opacity: 0;
@@ -22,6 +27,7 @@ code {
   z-index: 2;
 }
 
+/* Egységes gomb stílus */
 .btn {
   border-radius: 12px;
   transition: 0.3s ease;

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import './Footer.css';
 import { NavLink } from 'react-router-dom';
 
+{/* Animáció beállítása */ }
 const SCROLL_ANIMATION_CONFIG = {
   threshold: 0.15,
   staggerDelay: 0.08,
@@ -9,6 +10,7 @@ const SCROLL_ANIMATION_CONFIG = {
   observableClass: 'animate-on-scroll',
 };
 
+{/* Footer navigációs linkek */ }
 const FOOTER_LINKS = [
   { path: '/utjaink', label: 'Útjaink' },
   { path: '/okoutjaink', label: 'ÖkoÚtjaink' },
@@ -18,23 +20,27 @@ const FOOTER_LINKS = [
   { path: '/aszf', label: 'ÁSZF' },
 ];
 
+{/* Közösségi média linkek */ }
 const SOCIAL_LINKS = [
   { url: 'https://facebook.com', icon: 'bi-facebook', label: 'Facebook' },
   { url: 'https://instagram.com', icon: 'bi-instagram', label: 'Instagram' },
   { url: 'https://twitter.com', icon: 'bi-twitter-x', label: 'Twitter' },
 ];
 
+{/* Elérhetőségi adatok */ }
 const CONTACT_INFO = [
   { icon: 'bi-pin-map', label: 'Miskolc' },
   { icon: 'bi-telephone', label: '+36 70 285 4560' },
   { icon: 'bi-envelope', label: 'ecotripmail@gmail.com' },
 ];
 
+{/* Copyright szöveg */ }
 const FOOTER_COPYRIGHT = '© 2026 EcoTrip - Minden jog fenntartva';
 
 export default function Footer() {
   const footerRef = useRef(null);
 
+  {/* Animáció megvalósítása */ }
   useEffect(() => {
     if (!footerRef.current) return;
 
@@ -64,7 +70,8 @@ export default function Footer() {
     <footer ref={footerRef} className="footer-custom text-white">
       <div className="container py-4">
         <div className="row g-3 gy-4">
-          
+
+          {/* Kapcsolat szekció */}
           <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-geo-alt-fill me-2"></i>
@@ -80,6 +87,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Oldalak szekció */}
           <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-map me-2"></i>
@@ -97,6 +105,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Közösségi média szekció */}
           <div className="col-12 col-md-4 footer-section animate-on-scroll">
             <h5 className="footer-heading">
               <i className="bi bi-heart-fill me-2"></i>
@@ -120,6 +129,7 @@ export default function Footer() {
 
         </div>
 
+        {/* Copyright */}
         <div className="footer-bottom text-center mt-4 pt-3 animate-on-scroll">
           <small>{FOOTER_COPYRIGHT}</small>
         </div>
